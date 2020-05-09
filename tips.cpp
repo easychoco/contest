@@ -6,8 +6,12 @@ using namespace std;
 
 
 using ll = long long;
-ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }	// 最大公約数 : 2,6 ->  2
-ll lcm(ll a, ll b) { return a * b / gcd(a, b); }		// 最小公倍数 : 2,6 -> 12
+
+// 最大公約数 : 3,4 ->  1
+ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
+
+// 最小公倍数 : 3,4 -> 12
+ll lcm(ll a, ll b) { return a * b / gcd(a, b); }
 
 // 素数判定
 bool isPrime(int a)
@@ -18,6 +22,22 @@ bool isPrime(int a)
         if(a % i == 0) return false;
     }
     return true;
+}
+
+// a^n mod を計算する
+ll powmod(ll a, ll n, ll mod)
+{
+	ll ret = 1;
+	while (n > 0)
+	{
+		if (n % 2 == 1)
+		{
+			ret = ret * a % mod;
+		}
+		a = a * a % mod;
+		n /= 2;
+	}
+	return ret;
 }
 
 // =================================================================================================== //
@@ -42,7 +62,7 @@ void tip_string()
 	s.length();			// 長さ
 	s[3];				// 3番目の文字を参照
 	s.substr(3, 5);		// 3番目以降5文字を抽出して得られる文字列
-	s.find(t); 			// sの中に文字列tがあればその先頭のアドレスを返す．なければs.nopsを返却
+	s.find(t); 			// sの中に文字列tがあればその先頭のアドレスを返す．なければs.nposを返却
 	s.replace(3, 5, t);	// 3番目以降5文字を文字列tで置換する．tを空文字列にすれば削除の動作
 	s.insert(3, t);		// 3番目の文字の前に文字列tを挿入	
 }
