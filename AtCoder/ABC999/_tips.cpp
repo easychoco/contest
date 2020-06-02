@@ -24,20 +24,24 @@ bool isPrime(int a)
     return true;
 }
 
-// a^n mod を計算する
-ll powmod(ll a, ll n, ll mod)
-{
+// a^n % mod を計算する O(log n)
+ll powmod(ll a, ll n, ll mod) {
 	ll ret = 1;
-	while (n > 0)
-	{
-		if (n % 2 == 1)
-		{
-			ret = ret * a % mod;
-		}
+	while (n > 0) {
+		if (n % 2 == 1) { ret = ret * a % mod; }
 		a = a * a % mod;
 		n /= 2;
 	}
 	return ret;
+}
+
+// nCr % mod を計算する O(r)
+ll combmod(ll n, ll r, ll mod)
+{
+	ll x = 1, y = 1;
+	for(ll i = 0; i < r; ++i) { x = x * (n - i) % mod; }	// 分子
+	for(ll i = 1; i <= r; ++i) { y = y * i % mod; }			// 分母
+	return x * powmod(y, mod - 2, mod) % mod;	// nCr = (分子) * (分母)^-1 mod M
 }
 
 // =================================================================================================== //
