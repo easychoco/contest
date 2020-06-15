@@ -57,6 +57,19 @@ void tip_algorithm()
 
 }
 
+int f(int x){ return x; }
+void tip_binary_search()
+{
+	ll x;
+	ll le = 0, re = 1000000000LL;
+	while(re - le > 1)
+	{
+		ll mid = (le + re) / 2;
+		if ( x < f(x) ) re = mid;
+		else le = mid;
+	}
+}
+
 void tip_string()
 {
 	string s, t;
@@ -165,7 +178,7 @@ void tip_set()
 
 	s.insert(2);		// 要素の追加
 	s.erase(2);			// 要素の削除
-	s.find(2);			// 発見したらその要素へのイテレータを返す
+	s.find(2);			// 発見したらその要素へのイテレータを返す,なければend()を返す
 	s.count(2);			// 要素の数を返す
 	s.empty();			// 空ならtrue
 	s.size();			// 要素数を返却
