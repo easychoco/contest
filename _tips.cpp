@@ -14,11 +14,9 @@ ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 ll lcm(ll a, ll b) { return a * b / gcd(a, b); }
 
 // 素数判定
-bool isPrime(int a)
-{
+bool isPrime(int a) {
     if (a == 1) return false;
-    for (int i = 2; i * i <= a; i++)
-	{
+    for (int i = 2; i * i <= a; i++) {
         if(a % i == 0) return false;
     }
     return true;
@@ -36,9 +34,9 @@ ll powmod(ll a, ll n, ll mod) {
 }
 
 // nCr % mod を計算する O(r)
-ll combmod(ll n, ll r, ll mod)
-{
+ll combmod(ll n, ll r, ll mod) {
 	ll x = 1, y = 1;
+	r = min(n - r, r);
 	for(ll i = 0; i < r; ++i) { x = x * (n - i) % mod; }	// 分子
 	for(ll i = 1; i <= r; ++i) { y = y * i % mod; }			// 分母
 	return x * powmod(y, mod - 2, mod) % mod;	// nCr = (分子) * (分母)^-1 mod M
@@ -55,6 +53,18 @@ void tip_algorithm()
 
 	swap(x, y);				// 値を交換する
 
+}
+
+// ワーシャルフロイド法・全点対最短経路 O(n^3)
+void tip_warshall_floyd(int n) {
+	int d[300][300];
+	for (int k = 0; k < n; k++){			// 経由する頂点
+		for (int i = 0; i < n; i++) {		// 始点
+			for (int j = 0; j < n; j++) {	// 終点
+				d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+			}
+		}
+	}
 }
 
 int f(int x){ return x; }
