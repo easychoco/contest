@@ -11,13 +11,13 @@ const double PI = 3.14159265358979;
 
 void solve()
 {
-	
+  
 }
 
 int main()
 {
-	fastio;
-	solve();
+  fastio;
+  solve();
 
-	return 0;
+  return 0;
 }
