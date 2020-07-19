@@ -1,5 +1,8 @@
-// https://github.com/atcoder-live/library
+// https://github.com/atcoder/live_library
 // https:// qiita.com/kawa-Kotaro/items/782bc31b64e4ee13649a
+
+// --std=c++14 -Wl,--stack,10485760 
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -7,6 +10,7 @@ using namespace std;
 
 
 using ll = long long;
+using P = pair<int, int>;
 
 // 最大公約数 : 3,4 ->  1
 ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
@@ -83,10 +87,11 @@ void dijkstra()
     G[v].emplace_back(Edge{w, u});
   }
 
+  const ll INF = 1LL << 60;
   vector<ll> d(n, INF);
   d[0] = 0;
   priority_queue<P, vector<P>, greater<P>> que;
-  que.push(P(0, 0));
+  que.push(P(0, 0)); // P(cost, start)
   while (!que.empty())
   {
     P p = que.top();
@@ -104,9 +109,9 @@ void dijkstra()
   }
 }
 
-int f(int x){ return x; }
 void tip_binary_search()
 {
+  auto f = [&](ll arg){ return arg; };
   ll x;
   ll le = 0, re = 1000000000LL;
   while(re - le > 1)
@@ -147,6 +152,9 @@ void tip_vector()
 
   sort(vec.begin(), vec.end());					// 昇順ソート
   sort(vec.begin(), vec.end(), greater<int>());	// 降順ソート
+  sort(vec.begin(), vec.end(),  [](auto const& l, auto const& r){
+    return abs(l) < abs(r);
+  });// 自作ソート・昇順
 
   int x = 2;	// 探索対象
   binary_search(vec.begin(), vec.end(), x);		// trueかfalseを返す
@@ -195,6 +203,13 @@ void tip_deque() 		// stack と queue の性質を持つ
   d.pop_back();		// 末尾の要素を削除
 }
 
+struct My{
+  ll sum, i, j, k;
+  bool operator < (const My& other) const
+  { // 自作の構造体・最大値から
+    return sum < other.sum;
+  }
+};
 void tip_priority_queue()
 {
   priority_queue<int> que;	// 最大値から出てくるヒープ
@@ -272,7 +287,13 @@ public:
 
 void solve()
 {
-  
+  int n;
+  cin >> n;
+  vector<int> a(n);
+  for(int i = 0; i < n; ++i)
+  {
+    cin >> a[i];
+  }
 }
 
 int main()
