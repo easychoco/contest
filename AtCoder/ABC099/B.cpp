@@ -11,7 +11,9 @@ const double PI = 3.14159265358979;
 
 void solve()
 {
-  
+  int a, b;
+  cin >> a >> b;
+  cout << (b - a) * (b - a - 1) / 2 - a;
 }
 
 int main()
