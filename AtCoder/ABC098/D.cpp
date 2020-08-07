@@ -6,12 +6,28 @@
 using namespace std;
 using ll = long long;
 
-const ll MOD = 1000000007LL; // = 10^9 + 7
-const double PI = 3.14159265358979;
-
+//1125~1330
 void solve()
 {
-  
+  ll n;
+  cin >> n;
+  vector<ll> a(n);
+
+  ll ans = n;
+  int num = 0;
+  int le = 0;
+  for(int re = 0; re < n; ++re)
+  {
+    cin >> a[re];
+    while((num & a[re]) > 0) 
+    {
+      num ^= a[le];
+      le++;
+    }
+    num ^= a[re];
+    ans += (re - le);
+  }
+  cout << ans;
 }
 
 int main()
