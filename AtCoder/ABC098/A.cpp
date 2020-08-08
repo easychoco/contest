@@ -11,7 +11,9 @@ const double PI = 3.14159265358979;
 
 void solve()
 {
-  
+  int a, b;
+  cin >> a >> b;
+  cout << max({a+b, a-b, a*b});
 }
 
 int main()
