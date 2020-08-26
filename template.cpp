@@ -2,22 +2,22 @@
 
 #define fastio ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
 #define endl "\n"
+#define ALL(a) (a).begin(),(a).end()
 
 using namespace std;
 using ll = long long;
 
-const ll MOD = 1000000007LL; // = 10^9 + 7
 const double PI = 3.14159265358979;
 
 void solve()
 {
-	
+  
 }
 
 int main()
 {
-	fastio;
-	solve();
+  fastio;
+  solve();
 
-	return 0;
+  return 0;
 }

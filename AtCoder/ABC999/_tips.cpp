@@ -57,7 +57,24 @@ void tip_algorithm()
   for(auto &v : vec) {}	// 走査
 
   swap(x, y);				// 値を交換する
+}
 
+// 素因数分解
+void tip_facotization()
+{
+  ll n;
+  map<ll, ll> primes;
+  int factor = 2;
+  while(factor * factor <= n)
+  {
+    if (n % factor == 0)
+    {
+      primes[factor]++;
+      n /= factor;
+    }
+    else ++factor;
+  }
+  primes[n]++;
 }
 
 // ワーシャルフロイド法・全点対最短経路 O(n^3)
@@ -287,9 +304,9 @@ public:
 
 void solve()
 {
-  int n;
+  ll n;
   cin >> n;
-  vector<int> a(n);
+  vector<ll> a(n);
   for(int i = 0; i < n; ++i)
   {
     cin >> a[i];
