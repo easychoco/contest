@@ -11,7 +11,17 @@ const double PI = 3.14159265358979;
 
 void solve()
 {
-  
+  int a, b, k;
+  cin >> a >> b >> k;
+  int num = a;
+  for(num; num <= min(a + k - 1, b); ++num)
+  {
+    cout << num << endl;
+  }
+  for(num = max(num, b - k + 1); num <= b; ++num)
+  {
+    cout << num << endl;
+  }
 }
 
 int main()
