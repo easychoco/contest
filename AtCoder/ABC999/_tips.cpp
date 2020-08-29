@@ -304,6 +304,10 @@ public:
 
 void solve()
 {
+  int a;
+  cin >> a;
+  cout << (a ? "Yes" : "No");
+
   ll n;
   cin >> n;
   vector<ll> a(n);
