@@ -93,10 +93,18 @@ void solve()
     return;
   }
 
-  if ((cnt > 2 && old_n + cnt - 1 > n) || old_n != n)
+  if (old_n != n)
   {
-    cout << "setwise coprime";
-    return;
+    if (cnt >= 2 && n + cnt - 1 == old_n)
+    {
+
+    }
+    else
+    {
+      cout << "setwise coprime";
+      return;
+    }
+    
   }
 
   for(const auto& va : a)
