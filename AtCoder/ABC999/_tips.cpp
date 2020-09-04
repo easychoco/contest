@@ -4,13 +4,15 @@
 // --std=c++14 -Wl,--stack,10485760 
 
 #include <bits/stdc++.h>
+
+#define ALL(a) (a).begin(),(a).end()
+#define RALL(a) (a).rbegin(),(a).rend()
+
 using namespace std;
-
-#define PI 3.14159265358979
-
-
 using ll = long long;
 using P = pair<int, int>;
+
+const double PI = 3.14159265358979;
 
 // 最大公約数 : 3,4 ->  1
 ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
