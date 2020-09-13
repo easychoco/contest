@@ -13,7 +13,7 @@ const double PI = 3.14159265358979;
 void solve()
 {
   ll a, b, c, d;
-  cin >> a >>b >> c >> d;
+  cin >> a >> b >> c >> d;
   cout << max({a*c, a*d, b*c, b*d});
 }
 

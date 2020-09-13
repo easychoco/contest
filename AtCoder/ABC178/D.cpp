@@ -59,7 +59,7 @@ void solve()
     for(int j = 3; j <= i / 2; ++j)
     {
       ans[i] += ans[i - j] + ans[j];
-      if (i - j  == j) ans[i]-=ans[j];
+      if (i - j == j) ans[i] -= ans[j];
     }
   }
   cout << ans[s];
