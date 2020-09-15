@@ -128,6 +128,39 @@ void dijkstra()
   }
 }
 
+// BFSを使った無向グラフの全探索
+void tip_graph_bfs()
+{
+  ll n, m, a, b;
+  cin >> n >> m;
+  vector<P> input(m);
+  vector< vector<int> > edge(n, vector<int>());
+  for(int i = 0; i < m; ++i)
+  {
+    cin >> a >> b;
+    a--; b--;
+    input[i] = P(a, b);
+    edge[a].emplace_back(b);
+    edge[b].emplace_back(a);
+  }
+
+  // visited使用
+  vector<bool> visited(n, false);
+  queue<int> que;
+  que.push(0); //初期位置
+  while(!que.empty())
+  {
+    int now = que.front();
+    que.pop();
+    visited[now] = true;
+    for(const auto& to : edge[now])
+    {
+      if (!visited[to]) //visited使用
+        que.push(to);
+    }
+  }
+}
+
 void tip_binary_search()
 {
   auto f = [&](ll arg){ return arg; };
@@ -306,9 +339,9 @@ public:
 
 void solve()
 {
-  int a;
-  cin >> a;
-  cout << (a ? "Yes" : "No");
+  int x;
+  cin >> x;
+  cout << (x ? "Yes" : "No");
 
   ll n;
   cin >> n;
