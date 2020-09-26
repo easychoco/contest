@@ -322,7 +322,7 @@ public:
     rank.resize(n, 1);
   }
   int root(int x){
-    if(p[x] == -1)return x;
+    if(p[x] == -1) return x;
     else return p[x] = root(p[x]); // 深さを 1 にしている
   }
   void unite(int x, int y){
@@ -331,6 +331,12 @@ public:
     if(rank[x] > rank[y]) swap(x, y); // rankの小さいものを下につける
     rank[y] += rank[x];
     p[x] = y;
+  }
+  // グループの数
+  ll root_num() {
+    ll num = 0;
+    for(ll x : p) if (x < 0) num++;
+    return num;
   }
   //xが属すグループのサイズ
   int size(int x){ return rank[root(x)]; }
