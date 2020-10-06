@@ -346,11 +346,12 @@ public:
 // Segment Tree
 // https://www.creativ.xyz/segment-tree-entrance-999/
 // 使用関数の引数は全て1-index
+// query() は半開区間
 // ===================  問題ごとに設定 ====================
+// !!使う前に init() を呼ぶ!!
 const int N = 1 << 20;              // 葉の数、2の累乗数
 const ll E = 0;                     // 演算での単位元
-ll op(ll a, ll b) { return a + b; } // 使用する演算、非可換
-// !!使う前に init() を呼ぶ!!
+ll op(ll a, ll b) { return a + b; } // 使用する演算、可換
 // =======================================================
 ll node[N * 2 + 1];
 void init(){
