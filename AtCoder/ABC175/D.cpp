@@ -13,13 +13,44 @@ void solve()
 {
   ll n, k;
   cin >> n >> k;
-  vector<ll> c(n + 1, 0);
-  vector<ll> p(n + 1, 0);
-  for(int i = 1; i <= n; ++i) cin >> p[i];
-  for(int i = 1; i <= n; ++i) cin >> c[i];
+  vector<ll> c(n);
+  vector<ll> p(n);
+  for(int i = 0; i < n; ++i)
+  {
+    cin >> p[i];
+    p[i]--;
+  }
+  for(int i = 0; i < n; ++i) cin >> c[i];
 
-  const ll INF = 1000000000LL * 5000LL + 10LL;
+  ll ans = -1e18;
+  for(int i = 0; i < n; ++i)
+  {
+    int x = i;
+    vector<int> s;
+    ll total = 0;
+    while(true)
+    {
+      x = p[x];
+      s.emplace_back(c[x]);
+      total += c[x];
+      if (x == i) break;
+    }
 
+    ll sz = s.size();
+    ll now = 0;
+    for(int j = 0; j < sz; ++j)
+    {
+      now += s[j];
+      if (j + 1 > k) break;
+      ll score = now;
+      if(total > 0)
+      {
+        score += total * ((k - j - 1) / sz);
+      }
+      ans = max(ans, score);
+    }
+  }
+  cout << ans;
 }
 
 int main()
