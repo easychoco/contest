@@ -363,7 +363,7 @@ void update(int i, ll x){ // i 番目の葉の値を x に変える
   node[i] = x;
   while (i > 0) {
     i = (i - 1) / 2; // ノード i の親ノードの番号に変える
-    node[i] = op(node[i * 2 + 1], node[i * 2 + 2]); // 左右の子の min を計算しなおす
+    node[i] = op(node[i * 2 + 1], node[i * 2 + 2]); // 左右の子の値を計算しなおす
   }
 }
 ll query(int a, int b, int k = 0, int l = 0, int r = N){
