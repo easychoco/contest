@@ -7,77 +7,55 @@
 
 using namespace std;
 using ll = long long;
-
-using Pair = pair<int, int>;
-#define A first
-#define Belong second
+using P = pair<int, int>;
 
 void solve()
 {
-	int n, q;
-	cin >> n >> q;
-	vector<Pair> infant(n);
+  int n, q, a, b;
+  cin >> n >> q;
+  vector<P> infant(n);
+  vector< multiset<P> > y(200001, multiset<P>());
+  for(int i = 0; i < n; ++i)
+  {
+    cin >> a >> b;
+    b--;
+    infant[i] = P(a, b);
+    y[b].insert(P(a, i));
+  }
 
-	int max_score[200001];
-	fill(max_score, max_score + 200001, -1);
+  multiset<P> ans;
+  for(int i = 0; i < 200001; ++i)
+  {
+    if (!y[i].empty()) ans.insert(*(y[i].rbegin()));
+  }
 
-	int a, b;
-	for(int i = 0; i < n; ++i)
-	{
-		cin >> a >> b;
-		infant[i] = make_pair(a, b);
-		max_score[b] = max(max_score[b], a);
-	}
+  int c, d;
+  for(int i = 0; i < q; ++i)
+  {
+    cin >> c >> d;
+    c--; d--;
+    int rating = infant[c].first;
+    int belong = infant[c].second;
+    infant[c].second = d;
+    P infa = P(rating, c);
 
-	for(const auto& v : infant)
-	{
-		cout << v.Belong << " ";
-	}
+    ans.erase(*(y[belong].rbegin()));
+    if (!y[d].empty()) ans.erase(*(y[d].rbegin()));
+  
+    y[belong].erase(infa);
+    y[d].insert(infa);
 
+    if (!y[belong].empty()) ans.insert(*(y[belong].rbegin()));
+    ans.insert(*(y[d].rbegin()));
 
-	int c, d;
-	for(int i = 0; i < q; ++i)
-	{
-		cout << endl << i << " : -------" << endl;
-
-		cin >> c >> d;
-		c--;
-
-		int before = infant[c].Belong;
-		int after = d;
-
-		infant[c].Belong = d;
-
-		for(const auto& v : infant)
-		{
-
-		}
-
-		/*
-		最小の幼稚園に、その値よりも大きいレートを持つ幼児が移ったとき、答えが変わる
-		幼稚園の最大のレートを持つ幼児が移るとき、答えが変わるかもしれない
-		ans = min(各幼稚園のレート)
-		各幼稚園のレート = max(各幼児のレート)
-
-		ans = min(dp[0], dp[1], dp[2],...)
-		dp[i] = infant[0]
-		
-		*/
-
-
-		for(const auto& v : infant)
-		{
-			cout << v.Belong << "," << v.A << " ";
-		}
-
-
-	}
+    cout << (*ans.begin()).first << endl;
+  }
 }
 
 int main()
 {
-	fastio;
-	solve();
+  fastio;
+  solve();
 
-	return 0;
+  return 0;
 }
