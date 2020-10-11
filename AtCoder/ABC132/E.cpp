@@ -5,93 +5,57 @@
 
 using namespace std;
 using ll = long long;
+using P = pair<ll, ll>;
 
-const ll MOD = 1000000007LL; // = 10^9 + 7
-const double PI = 3.14159265358979;
-
-
-vector<int> edge[100005];
-bool seen[100005];
-
-set<int> dfs(int now, int depth)
-{
-	if (depth == 3)
-	{
-		set<int> ret;
-		for(const int e : edge[now])
-		{
-			ret.insert(e);
-		}
-		return ret;
-	}
-
-	set<int> ret;
-	for(const int e : edge[now])
-	{
-		set<int> next = dfs(e, depth + 1);
-		for(const int n : next) ret.insert(n);
-	}
-	return ret;
-}
+struct Edge{ ll cost, to; };
 
 void solve()
 {
-	fill(seen, seen + 100005, false);
-	int n, m, u, v;;
-	cin >> n >> m;
+  ll n, m, u, v;
+  cin >> n >> m;
+  vector< vector<ll> > G(n * 3, vector<ll>());
+  for(int i = 0; i < m; ++i)
+  {
+    cin >> u >> v;
+    u--; v--;
+    G[u].emplace_back(v + n);
+    G[u + n].emplace_back(v + n * 2);
+    G[u + n * 2].emplace_back(v);
+  }
 
-	for(int i = 0; i < m; ++i)
-	{
-		cin >> u >> v;
-		u--; v--;
-		edge[u].emplace_back(v);
-	}
+  ll from, to;
+  cin >> from >> to;
+  from--; to--;
 
-	int start, dest;
-	cin >> start >> dest;
-	start--; dest--;
+  const ll INF = 1LL << 60;
+  vector<ll> d(n * 3, INF);
+  d[from] = 0;
+  priority_queue<P, vector<P>, greater<P>> que;
+  que.push(P(0, from)); // P(cost, start)
+  while (!que.empty())
+  {
+    P p = que.top();
+    que.pop();
+    ll node = p.second;
+    if (d[node] < p.first) continue;
+    for (const auto& edge : G[node])
+    {
+      if (d[edge] > d[node] + 1)
+      {
+        d[edge] = d[node] + 1;
+        que.push(P(d[edge], edge));
+      }
+    }
+  }
 
-	set<int> now{ start };
-	int cnt = 0;
-	while(true)
-	{
-		cnt++;
-		set<int> next;
-		for(const int e : now)
-		{
-			set<int> to = dfs(e, 1);
-			for(const auto& t : to)
-			{
-				//cout << t << " ";
-				next.insert(t);
-				if (t == dest)
-				{
-					cout << cnt;
-					return;
-				}
-			}
-			//cout << endl;
-		}
-
-		now = next;
-		bool ng = true;
-		for(const int e : now)
-		{
-			ng &= seen[e];
-			seen[e] = true;
-		}
-		if (ng)
-		{
-			cout << -1;
-			return;
-		}
-	}
+  ll dist = d[to];
+  cout << (((dist == INF) || (dist % 3 > 1)) ? -1LL : dist / 3);
 }
 
 int main()
 {
-	fastio;
-	solve();
+  fastio;
+  solve();
 
-	return 0;
+  return 0;
 }
