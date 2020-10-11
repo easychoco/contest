@@ -51,16 +51,6 @@ ll combmod(ll n, ll r, ll mod) {
 
 // =================================================================================================== //
 
-void tip_algorithm()
-{
-  auto vec = vector<int> { 0, 1, 2 };
-  int x = 4, y = 5;
-
-  for(auto &v : vec) {}	// 走査
-
-  swap(x, y);				// 値を交換する
-}
-
 // 素因数分解
 void tip_facotization()
 {
@@ -92,6 +82,9 @@ void tip_warshall_floyd(int n) {
 }
 
 // Dijkstra法
+// w=1(固定長)の時はpriority_queueをqueueにするとO(NlogN)がO(logN)になる
+// 大抵は不要だけどO(NlogN)では厳しいときに
+// 下のtip_graph_bfsも検討
 struct Edge{ ll cost, to; };
 void dijkstra()
 {
@@ -173,6 +166,8 @@ void tip_binary_search()
     else le = mid;
   }
 }
+
+// =================================================================================================== //
 
 void tip_string()
 {
@@ -312,6 +307,8 @@ void tip_unordered_set()
   s.size();			// 要素数を返却
   s.clear();			// 空にする
 }
+
+// =================================================================================================== //
 
 class UnionFind{
 public:
