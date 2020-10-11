@@ -5,14 +5,19 @@
 
 #include <bits/stdc++.h>
 
+#define rep(i,n) repi(i,0,n)
+#define repi(i,a,n) for(ll i = a;i < (ll)n;++i)
 #define ALL(a) (a).begin(),(a).end()
 #define RALL(a) (a).rbegin(),(a).rend()
+#define SHOW(str,val) cout<<(str)<<" : "<<(val)<<endl;
 
 using namespace std;
 using ll = long long;
-using P = pair<int, int>;
-
-const double PI = 3.14159265358979;
+using P = pair<ll, ll>;
+// using P = pair<int, int>;
+void YN(bool a) { cout << (a ? "Yes" : "No"); }
+template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true;} return false;}
+template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true;} return false;}
 
 // 最大公約数 : 3,4 ->  1
 ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
@@ -378,12 +383,16 @@ void solve()
 {
   int x;
   cin >> x;
-  cout << (x ? "Yes" : "No");
+
+  bool y = x > 0;
+
+  YN(y);
+
 
   ll n;
   cin >> n;
   vector<ll> a(n);
-  for(int i = 0; i < n; ++i)
+  rep(i, n)
   {
     cin >> a[i];
   }
