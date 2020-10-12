@@ -19,34 +19,51 @@ template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true
 
 void solve()
 {
-  ll a, b, k;
-  cin >> a >> b >> k;
-  bool t = true;
-  rep(i, k)
+  ll n;
+  cin >> n;
+  vector<ll> a(n);
+  rep(i, n) cin >> a[i];
+
+  ll ans = 0;
+  sort(ALL(a));
+  auto bi = a.begin();
+  auto ri = a.end();
+  bi++;
+  ri--;
+  ll front = a[0];
+  ll back = a[0];
+  while(bi <= ri)
   {
-    if (t)
+    ll m1 = abs(*bi - front);
+    ll m2 = abs(*bi - back);
+    ll m3 = abs(*ri - front);
+    ll m4 = abs(*ri - back);
+    ll mm = max({m1, m2, m3, m4});
+    ans += mm;
+    if (mm == m1)
     {
-      if(a&1)
-      {
-        a--;
-      }
-      b += a / 2;
-      a /= 2;
+      front = *bi;
+      bi++;
+    }
+    else if (mm == m2)
+    {
+      back = *bi;
+      bi++;
+    }
+    else if (mm == m3)
+    {
+      front = *ri;
+      ri--;
     }
     else
     {
-      if(b&1)
-      {
-        b--;
-      }
-      a += b / 2;
-      b /= 2;      
+      back = *ri;
+      ri--; 
     }
-    
-    t = !t;
   }
-  cout << a << " " << b;
+  cout << ans;
 }
+
 
 int main()
 {
