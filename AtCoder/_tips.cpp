@@ -61,7 +61,7 @@ void tip_facotization()
 {
   ll n;
   map<ll, ll> primes;
-  int factor = 2;
+  ll factor = 2;
   while(factor * factor <= n)
   {
     if (n % factor == 0)
