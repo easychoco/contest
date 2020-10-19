@@ -5,11 +5,13 @@
 
 #include <bits/stdc++.h>
 
+#define fastio ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define endl "\n"
 #define rep(i,n) repi(i,0,n)
-#define repi(i,a,n) for(ll i = a;i < (ll)n;++i)
+#define repi(i,a,n) for(ll i=a;i<(ll)n;++i)
 #define ALL(a) (a).begin(),(a).end()
 #define RALL(a) (a).rbegin(),(a).rend()
-#define SHOW(str,val) cout<<(str)<<" : "<<(val)<<endl;
+#define SHOW(str,val) cout<<(str)<<" : "<<(val)<<endl
 
 using namespace std;
 using ll = long long;
@@ -174,6 +176,54 @@ void tip_binary_search()
 
 // =================================================================================================== //
 
+// dynamic programming
+void tip_dp()
+{
+  /*
+  // knapsack
+  // ナップサック問題
+  // dp[i][j] = i個まで見て、重さがjの時の最大価値
+  vector< vector<ll> > dp(n, vector<ll>(w, 0));
+  rep (i, w) dp[0][i] = 0;
+  rep (i, n) rep (j, w)
+  {
+    if (j >= weight[i]) dp[i + 1][j] = max(dp[i][j - weight[i]] + value[i], dp[i][j]);
+    else dp[i+1][j] = dp[i][j];
+  }
+  cout << dp[n][w];
+
+  // knapsack
+  // ナップサック問題
+  // dp[i][j] = i個まで見て、重さがjの時の最大価値
+  vector< vector<ll> > dp(n, vector<ll>(w + max_weight, 0));
+  rep(i, n) rep(x, w + 1)
+  {
+    chmax(dp[i + 1][x + weight[i]], dp[i][x] + value[i]);
+    chmax(dp[i + 1][x], dp[i][x]);
+  }
+  cout << dp[n][w];
+
+  // tsp
+  // traveling salesman
+  // 巡回セールスマン問題
+  const ll INF = 1LL << 60;
+  // dp[i][j] = いまiにいて、j(mask)の街に訪れているときのコストの最小値
+  vector< vector<ll> > dp(1<<n, vector<ll>(n, INF));
+  repi(i, 1, n) dp[1<<i][i] = dist[0][i];
+  rep(mask, 1<<n) rep(now, n)
+  {
+    if (1 << now & mask) rep(next, n)
+    {
+      if (1 << next & mask) continue;
+      chmin(dp[mask | (1<<next)][next], dp[mask][now] + dist[now][next]);
+    }
+  }
+  cout << dp[(1 << n) - 1][0];
+  */
+}
+
+// =================================================================================================== //
+
 void tip_string()
 {
   string s, t;
@@ -190,7 +240,7 @@ void tip_string()
 
 void tip_vector()
 {
-    vector<int> vec(5);
+  vector<int> vec(5);
 
   vec.size();			// vecの大きさ
   vec[3];				// i番目の要素にアクセス
