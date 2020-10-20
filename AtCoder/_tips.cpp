@@ -164,13 +164,12 @@ void tip_graph_bfs()
 void tip_binary_search()
 {
   auto f = [&](ll arg){ return arg; };
-  ll x;
-  ll le = 0, re = 1000000000LL;
-  while(re - le > 1)
+  ll ac = 0, wa = 1000000000LL;
+  while(wa - ac > 1)
   {
-    ll mid = (le + re) / 2;
-    if ( x < f(x) ) re = mid;
-    else le = mid;
+    ll wj = (ac + wa) / 2;
+    if ( !f(wj) ) wa = wj;
+    else ac = wj;
   }
 }
 
