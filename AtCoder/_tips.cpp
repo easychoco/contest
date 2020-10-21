@@ -119,11 +119,11 @@ void dijkstra()
     if (d[node] < p.first) continue;
     for (const auto& edge : G[node])
     {
-        if (d[edge.to] > d[node] + edge.cost)
-        {
-            d[edge.to] = d[node] + edge.cost;
-            que.push(P(d[edge.to], edge.to));
-        }
+      if (d[edge.to] > d[node] + edge.cost)
+      {
+        d[edge.to] = d[node] + edge.cost;
+        que.push(P(d[edge.to], edge.to));
+      }
     }
   }
 }
