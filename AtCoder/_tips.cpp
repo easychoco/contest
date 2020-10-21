@@ -182,11 +182,11 @@ void tip_dp()
   // knapsack
   // ナップサック問題
   // dp[i][j] = i個まで見て、重さがjの時の最大価値
-  vector< vector<ll> > dp(n, vector<ll>(w, 0));
+  vector< vector<ll> > dp(n + 1, vector<ll>(w + 1, 0));
   rep (i, w) dp[0][i] = 0;
   rep (i, n) rep (j, w)
   {
-    if (j >= weight[i]) dp[i + 1][j] = max(dp[i][j - weight[i]] + value[i], dp[i][j]);
+    if (j >= w[i]) dp[i + 1][j] = max(dp[i][j - w[i]] + v[i], dp[i][j]);
     else dp[i+1][j] = dp[i][j];
   }
   cout << dp[n][w];
@@ -194,13 +194,32 @@ void tip_dp()
   // knapsack
   // ナップサック問題
   // dp[i][j] = i個まで見て、重さがjの時の最大価値
-  vector< vector<ll> > dp(n, vector<ll>(w + max_weight, 0));
+  vector< vector<ll> > dp(n + 1, vector<ll>(w + max_weight, 0));
   rep(i, n) rep(x, w + 1)
   {
-    chmax(dp[i + 1][x + weight[i]], dp[i][x] + value[i]);
+    chmax(dp[i + 1][x + w[i]], dp[i][x] + v[i]);
     chmax(dp[i + 1][x], dp[i][x]);
   }
   cout << dp[n][w];
+
+  // knapsack
+  // ナップサック問題
+  const ll INF = 1LL << 60;
+  // dp[i][j] = i番目まで見て、価値がjの時の最小重さ
+  vector< vector<ll> > dp(n + 1, vector<ll>(Vsum + 1, INF));
+  dp[0][0] = 0;
+  rep(i, n) rep(j, Vsum)
+  {
+    if (j - v[i] >= 0) dp[i + 1][j] = min(dp[i][j - v[i]] + w[i], dp[i][j]);
+    else dp[i + 1][j] = dp[i][j];
+  }
+  ll ans = 0;
+  for(int i = Vsum; i >= 0; --i) {
+    if (dp[n][i] <= weight) {
+      ans = i;
+      break;
+    }
+  }
 
   // tsp
   // traveling salesman
