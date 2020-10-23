@@ -76,7 +76,8 @@ void tip_facotization()
   primes[n]++;
 }
 
-// ワーシャルフロイド法・全点対最短経路 O(n^3)
+// ワーシャルフロイド法
+// 全点対最短経路 O(n^3)
 void tip_warshall_floyd(int n) {
   int d[300][300];
   for (int k = 0; k < n; k++){			// 経由する頂点
@@ -88,13 +89,16 @@ void tip_warshall_floyd(int n) {
   }
 }
 
-// Dijkstra法
-// w=1(固定長)の時はpriority_queueをqueueにするとO(NlogN)がO(logN)になる
-// 大抵は不要だけどO(NlogN)では厳しいときに
-// 下のtip_graph_bfsも検討
+// Dijkstra法 ダイクストラ法
+// 単一始点最短経路問題 O(E log V)
 struct Edge{ ll cost, to; };
 void dijkstra()
 {
+  // 重みに負値があるときはベルマンフォード法を使う
+
+  // w=1(固定長)の時はpriority_queueをqueueにするとO(NlogN)がO(logN)になる
+  // 大抵は不要だけどO(NlogN)では厳しいときに
+  // 下のtip_graph_bfsも検討
   ll n, u, v, w;
   cin >> n;
   vector< vector<Edge> > G(n, vector<Edge>());
@@ -161,6 +165,8 @@ void tip_graph_bfs()
   }
 }
 
+// 二分探索
+// めぐる式
 void tip_binary_search()
 {
   auto f = [&](ll arg){ return arg; };
