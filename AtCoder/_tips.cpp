@@ -76,6 +76,51 @@ void tip_facotization()
   primes[n]++;
 }
 
+
+// クラスカル法
+// 最小全域木問題
+// [UnionFind木] を貼る
+void tip_kruskal()
+{
+  // ======================================
+  // このクラスはいらない
+  // コンパイルを通すためのダミークラス
+  class UnionFind{ 
+    public: UnionFind(ll a){}
+    bool same(ll a, ll b){ return true; }
+    void unite(ll a, ll b){}
+  };
+  // ここまでいらない
+  // ======================================
+
+  ll n = 1;
+  //     tuple<cost, from, to>
+  vector<tuple<ll, ll, ll> > G;
+  UnionFind uf(n);
+  
+  rep(i, n)
+  {
+    ll cost, from, to;
+    G.emplace_back(cost, from, to);
+  }
+  sort(ALL(G));
+
+  ll dist_sum = 0;
+  ll edge_cnt = 0;
+  for(const auto& edge : G)
+  {
+    ll cost, from, to;
+    tie(cost, from, to) = edge;
+    if (!uf.same(from, to))
+    {
+      uf.unite(from, to);
+      dist_sum += cost;
+      ++edge_cnt;
+    }
+  }
+}
+
+
 // ワーシャルフロイド法
 // 全点対最短経路 O(n^3)
 void tip_warshall_floyd(int n) {
