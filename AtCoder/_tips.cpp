@@ -210,6 +210,38 @@ void tip_graph_bfs()
   }
 }
 
+// トポロジカルソート
+// O(V + E)
+void tip_topological_sort()
+{
+  ll n, m, u, v;
+  cin >> n >> m;
+  vector< vector<ll> > edge(n, vector<ll>()); // グラフ・DAG
+  vector<ll> deg(n, 0); // 入り次数
+  rep(i, m)
+  {
+    cin >> u >> v;
+    u--; v--;
+    edge[u].emplace_back(v);
+    deg[v]++;
+  }
+
+  vector<ll> sorted;
+  queue<ll> que;
+  rep(i, n) if (deg[i] == 0) que.push(i);
+  while(!que.empty())
+  {
+    ll now = que.front();
+    que.pop();
+    sorted.emplace_back(now);
+    for(const auto& v : edge[now])
+    {
+      deg[v]--;
+      if (deg[v] == 0) que.push(v);
+    }
+  }
+}
+
 // 二分探索
 // めぐる式
 void tip_binary_search()
