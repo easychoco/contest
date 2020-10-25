@@ -11,15 +11,16 @@
 #define repi(i,a,n) for(ll i=a;i<(ll)n;++i)
 #define ALL(a) (a).begin(),(a).end()
 #define RALL(a) (a).rbegin(),(a).rend()
-#define SHOW(str,val) cout<<(str)<<" : "<<(val)<<endl
+#define Show(val) cout<<(val)<<" "
+#define Showln(val) cout<<(val)<<endl
 
 using namespace std;
 using ll = long long;
 using P = pair<ll, ll>;
 // using P = pair<int, int>;
 void YN(bool a) { cout << (a ? "Yes" : "No"); }
-template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true;} return false;}
-template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true;} return false;}
+template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
+template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true; } return false; }
 
 // 最大公約数 : 3,4 ->  1
 ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
@@ -76,6 +77,19 @@ void tip_facotization()
   primes[n]++;
 }
 
+// 二分探索
+// めぐる式
+void tip_binary_search()
+{
+  auto f = [&](ll arg){ return arg; };
+  ll ac = 0, wa = 1000000000LL;
+  while(wa - ac > 1)
+  {
+    ll wj = (ac + wa) / 2;
+    if ( !f(wj) ) wa = wj;
+    else ac = wj;
+  }
+}
 
 // クラスカル法
 // 最小全域木問題
@@ -239,20 +253,6 @@ void tip_topological_sort()
       deg[v]--;
       if (deg[v] == 0) que.push(v);
     }
-  }
-}
-
-// 二分探索
-// めぐる式
-void tip_binary_search()
-{
-  auto f = [&](ll arg){ return arg; };
-  ll ac = 0, wa = 1000000000LL;
-  while(wa - ac > 1)
-  {
-    ll wj = (ac + wa) / 2;
-    if ( !f(wj) ) wa = wj;
-    else ac = wj;
   }
 }
 
