@@ -2,11 +2,20 @@
 
 #define fastio ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
 #define endl "\n"
-#define PI 3.14159265358979
-#define MOD 1000000007 // = 10^9 + 7
+#define rep(i,n) repi(i,0,n)
+#define repi(i,a,n) for(ll i=a;i<(ll)n;++i)
+#define ALL(a) (a).begin(),(a).end()
+#define RALL(a) (a).rbegin(),(a).rend()
+#define Show(val) cout<<(val)<<" "
+#define Showln(val) cout<<(val)<<endl
 
 using namespace std;
 using ll = long long;
+using P = pair<ll, ll>;
+// using P = pair<int, int>;
+void YN(bool a) { cout << (a ? "Yes" : "No"); }
+template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
+template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true; } return false; }
 
 void solve()
 {
@@ -14,28 +23,37 @@ void solve()
 	cin >> n >> m;
 
 	vector<ll> a(n);
-	for(int i = 0; i < n; ++i)
-	{
-		cin >> a[i];
-	}
+	rep(i, n) cin >> a[i];
+  sort(ALL(a));
+  vector<ll> sum_a(a);
+  reverse(ALL(sum_a));
+  repi(i, 1, n) sum_a[i] += sum_a[i - 1];
+  
+  auto f = [&](ll arg)
+  {
+    ll num = 0;
+    rep(i, n) num += a.end() - lower_bound(ALL(a), arg - a[i]);
+    return num >= m;
+  };
 
-	priority_queue<int> sum;
+  ll ac = a[0] * 2, wa = a.back() * 2 + 1;
+  while(wa - ac > 1)
+  {
+    ll wj = (ac + wa) / 2;
+    if ( !f(wj) ) wa = wj;
+    else ac = wj;
+  }
 
-	for(int i = 0; i < n; ++i)
-	{
-		for(int j = 0; j < n; ++j)
-		{
-			sum.push(a[i] + a[j]);
-		}
-	}
-
-	ll ans = 0;
-	for(int i = 0; i < m; ++i)
-	{
-		ans += sum.top();
-		sum.pop();
-	}
-	cout << ans;
+  ll ans = 0;
+  ll num = 0;
+  rep(i, n)
+  {
+    ll ai = a.end() - lower_bound(ALL(a), ac - a[i]);
+    num += ai;
+    if (ai > 0) ans += sum_a[ai - 1] + a[i] * ai;
+  }
+  ans -= ac * max(0LL, num - m);
+  cout << ans;
 }
 
 int main()
