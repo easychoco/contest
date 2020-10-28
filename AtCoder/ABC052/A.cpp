@@ -18,7 +18,9 @@ template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true
 
 void solve()
 {
-  
+  ll a, b, c, d;
+  cin >> a >> b >> c >> d;
+  cout << max(a*b, c*d);
 }
 
 int main()

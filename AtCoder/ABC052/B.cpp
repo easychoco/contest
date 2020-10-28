@@ -18,7 +18,18 @@ template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true
 
 void solve()
 {
-  
+  int n;
+  string s;
+  cin >> n >> s;
+  ll ans = 0;
+  ll cnt = 0;
+  rep(i, n)
+  {
+    if (s[i] == 'I') cnt++;
+    else if (s[i] == 'D') cnt--;
+    chmax(ans, cnt);
+  }
+  cout << ans << endl;
 }
 
 int main()
