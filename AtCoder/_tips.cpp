@@ -445,6 +445,8 @@ void tip_set()
   s.erase(2);			// 要素の削除
   s.find(2);			// 発見したらその要素へのイテレータを返す,なければend()を返す
   s.count(2);			// 要素の数を返す
+  s.lower_bound(2); // 二分探索 : lower_bound(ALL(s)) は O(N) かかる
+  s.upper_bound(2); // 二分探索 : upper_bound(ALL(s)) は O(N) かかる
   s.empty();			// 空ならtrue
   s.size();			// 要素数を返却
   s.clear();			// 空にする
@@ -497,6 +499,7 @@ public:
 };
 
 // Segment Tree
+// セグメント木
 // https://www.creativ.xyz/segment-tree-entrance-999/
 // 使用関数の引数は全て1-index
 // query() は半開区間
@@ -529,6 +532,56 @@ ll query(int a, int b, int k = 0, int l = 0, int r = N){
   return op(c1, c2);
 }
 // Segment Tree ここまで
+
+// Mo's algorithm
+// クエリ平方分割
+// O( (N + Q)√N + Q log Q )
+// 引数と返り値は 0-index
+// https://ei1333.hateblo.jp/entry/2017/09/11/211011
+// TLEしてるけど、こんな感じで使う https://atcoder.jp/contests/abc174/submissions/17716967
+struct Mo {
+  vector<int> left, right, order;
+  vector<bool> v;
+  int width, nl, nr, ptr, qi;
+  // Mo(num_cnt, query_cnt)
+  Mo(int n, int q) : width((int)sqrt(n)), nl(0), nr(0), ptr(0), v(n) {
+    left.resize(q);
+    right.resize(q);
+    qi = 0;
+  }
+  void insert(int l, int r) { // 0-index, 半開区間
+    left[qi] = l;
+    right[qi] = r;
+    qi++;
+  }
+  void build() { // sort
+    order.resize(left.size());
+    iota(ALL(order), 0);
+    sort(ALL(order), [&](int a, int b) {
+      if(left[a] / width != left[b] / width) return left[a] < left[b];
+      return right[a] < right[b];
+    });
+  }
+  int process() { // クエリを1つ処理してクエリのidを返す
+    if(ptr == (int)order.size()) return (-1);
+    const auto id = order[ptr];
+    while(nl > left[id]) distribute(--nl);
+    while(nr < right[id]) distribute(nr++);
+    while(nl < left[id]) distribute(nl++);
+    while(nr > right[id]) distribute(--nr);
+    return (order[ptr++]);
+  }
+  inline void distribute(int idx) {
+    v[idx].flip();
+    if(v[idx]) add(idx);
+    else del(idx);
+  }
+  // ===================  問題ごとに設定 ====================
+  void add(int idx);
+  void del(int idx);
+  // =======================================================
+};
+// Mo's algorithm ここまで
 
 void solve()
 {
