@@ -19,7 +19,18 @@ template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true
 
 void solve()
 {
-
+  ll n, k;
+  cin >> n >> k;
+  vector<ll> a(n);
+  rep(i, n) cin >> a[i];
+  ll ans = 0;
+  rep(i, n) ans += a[i] * k;
+  rep(i, k)
+  {
+    ans -= a[i] * (k - i - 1);
+    ans -= a[n - i - 1] * (k - i - 1);
+  }
+  cout << ans << endl;
 }
 
 int main()
