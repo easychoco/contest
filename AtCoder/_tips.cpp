@@ -148,6 +148,44 @@ void tip_warshall_floyd(int n) {
   }
 }
 
+// ベルマンフォード法
+// 単一始点最短経路問題 O(VE)
+void tip_bellman-ford()
+{
+  // 重みがすべて正値のときはダイクストラ法を使う
+  ll n, m, u, v, w;
+  cin >> n >> m;
+  //     tuple<from, to, cost>
+  vector<tuple<ll, ll, ll>> G(m);
+  rep(i, m)
+  {
+    cin >> u >> v >> w;
+    u--; v--;
+    G[i] = make_tuple(u, v, w);
+  }
+
+  const ll INF = 1LL << 60;
+  vector<ll> d(n, INF);
+  d[0] = 0;
+
+  rep(i, n)
+  {
+    rep(j, m)
+    {
+      ll from, to, cost;
+      tie(from, to, cost) = G[j];
+      if (chmin(d[to], d[from] + cost))
+      {
+        if (i == n - 1) //負閉路検出
+        {
+          cout << "negative loop" << endl;
+          break;
+        }
+      }
+    }
+  }
+}
+
 // Dijkstra法 ダイクストラ法
 // 単一始点最短経路問題 O(E log V)
 struct Edge{ ll cost, to; };
@@ -166,7 +204,7 @@ void dijkstra()
     cin >> u >> v >> w;
     u--; v--;
     G[u].emplace_back(Edge{w, v});
-    G[v].emplace_back(Edge{w, u});
+    G[v].emplace_back(Edge{w, u}); // 無向グラフの場合
   }
 
   const ll INF = 1LL << 60;
