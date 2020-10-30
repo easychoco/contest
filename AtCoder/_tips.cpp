@@ -150,7 +150,7 @@ void tip_warshall_floyd(int n) {
 
 // ベルマンフォード法
 // 単一始点最短経路問題 O(VE)
-void tip_bellman-ford()
+void tip_bellman_ford()
 {
   // 重みがすべて正値のときはダイクストラ法を使う
   ll n, m, u, v, w;
