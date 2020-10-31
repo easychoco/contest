@@ -138,10 +138,15 @@ void tip_kruskal()
 // ワーシャルフロイド法
 // 全点対最短経路 O(n^3)
 void tip_warshall_floyd(int n) {
-  int d[300][300];
-  for (int k = 0; k < n; k++){			// 経由する頂点
-    for (int i = 0; i < n; i++) {		// 始点
-      for (int j = 0; j < n; j++) {	// 終点
+  const ll INF = 100100100100;
+  const int N = 300;
+  ll d[N][N];
+  rep(i, N) rep(j, N) d[i][j] = INF;
+  rep(i, N) d[i][i] = 0;
+
+  rep (k, n){       // 経由する頂点
+    rep (i, n) {    // 始点
+      rep (j, n) {  // 終点
         d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
       }
     }
