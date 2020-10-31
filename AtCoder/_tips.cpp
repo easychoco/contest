@@ -351,7 +351,7 @@ void tip_dp()
   // traveling salesman
   // 巡回セールスマン問題
   const ll INF = 1LL << 60;
-  // dp[i][j] = いまiにいて、j(mask)の街に訪れているときのコストの最小値
+  // dp[i][j] = いまjにいて、i(mask)の街に訪れているときのコストの最小値
   vector< vector<ll> > dp(1<<n, vector<ll>(n, INF));
   repi(i, 1, n) dp[1<<i][i] = dist[0][i];
   rep(mask, 1<<n) rep(now, n)
@@ -363,6 +363,9 @@ void tip_dp()
     }
   }
   cout << dp[(1 << n) - 1][0];
+
+  // 次のようにすれば、元の位置に戻らない場合とかにも対応可能
+  // repi(i, 1, n) dp[((1<<n) - 1) ^ 1][i]
   */
 }
 
