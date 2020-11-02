@@ -19,6 +19,16 @@ template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true
 
 void solve()
 {
+  ll n;
+  cin >> n;
+  ll num = 2025 - n;
+  repi(i, 1, 10) repi(j, 1, 10)
+  {
+    if (i * j == num)
+    {
+      cout << i << " x " << j << endl;
+    }
+  }
 
 }
 
