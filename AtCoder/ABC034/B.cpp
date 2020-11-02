@@ -19,7 +19,11 @@ template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true
 
 void solve()
 {
-
+  ll n;
+  cin >> n;
+  // 0100101 -> 0100110
+  // 0100100 -> 0100011
+  cout << n + ((n&1) ? 1 : -1) << endl;
 }
 
 int main()

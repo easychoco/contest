@@ -13,13 +13,16 @@ using namespace std;
 using ll = long long;
 using P = pair<ll, ll>;
 // using P = pair<int, int>;
-void YN(bool a) { cout << (a ? "Yes" : "No"); }
+void YN(bool a) { cout << (a ? "Better" : "Worse"); }
 template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
 template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true; } return false; }
 
 void solve()
 {
-
+  ll x, y;
+  cin >> x >> y;
+  bool ye = x < y;
+  YN(ye);
 }
 
 int main()
