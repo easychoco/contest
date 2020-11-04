@@ -2,73 +2,69 @@
 
 #define fastio ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
 #define endl "\n"
-#define PI 3.14159265358979
-#define MOD 1000000007 // = 10^9 + 7
+#define rep(i,n) repi(i,0,n)
+#define repi(i,a,n) for(ll i=a;i<(ll)n;++i)
+#define ALL(a) (a).begin(),(a).end()
+#define RALL(a) (a).rbegin(),(a).rend()
+#define Show(val) cout<<(val)<<" "
+#define Showln(val) cout<<(val)<<endl
 
 using namespace std;
 using ll = long long;
+using P = pair<ll, ll>;
+// using P = pair<int, int>;
+void YN(bool a) { cout << (a ? "Yes" : "No"); }
+template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
+template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true; } return false; }
 
 void solve()
 {
 	ll n, k;
 	cin >> n >> k;
 	vector<ll> a(n);
+  rep(i, n) cin >> a[i];
 
-	ll sum = 0;
-	for(ll i = 0; i < n; ++i)
-	{
-		cin >> a[i];
-		sum += a[i];
-	}
+  ll sum = accumulate(ALL(a), 0LL);
+  vector<ll> factors;
+  for(ll f = 1; f * f <= sum; ++f)
+  {
+    if (sum % f == 0)
+    {
+      factors.emplace_back(f);
+      if (f * f < sum) factors.emplace_back(sum / f);
+    }
+  }
+  sort(RALL(factors));
+  for(const auto& target : factors)
+  {
+    vector<ll> diff(n);
+    ll sum_diff = 0;
+    rep(i, n)
+    {
+      ll fm = a[i] % target;
+      diff[i] = ((fm < target - fm) ? -fm : target - fm);      
+      sum_diff += diff[i];
+    }
 
-	vector<ll> divisor;
-	for(int i = 1; i * i <= sum; ++i)
-	{
-		if (sum % i == 0)
-		{
-			divisor.emplace_back(sum / i);
-			divisor.emplace_back(i);
-		}
-	}
-	ll mid_divisor = divisor.back();
-	sort(divisor.begin(),divisor.end(), greater<ll>());
+    if (sum_diff > 0)
+    {
+      sort(RALL(diff));
+      rep(i, sum_diff / target) diff[i] -= target;
+    }
+    else if (sum_diff < 0)
+    {
+      sort(ALL(diff));
+      rep(i, -sum_diff / target) diff[i] += target;
+    }
 
-
-	for(const auto& d : divisor)cout << d << " ";
-	cout << endl;
-
-
-
-	for(const auto& d : divisor)
-	{	
-		ll deviation = 0;
-		ll sign = 0;
-		cout << endl << 0;
-		for(int i = 0; i < n; ++i)
-		{
-			ll mod = a[i] % d;
-			deviation += ((mod > d / 2) ? d - mod : mod);
-
-			if (i < n / 2)
-			{
-				sign += ((mod > d / 2) ? d - mod : -mod);
-			}
-			else
-			{
-				sign += ((mod > d / 2) ? mod - d : mod);
-			}
-			
-			cout << " -> " << deviation;
-		}
-		cout << " : " << deviation << " / " << sign << endl;
-		
-		if (deviation <= k * 2)
-		{
-			cout << d;
-			return;
-		}
-	}
-	cout << 1;
+    ll cnt = 0;
+    rep(i, n) if(diff[i] > 0) cnt += diff[i];
+    if (cnt <= k)
+    {
+      cout << target << endl;
+      return;
+    }
+  }
 }
 
 int main()
