@@ -17,8 +17,6 @@ void YN(bool a) { cout << (a ? "Yes" : "No"); }
 template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
 template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true; } return false; }
 
-int mp[1505][1505];
-
 void solve()
 {
   ll h, w, n, m;
@@ -35,6 +33,8 @@ void solve()
     by[i]--; bx[i]--;
   }
 
+  vector< vector<int> > mp(h, vector<int>(w, 0));
+
   const int LIGHT = 10;
   const int BLOCK = -5;
 
@@ -45,37 +45,55 @@ void solve()
   rep(i, m) mp[by[i]][bx[i]] = BLOCK;
 
   // 横
-  rep(ii, 2)
+  rep(y, h)
   {
-    rep(y, h)
+    ll sx = 0;
+    bool last_light = false;
+    rep(x, w)
     {
-      ll sx = 0;
-      bool last_light = false;
-      rep(x, w)
+      if (mp[y][x] == LIGHT)
       {
-        if (mp[y][x] == LIGHT)
-        {
-          for(int i = sx; i < x; ++i) mp[y][i] = 1;
-          sx = x + 1;
-          last_light = true;
-        }
-        else if (mp[y][x] == BLOCK)
-        {
-          if (last_light) for(int i = sx; i < x; ++i) mp[y][i] = 1;
-          sx = x + 1;
-          last_light = false;
-        }
-        else if (x == w - 1 && last_light)
-        {
-          for(int i = sx; i <= x; ++i) mp[y][i] = 1;
-        }
+        for(int i = sx; i < x; ++i) mp[y][i] = 1;
+        sx = x + 1;
+        last_light = true;
+      }
+      else if (mp[y][x] == BLOCK)
+      {
+        if (last_light) for(int i = sx; i < x; ++i) mp[y][i] = 1;
+        sx = x + 1;
+        last_light = false;
+      }
+      else if (x == w - 1 && last_light)
+      {
+        for(int i = sx; i <= x; ++i) mp[y][i] = 1;
       }
     }
-    if (ii == 1) break;
+  }
 
-    // 転置
-    rep(x, 1505) rep(y, x) swap(mp[x][y], mp[y][x]);
-    swap(h, w);
+  // 縦
+  rep(x, w)
+  {
+    ll sy = 0;
+    bool last_light = false;
+    rep(y, h)
+    {
+      if (mp[y][x] == LIGHT)
+      {
+        for(int i = sy; i < y; ++i) mp[i][x] = 1;
+        sy = y + 1;
+        last_light = true;
+      }
+      else if (mp[y][x] == BLOCK) 
+      {
+        if (last_light) for(int i = sy; i < y; ++i) mp[i][x] = 1;
+        sy = y + 1;
+        last_light = false;
+      }
+      else if (y == h - 1 && last_light)
+      {
+        for(int i = sy; i <= y; ++i) mp[i][x] = 1;
+      }
+    }
   }
 
   ll ans = 0;
