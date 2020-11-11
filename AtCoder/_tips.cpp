@@ -81,13 +81,16 @@ void tip_facotization()
 // めぐる式
 void tip_binary_search()
 {
-  auto f = [&](ll arg){ return arg; };
+  auto f = [&](ll arg)
+  {
+    return arg;
+  };
   ll ac = 0, wa = 1000000000LL;
   while(wa - ac > 1)
   {
     ll wj = (ac + wa) / 2;
-    if ( !f(wj) ) wa = wj;
-    else ac = wj;
+    if ( f(wj) ) ac = wj;
+    else wa = wj;
   }
 }
 
