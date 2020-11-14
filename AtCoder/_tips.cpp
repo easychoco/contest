@@ -542,6 +542,12 @@ public:
     for(ll x : p) if (x < 0) num++;
     return num;
   }
+  // グループごとに頂点をまとめる: O(N log N)
+  map<int, vector<int>> groups(){
+    map<int, vector<int>> ret;
+    rep(i, p.size()) ret[root(i)].emplace_back(i);
+    return ret;
+  }
   //xが属すグループのサイズ
   int size(int x){ return rank[root(x)]; }
   bool same(int x, int y){ return (root(x) == root(y)); }
