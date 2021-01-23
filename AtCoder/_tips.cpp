@@ -652,6 +652,9 @@ struct Mo {
 // Mo's algorithm ここまで
 
 // 行列クラス
+// - 任意のサイズの行列同士の演算[+][-][x]
+// - Matrix::E(int n) でn次単位行列
+// - .val[][] で要素にアクセス
 class Matrix {
 protected:
   int size_y, size_x;
@@ -728,6 +731,11 @@ public:
 };
 
 // アフィン変換用の行列クラス
+// - 拡大
+// - 平行移動
+// - 原点中心の回転
+// - スキュー
+// - x軸反転・y軸反転
 class AffineMatrix : public Matrix {
 public:
   AffineMatrix() : Matrix(3, 3){ val[2][2] = 1; }
