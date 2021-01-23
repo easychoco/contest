@@ -651,6 +651,146 @@ struct Mo {
 };
 // Mo's algorithm ここまで
 
+// 行列クラス
+class Matrix {
+protected:
+  int size_y, size_x;
+
+public:
+  Matrix(int _y, int _x) {
+    size_y = _y;
+    size_x = _x;
+    val = vector<vector<ll>>(_y, vector<ll>(_x, 0));
+  }
+  vector<vector<ll>> val;
+
+  Matrix operator - () {
+    for(int y = 0; y < size_y; ++y)
+    for(int x = 0; x < size_x; ++x) {
+      this->val[y][x] *= -1;
+    }
+  }
+  Matrix operator + (Matrix right) const {
+    auto left = *this;
+    if (!same_size(&right)) {
+      cerr << "invalid size" << endl;
+      return E(1);
+    }
+
+    auto ret = Matrix(size_y, size_x);
+    for(int y = 0; y < size_y; ++y)
+    for(int x = 0; x < size_x; ++x) {
+      ret.val[y][x] = left.val[y][x] + right.val[y][x];
+    }
+    return ret;
+  }
+  Matrix operator - (Matrix right) const {
+    return (*this + -right);
+  }
+  void operator += (Matrix right) { *this = *this + right; }
+  void operator -= (Matrix right) { *this = *this - right; }
+  Matrix operator * (Matrix right) const {
+    auto left = *this;
+    if (left.x() != right.y()) {
+      cerr << "invalid size" << endl;
+      return E(1);
+    }
+
+    auto ret = Matrix(left.y(), right.x());
+    for(int y = 0; y < ret.val.size(); ++y)
+    for(int x = 0; x < ret.val[0].size(); ++x) {
+      for(int i = 0; i < left.x(); ++i) {
+        ret.val[y][x] += left.val[y][i] * right.val[i][x];
+      }
+    }
+    return ret;
+  }
+  void operator *= (Matrix right) { *this = *this * right; }
+
+  static Matrix E(int _size) {// ::演算子でアクセス
+    auto ret = Matrix(_size, _size);
+    for(int i = 0; i < _size; ++i) {
+      ret.val[i][i] = 1;
+    }
+    return ret;
+  }
+  int x() const { return this->size_x; }
+  int y() const { return this->size_y; }
+  bool same_size(Matrix* other) const { return ((this->x() == other->x()) && (this->y() == other->y())); }
+  void print() const {
+    for(int y = 0; y < size_y; ++y) {
+      for(int x = 0; x < size_x; ++x) {
+        cout << val[y][x] << " ";
+      }
+      cout << endl;
+    }
+  }
+};
+
+// アフィン変換用の行列クラス
+class AffineMatrix : public Matrix {
+public:
+  AffineMatrix() : Matrix(3, 3){ val[2][2] = 1; }
+  void operator = (Matrix other) {
+    this->val = other.val;
+    this->size_x = other.x();
+    this->size_y = other.y();
+  }
+  void zoom(int _x, int _y) {
+    Matrix mat = Matrix::E(3);
+    mat.val[0][0] = _x;
+    mat.val[1][1] = _y;
+    *this = mat * (*this);
+  }
+  void move(int _x, int _y) {
+    Matrix mat = Matrix::E(3);
+    mat.val[0][2] = _x;
+    mat.val[1][2] = _y;
+    *this = mat * (*this);
+  }
+  void rotate(int _angle) { // 原点中心に反時計回り
+    if (_angle == 90) {
+      AffineMatrix mat;
+      mat.val[0][1] = -1;
+      mat.val[1][0] = 1;
+      *this = mat * (*this);
+    }
+    else if (_angle == 180) {
+      AffineMatrix mat;
+      mat.val[0][0] = -1;
+      mat.val[1][1] = -1;
+      *this = mat * (*this);
+    }
+    else if (_angle == 270) {
+      AffineMatrix mat;
+      mat.val[0][1] = 1;
+      mat.val[1][0] = -1;
+      *this = mat * (*this);
+    }
+    else if (_angle == 360) {
+      // do nothing
+    }
+    else {
+      // { cos -sin   0}{ x }
+      // { sin  cos   0}{ y }
+      // {   0    0   1}{ 1 }
+    }
+  }
+  void skew_x(int _angle) {
+      // {   1  0  0}{ x }
+      // { tan  1  0}{ y }
+      // {   0  0  1}{ 1 }
+  }
+  void skew_y(int _angle) {
+      // {  1  tan   0}{ x }
+      // {  0    1   0}{ y }
+      // {  0    0   1}{ 1 }
+  }
+  void flip_x() { zoom(-1, 1); }
+  void flip_y() { zoom(1, -1); }
+};
+
+
 void solve()
 {
   int x;
