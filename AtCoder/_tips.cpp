@@ -667,7 +667,7 @@ public:
   }
   vector<vector<ll>> val;
 
-  Matrix operator - () {
+  void Matrix operator - () {
     for(int y = 0; y < size_y; ++y)
     for(int x = 0; x < size_x; ++x) {
       this->val[y][x] *= -1;
@@ -700,8 +700,8 @@ public:
     }
 
     auto ret = Matrix(left.y(), right.x());
-    for(int y = 0; y < ret.val.size(); ++y)
-    for(int x = 0; x < ret.val[0].size(); ++x) {
+    for(int y = 0; y < (int)ret.val.size(); ++y)
+    for(int x = 0; x < (int)ret.val[0].size(); ++x) {
       for(int i = 0; i < left.x(); ++i) {
         ret.val[y][x] += left.val[y][i] * right.val[i][x];
       }
@@ -784,16 +784,18 @@ public:
       // {   0    0   1}{ 1 }
     }
   }
+  /*
   void skew_x(int _angle) {
-      // {   1  0  0}{ x }
-      // { tan  1  0}{ y }
-      // {   0  0  1}{ 1 }
+    // {   1  0  0}{ x }
+    // { tan  1  0}{ y }
+    // {   0  0  1}{ 1 }
   }
   void skew_y(int _angle) {
-      // {  1  tan   0}{ x }
-      // {  0    1   0}{ y }
-      // {  0    0   1}{ 1 }
+    // {  1  tan   0}{ x }
+    // {  0    1   0}{ y }
+    // {  0    0   1}{ 1 }
   }
+  */
   void flip_x() { zoom(-1, 1); }
   void flip_y() { zoom(1, -1); }
 };
