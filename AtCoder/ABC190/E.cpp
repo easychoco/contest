@@ -45,8 +45,6 @@ void solve()
     cin >> c[i];
     c[i]--;
 
-    // visited使用
-    vector<bool> visited(n, false);
     queue<int> que;
     que.push(c[i]); //初期位置
     d[i][c[i]] = 0;
@@ -54,15 +52,10 @@ void solve()
     {
       int now = que.front();
       que.pop();
-      visited[now] = true;
       for(const auto& to : edge[now])
       {
-        if (!visited[to]) //visited使用
-        {
-          chmin(d[i][to], d[i][now] + 1);
+        if (chmin(d[i][to], d[i][now] + 1))
           que.push(to);
-          // Showln(d[i][to]);
-        }
       }
     }
   }
