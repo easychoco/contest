@@ -278,12 +278,15 @@ void tip_graph_bfs()
     for(const auto& to : edge[now])
     {
       if (!visited[to]) //visited使用
+      {
         que.push(to);
+      }
     }
   }
 }
 
 // トポロジカルソート
+// topological sort
 // O(V + E)
 void tip_topological_sort()
 {
@@ -307,10 +310,10 @@ void tip_topological_sort()
     ll now = que.front();
     que.pop();
     sorted.emplace_back(now);
-    for(const auto& v : edge[now])
+    for(const auto& to : edge[now])
     {
-      deg[v]--;
-      if (deg[v] == 0) que.push(v);
+      deg[to]--;
+      if (deg[to] == 0) que.push(to);
     }
   }
 }
@@ -369,7 +372,13 @@ void tip_dp()
   const ll INF = 1LL << 60;
   // dp[i][j] = いまjにいて、i(mask)の街に訪れているときのコストの最小値
   vector< vector<ll> > dp(1<<n, vector<ll>(n, INF));
+
+  // 開始地点は0固定
   repi(i, 1, n) dp[1<<i][i] = dist[0][i];
+
+  // 全地点開始なら
+  // rep(i, n) dp[1 << i][i] = 1;
+
   rep(mask, 1<<n) rep(now, n)
   {
     if (1 << now & mask) rep(next, n)
@@ -600,6 +609,34 @@ ll query(int a, int b, int k = 0, int l = 0, int r = N){
   return op(c1, c2);
 }
 // Segment Tree ここまで
+
+// BIT
+// Binary Indexed Tree
+// https://scrapbox.io/pocala-kyopro/%E8%BB%A2%E5%80%92%E6%95%B0
+// 1-index
+struct BIT {
+private:
+  vector<int> bit;
+  int N;
+
+public:
+  BIT(int size) {
+    N = size;
+    bit.resize(N + 1);
+  }
+
+  // 一点更新
+  void add(int a, int w) {
+    for (int x = a; x <= N; x += x & -x) bit[x] += w;
+  }
+
+  // 1~Nまでの和を求める。
+  int sum(int a) {
+    int ret = 0;
+    for (int x = a; x > 0; x -= x & -x) ret += bit[x];
+    return ret;
+  }
+};
 
 // Mo's algorithm
 // クエリ平方分割
