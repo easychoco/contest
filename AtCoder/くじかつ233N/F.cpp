@@ -22,11 +22,7 @@ void solve()
 {
   ll n;
   cin >> n;
-  vector<ll> a(n);
-  rep(i, n)
-  {
-    cin >> a[i];
-  }
+  rep(i, n) cout << (i * 2) % n + 1 << " " << (i * 2 + 1) % n + 1 << endl;
 }
 
 int main()
