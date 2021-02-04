@@ -1,3 +1,4 @@
+// https://atcoder.jp/contests/abc061/tasks/abc061_a
 #include <bits/stdc++.h>
 
 #define fastio ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
