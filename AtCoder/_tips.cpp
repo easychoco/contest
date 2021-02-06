@@ -255,13 +255,13 @@ void dijkstra()
   {
     P p = que.top();
     que.pop();
-    ll node = p.second;
-    if (d[node] < p.first) continue;
-    for (const auto& edge : G[node])
+    ll now = p.second;
+    if (d[now] < p.first) continue;
+    for (const auto& edge : G[now])
     {
-      if (d[edge.to] > d[node] + edge.cost)
+      if (d[edge.to] > d[now] + edge.cost)
       {
-        d[edge.to] = d[node] + edge.cost;
+        d[edge.to] = d[now] + edge.cost;
         que.push(P(d[edge.to], edge.to));
       }
     }
