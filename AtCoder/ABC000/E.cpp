@@ -6,16 +6,16 @@
 #define repi(i,a,n) for(ll i=a;i<(ll)n;++i)
 #define ALL(a) (a).begin(),(a).end()
 #define RALL(a) (a).rbegin(),(a).rend()
-#define Show(val) cout<<(val)<<" "
-#define Showln(val) cout<<(val)<<endl
 
 using namespace std;
 using ll = long long;
 using P = pair<ll, ll>;
-// using P = pair<int, int>;
 void YN(bool a) { cout << (a ? "Yes" : "No"); }
 template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
 template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true; } return false; }
+void show(){ cout << endl; }
+template <class Head, class... Tail>
+void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
 
 void solve()
 {
