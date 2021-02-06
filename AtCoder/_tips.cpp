@@ -11,16 +11,34 @@
 #define repi(i,a,n) for(ll i=a;i<(ll)n;++i)
 #define ALL(a) (a).begin(),(a).end()
 #define RALL(a) (a).rbegin(),(a).rend()
-#define Show(val) cout<<(val)<<" "
-#define Showln(val) cout<<(val)<<endl
 
 using namespace std;
 using ll = long long;
 using P = pair<ll, ll>;
-// using P = pair<int, int>;
 void YN(bool a) { cout << (a ? "Yes" : "No"); }
 template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
 template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true; } return false; }
+void show(){ cout << endl; }
+template <class Head, class... Tail>
+void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
+
+ll getnum(ll pow)
+{ // 入力を文字列で受け取って、10^pow 倍して返す。小数の丸め誤差対策。
+  string in;
+  cin >> in;
+  for(int i = 0; i < pow; ++i) in += '0';
+  for(int i = 1; i < in.length(); ++i)
+  {
+    if (in[i] == '.')
+    {
+      swap(in[i], in[i + 1]);
+      pow--;
+      if (pow <= 0) break;
+    }
+  }
+  ll ret = stol(in);
+  return ret;
+}
 
 // 最大公約数 : 3,4 ->  1
 ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
