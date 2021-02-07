@@ -2,215 +2,143 @@
 
 #define fastio ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
 #define endl "\n"
-#define PI 3.14159265358979
-#define MOD 1000000007 // = 10^9 + 7
+#define rep(i,n) repi(i,0,n)
+#define repi(i,a,n) for(ll i=a;i<(ll)n;++i)
+#define ALL(a) (a).begin(),(a).end()
+#define RALL(a) (a).rbegin(),(a).rend()
 
 using namespace std;
 using ll = long long;
+using P = pair<ll, ll>;
+void YN(bool a) { cout << (a ? "Yes" : "No"); }
+template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
+template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true; } return false; }
+void show(){ cout << endl; }
+template <class Head, class... Tail>
+void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
 
 void solve()
 {
 	ll n, k;
 	cin >> n >> k;
 
-	vector<ll> a_posi;
-	vector<ll> a_nega;
-	ll a;
+	vector<ll> na;
+	vector<ll> pa;
+  ll za = 0;
 	for(int i = 0; i < n; ++i)
 	{
+  	ll a;
 		cin >> a;
-		// 0 はpositiveグループ
-		(a >= 0) ? a_posi.emplace_back(a) : a_nega.emplace_back(a);
+    if (a == 0) za++;
+    else if (a > 0) pa.emplace_back(a);
+    else na.emplace_back(-a);
 	}
 
-	ll all_pair = n * (n - 1) / 2;
+  sort(ALL(pa));
+  sort(ALL(na));
 
-	sort(a_posi.begin(), a_posi.end());
-	sort(a_nega.begin(), a_nega.end());
+  ll n_num = 0;
+  ll z_num = 0;
+  ll p_num = 0;
 
-	// 愚直にやるとO(n^2)でしぬ
-	// O(n)に抑えなきゃ
-	// 尺取りっぽくして計算量抑えられる？？？
+  n_num = pa.size() * na.size();
+  z_num = za * (pa.size() + na.size()) + za * (za - 1) / 2;
+  p_num = pa.size() * (pa.size() - 1) / 2 + na.size() * (na.size() - 1) / 2;
 
-	ll posi_size = a_posi.size();
-	ll nega_size = a_nega.size();
+  cerr << ((n_num + z_num + p_num == n * (n - 1) / 2) ? "Yes" : "No") << endl;
 
-	// 別グループどうし
-	ll nega_cnt = posi_size * nega_size;
-	// 同グループどうし
-	ll posi_cnt = ( posi_size * (posi_size - 1) + nega_size * (nega_size - 1) ) / 2;
+  if (k <= n_num)
+  {
+    k = n_num - k;
+    auto f = [&](ll arg)
+    {
+      ll sum = 0;
+      rep(i, pa.size())
+      {
+        auto g = [&](ll ind)
+        {
+          if (ind == 0) return true;
+          return pa[i] * na[ind - 1] <= arg;
+        };
+        ll ac = 0, wa = na.size() + 1;
+        while(wa - ac > 1) // arg 以下の数字が wj個ある
+        {
+          ll wj = (ac + wa) / 2;
+          if ( g(wj) ) ac = wj;
+          else wa = wj;
+        }
+        sum += ac;
+      }
+      return sum <= k;
+    };
+    ll ac = 0, wa = pa.back() * na.back() + 1;
+    while(wa - ac > 1) // wj が前から k 番目以下である
+    {
+      ll wj = (ac + wa) / 2;
+      if ( f(wj) ) ac = wj;
+      else wa = wj;
+    }
+    show(-wa);
+    return;
+  }
+  else if (k <= n_num + z_num)
+  {
+    show(0);
+    return;
+  }
+  else
+  {
+    k -= n_num + z_num;
+    auto f = [&](ll arg)
+    {
+      ll sum = 0;
+      rep(i, pa.size())
+      {
+        auto g = [&](ll ind)
+        {
+          if (ind == 0) return true;
+          ll idx = i + ind;
+          return pa[i] * pa[idx] <= arg;
+        };
+        ll ac = 0, wa = pa.size() - i;
+        while(wa - ac > 1) // arg 以下の数字が wj個ある
+        {
+          ll wj = (ac + wa) / 2;
+          if ( g(wj) ) ac = wj;
+          else wa = wj;
+        }
+        sum += ac;
+      }
 
-	bool find_inverse = false;
-	bool isNegative = true;
-
-	cout << "posi_size : " << posi_size << " nega_size : " << nega_size << endl;
-	cout << "posi_cnt  : " << posi_cnt  << " nega_cnt  : " << nega_cnt  << endl;
-
-	if (k <= nega_cnt / 2)
-	{
-		isNegative = true;
-		find_inverse = false;
-		cout << "come1" << endl;
-	}
-	else if (k <= nega_cnt)
-	{
-		k = nega_cnt - k + 1;
-		isNegative = true;
-		find_inverse = true;
-		cout << "come2" << endl;
-	}
-	else if (k - nega_cnt <= posi_cnt / 2)
-	{
-		k -= nega_cnt;
-		isNegative = false;
-		find_inverse = false;
-		cout << "come3" << endl;
-	}
-	else
-	{
-		k = (nega_cnt + posi_cnt) - k + 1;
-		isNegative = false;
-		find_inverse = true;
-		cout << "come4" << endl;
-	}
-
-	cout << "k is " << k << endl;
-	
-	// ここまで O(n log n)
-
-	ll posi_index = 0;
-	ll nega_index = 0;
-
-	bool fin_posi = true;
-
-	// O(k / 4) = O(5e9)....
-	if (isNegative && !find_inverse)
-	{
-		for(ll i = 0; i < k; ++i)
-		{
-			if (posi_index == posi_size - 1)
-			{
-				nega_index++;
-				continue;
-			}
-			if (nega_index == nega_size - 1)
-			{
-				posi_index++;
-				continue;
-			}
-			if (a_posi[posi_index] * a_nega[nega_index + 1] < a_posi[posi_index + 1] * a_nega[nega_index])
-			{
-				nega_index++;
-			}
-			else
-			{
-				posi_index++;
-			}
-		}
-	}
-	else if (isNegative && find_inverse)
-	{
-		posi_index = posi_size - 1;
-		nega_index = nega_size - 1;
-		for(ll i = 0; i < k; ++i)
-		{
-			if (posi_index == 0)
-			{
-				nega_index--;
-				continue;
-			}
-			if (nega_index == 0)
-			{
-				posi_index--;
-				continue;
-			}
-			if (a_posi[posi_index] * a_nega[nega_index - 1] > a_posi[posi_index - 1] * a_nega[nega_index])
-			{
-				nega_index--;
-			}
-			else
-			{
-				posi_index--;
-			}
-		}
-	}
-	else if (!isNegative && !find_inverse)
-	{
-		for(ll i = 0; i < k; ++i)
-		{
-			if (posi_index == posi_size - 1)
-			{
-				nega_index++;
-				continue;
-			}
-			if (nega_index == nega_size - 1)
-			{
-				posi_index++;
-				continue;
-			}
-			if (a_posi[posi_index] * a_posi[posi_index + 1] < a_nega[nega_index + 1] * a_nega[nega_index])
-			{
-				posi_index++;
-				fin_posi = true;
-			}
-			else
-			{
-				nega_index++;
-				fin_posi = false;
-			}
-		}
-	}
-	else if (!isNegative && find_inverse)
-	{
-		posi_index = posi_size - 1;
-		nega_index = nega_size - 1;
-		for(ll i = 0; i < k; ++i)
-		{
-			if (posi_index == 0)
-			{
-				nega_index--;
-				fin_posi = false;
-				continue;
-			}
-			if (nega_index == 0)
-			{
-				posi_index--;
-				fin_posi = true;
-				continue;
-			}
-			if (a_posi[posi_index] * a_posi[posi_index - 1] < a_nega[nega_index - 1] * a_nega[nega_index])
-			{
-				nega_index--;
-				fin_posi = false;
-			}
-			else
-			{
-				posi_index--;
-				fin_posi = true;
-			}
-		}
-	}
-	else
-	{
-		while(true) cout << "fsdasdfsd";
-	}
-
-	cout << "negative : " << isNegative << " inv : " << find_inverse << " fin_posi : " <<  fin_posi << endl;
-	cout << "posi : " << posi_index << " nega : " << nega_index << endl;
-
-	if (isNegative)
-	{
-		cout << a_posi[posi_index] * a_nega[nega_index];
-	}
-	else if (fin_posi)
-	{
-		cout << a_posi[posi_index] * a_posi[posi_index + (find_inverse ? 1 : -1)];
-	}
-	else
-	{
-		cout << a_nega[nega_index] * a_nega[nega_index + (find_inverse ? 1 : -1)];
-	}
-	
+      rep(i, na.size())
+      {
+        auto g = [&](ll ind)
+        {
+          if (ind == 0) return true;
+          ll idx = i + ind;
+          return na[i] * na[idx] <= arg;
+        };
+        ll ac = 0, wa = na.size() - i;
+        while(wa - ac > 1) // arg 以下の数字が wj個ある
+        {
+          ll wj = (ac + wa) / 2;
+          if ( g(wj) ) ac = wj;
+          else wa = wj;
+        }
+        sum += ac;
+      }
+      return sum < k;
+    };
+    ll ac = 0, wa = 1'001'001'001'001'001'001;
+    while(wa - ac > 1) // wj が前から k 番目以下である
+    {
+      ll wj = (ac + wa) / 2;
+      if ( f(wj) ) ac = wj;
+      else wa = wj;
+    }
+    show(wa);
+    return;
+  }
 }
 
 int main()
