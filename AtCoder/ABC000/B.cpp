@@ -10,12 +10,13 @@
 using namespace std;
 using ll = long long;
 using P = pair<ll, ll>;
-void YN(bool a) { cout << (a ? "Yes" : "No"); }
+void YN(bool a) { cout << (a ? "Yes" : "No") << endl; }
 template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
 template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true; } return false; }
 void show(){ cout << endl; }
 template <class Head, class... Tail>
 void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
+template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
 
 void solve()
 {
