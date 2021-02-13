@@ -15,12 +15,13 @@
 using namespace std;
 using ll = long long;
 using P = pair<ll, ll>;
-void YN(bool a) { cout << (a ? "Yes" : "No"); }
+void YN(bool a) { cout << (a ? "Yes" : "No") << endl; }
 template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
 template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true; } return false; }
 void show(){ cout << endl; }
 template <class Head, class... Tail>
 void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
+template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
 
 ll getnum(ll pow)
 { // 入力を文字列で受け取って、10^pow 倍して返す。小数の丸め誤差対策。
@@ -669,6 +670,7 @@ public:
     *this = mat * (*this);
   }
   void rotate(int _angle) { // 原点中心に反時計回り
+    _angle %= 360;
     if (_angle == 90) {
       AffineMatrix mat;
       mat.val[0][1] = -1;
