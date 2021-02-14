@@ -18,9 +18,8 @@ template <class Head, class... Tail>
 void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
 template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
 
-vector<vector<ll>> child;
-vector<vector<ll>> parent;
 vector<ll> sz;
+vector<vector<ll>> child;
 
 int dfs(int idx)
 {
@@ -32,12 +31,27 @@ int dfs(int idx)
   return sz[idx];
 }
 
-int count(int idx)
+int count(int idx) // idxの頂点に来た時に手番のある人が、また戻ってきたときの相対スコア
 {
-  for(auto to : child[idx])
+  vector<ll> odd;
+  vector<ll> even;
+  ll score = -1;
+  for(auto to : child[idx]) ((sz[to] & 1) ? odd : even).emplace_back(count(to));
+
+  sort(RALL(odd));
+  int sign = 1;
+  for(auto v : odd)
   {
-    
+    score += sign * v;
+    sign *= -1;
   }
+
+  for(auto v : even)
+  {
+    if (v >= 0) score += v;
+    else score += v * ((odd.size() & 1) ? -1 : 1);
+  }
+  return score;
 }
 
 void solve()
@@ -45,20 +59,17 @@ void solve()
   ll n;
   cin >> n;
   sz.resize(n, 0);
-  parent.resize(n, vector<ll>());
   child.resize(n, vector<ll>());
   repi(i, 1, n)
   {
     ll p;
     cin >> p;
     p--;
-
-    parent[i].emplace_back(p);
     child[p].emplace_back(i);
   }
 
   dfs(0);
-
+  show((n - count(0)) / 2);
 }
 
 int main()
