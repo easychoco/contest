@@ -337,6 +337,39 @@ void tip_topological_sort()
   }
 }
 
+// トポロジカルソート(DFS)
+// topological sort
+// O(V + E)
+vector<P> sorted;
+vector< vector<ll> > g;
+vector<bool> come(100010, false);
+void topo_dfs(int prev, int now)
+{
+  if (come[now]) return;
+  come[now] = true;
+
+  for (auto& i: g[now]) topo_dfs(now, i);
+  // 帰りがけ順で追加
+  sorted.push_back(P(prev, now));
+};
+void tip_topologicalsort_dfs()
+{
+  ll n, m;
+  cin >> n;
+  g = vector< vector<ll> >(n, vector<ll>());
+  vector<ll> deg(n, 0); // 入り次数
+  rep(i, n)
+  {
+    ll a, b;
+    cin >> a >> b;
+    a--; b--;
+    g[a].emplace_back(b);
+  }
+  rep(i, n) topo_dfs(-1, i);
+  reverse(ALL(sorted));
+}
+
+
 // =================================================================================================== //
 
 // dynamic programming
@@ -580,7 +613,7 @@ public:
   }
   vector<vector<ll>> val;
 
-  void Matrix operator - () {
+  Matrix operator - () {
     for(int y = 0; y < size_y; ++y)
     for(int x = 0; x < size_x; ++x) {
       this->val[y][x] *= -1;
