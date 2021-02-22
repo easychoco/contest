@@ -55,23 +55,6 @@ struct mint {
 istream& operator>>(istream& is, mint& a) { return is >> a.x;}
 ostream& operator<<(ostream& os, const mint& a) { return os << a.x;}
 
-// combination mod prime
-// https://www.youtube.com/watch?v=8uowVvQ_-Mo&feature=youtu.be&t=1619
-struct combination {
-  vector<mint> fact, ifact;
-  combination(int n):fact(n+1),ifact(n+1) {
-    assert(n < mod);
-    fact[0] = 1;
-    for (int i = 1; i <= n; ++i) fact[i] = fact[i-1]*i;
-    ifact[n] = fact[n].inv();
-    for (int i = n; i >= 1; --i) ifact[i-1] = ifact[i]*i;
-  }
-  mint operator()(int n, int k) {
-    if (k < 0 || k > n) return 0;
-    return fact[n]*ifact[k]*ifact[n-k];
-  }
-} c(200010);
-
 void solve()
 {
   ll n, m, k;
@@ -82,12 +65,26 @@ void solve()
     show(k);
     return;
   }
+  if (n == 1)
+  {
+    cout << mint(k).pow(m) << endl;
+    return;
+  }
+  if (m == 1)
+  {
+    cout << mint(k).pow(n) << endl;
+    return;
+  }
 
   mint ans = 0;
-  repi(lmin, 1, n + 1)
+  repi(i, 1, k + 1)
   {
-    
+    // 最小値の最大値が i
+    // かける
+    // 最大値が i 以上
+    ans += (mint(i).pow(n) - mint(i - 1).pow(n)) * mint(k - i + 1).pow(m);
   }
+  show(ans);
 }
 
 int main()
