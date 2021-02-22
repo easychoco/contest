@@ -24,11 +24,21 @@ void solve()
   cin >> n;
 
   ll ans = 0;
+  /*
   for(int a = 1; a <= n; ++a)
   for(int b = 1; a * b <= n; ++b)
   {
-    show(a, b, n / a / b);
     ans += n / a / b;
+  }
+  */
+  for(int a = 1; a <= n; ++a) {
+    for(int b = 1; b <= n; ++b) {
+      if (a * b > n) break;
+      for(int c = 1; c <= n; ++c) {
+        if (a * b * c > n) break;
+        ans++;
+      }
+    }
   }
   show(ans);
 }

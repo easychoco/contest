@@ -4,6 +4,7 @@
 #define endl "\n"
 #define rep(i,n) repi(i,0,n)
 #define repi(i,a,n) for(ll i=a;i<(ll)n;++i)
+#define repie(i,a,n) for(ll i=a;i<=(ll)n;++i)
 #define ALL(a) (a).begin(),(a).end()
 #define RALL(a) (a).rbegin(),(a).rend()
 
@@ -24,47 +25,35 @@ void solve()
   cin >> s;
 
   ll sz = s.length();
-  string imos = string(sz, '-');
+  string ss = string(sz, '-');
+  char now = '-';
   repi(i, 2, sz)
   {
-    if (s[i - 2] == s[i - 1] && s[i - 1] != s[i])
+    if (s[i - 2] == s[i - 1] && s[i - 1] != s[i] && s[i - 1] != now)
     {
-      imos[i] = s[i - 1];
+      ss[i] = s[i - 1];
+      now = ss[i];
     }
   }
+  
+  reverse(ALL(s));
+  reverse(ALL(ss));
 
-  char now = '-';
-  ll minus = 0;
-  vector<ll> sum(sz, 0);
+  now = '-';
+  ll ans = 0;
+  ll le = 0;
   rep(i, sz)
   {
-    if (imos[i] != now && imos[i] != '-')
+    if (ss[i] != '-')
     {
-      sum[i] = 1;
-      now = imos[i];
-
-      ll idx = i + 1;
-      while((imos[idx] == '-' || imos[idx] == now) && idx < sz)
-      {
-        if (s[idx] == now)
-        {
-          minus++;
-        }
-        idx++;
-      }
-      i = idx - 1;
+      ans += i + 1;
+      now = ss[i];
+      repie(j, le, i) if (s[j] == now) ans--;
+      i += 1;
+      le = i;
     }
   }
-
-  repi(i, 1, sz)
-  {
-    sum[i] += sum[i - 1];
-  }
-  repi(i, 1, sz)
-  {
-    sum[i] += sum[i - 1];
-  }
-  show(sum.back() - minus);
+  show(ans);
 }
 
 int main()
