@@ -11,4 +11,4 @@ else
 fi
 
 echo open $1/$2
-code ./_tips.cpp ./$1/$2/in ./$1/$2/*.cpp
+code . ./_tips.cpp ./$1/$2/in ./$1/$2/*.cpp
