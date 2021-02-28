@@ -44,7 +44,7 @@ void solve()
   rep(i, 4) hist_t[(int)(t[i] - '0')]++;
   repie(i, 1, 9) hist_all[i] = hist_s[i] + hist_t[i];
 
-  ll bunbo = (9 * k - 8) * (9 * k - 9) / 2;
+  ll bunbo = (9 * k - 8) * (9 * k - 9);
   ll bunsi = 0;
   repie(si, 1, 9)
   {
@@ -66,7 +66,7 @@ void solve()
       }
     }
   }
-  printf("%.7lf\n", (bunsi / (double)(bunbo * 2)));
+  printf("%.7lf\n", (bunsi / (double)bunbo));
 }
 
 int main()

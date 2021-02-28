@@ -32,33 +32,28 @@ void solve()
     ll x, y, p, q;
     cin >> x >> y >> p >> q;
 
-    // 1ループ 2x + 2y
-    //   A => B => B => A => ...
-    // 0 | x    y    x    y
+    // 2x + 2y で割ったときの余りが [x, x+y) の範囲
+    //  p +  q で割ったときの余りが [p, p+q) の範囲
 
-    // % (2X + 2Y) で X <= t < X + Y のときに降りられる
-
-    // 1ループ目で起きている時間は p <= t < q
-    // 2ループ目で起きている時間は (p+q) % loop + p <= t < (p+q) % loop + p + q
-
-    ll loop1 = 2*x + 2*y;
+    ll loop1 = 2 * x + 2 * y;
     ll loop2 = p + q;
-
-    ll ans = 1LL << 62;
+    ll ans = 1LL << 60;
     repi(t1, x, x + y)
     {
       repi(t2, p, p + q)
       {
+        // [ loop1 で割ったときの余りが t1 ] かつ [ loop2 で割ったときの余りが t2 ]
+        // のようになる数字を n とすると [ n ≡ a (mod b) ] または [ n = bx + a ] と表せる (x は非負整数、 a, b は定数)
+        // この時の a と b を P(a, b) で返す
         auto pp = crt({t1, t2}, {loop1, loop2});
         if (pp != P(0, 0))
         {
           ll num = pp.first;
-          if (num == 0) num = pp.second;
           chmin(ans, num);
         }
       }
     }
-    if (ans == 1LL<<62) show("infinity");
+    if (ans == 1LL<<60) show("infinity");
     else show(ans);
   }
 }
