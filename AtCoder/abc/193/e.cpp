@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
 
 #define fastio ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
 #define endl "\n"
@@ -10,6 +11,7 @@
 #define RALL(a) (a).rbegin(),(a).rend()
 
 using namespace std;
+using namespace atcoder;
 using ll = long long;
 using P = pair<ll, ll>;
 void YN(bool a) { cout << (a ? "Yes" : "No") << endl; }
@@ -36,43 +38,28 @@ void solve()
 
     // % (2X + 2Y) で X <= t < X + Y のときに降りられる
 
-    ll loop1 = 2*x + 2*y;
-    ll loop2 = p + q;
-    if (loop1 == loop2)
-    {
-      if (p < x + y) show(max(x, p));
-      else show("infinity");
-      continue;
-    }
-
     // 1ループ目で起きている時間は p <= t < q
     // 2ループ目で起きている時間は (p+q) % loop + p <= t < (p+q) % loop + p + q
 
-    ll t1 = x;
-    ll t2 = p;
+    ll loop1 = 2*x + 2*y;
+    ll loop2 = p + q;
 
-    while(true)
+    ll ans = 1LL << 62;
+    repi(t1, x, x + y)
     {
-      show(t1, t2);
-      if (t2 < t1 + y && t1 < t2 + q)
+      repi(t2, p, p + q)
       {
-        show(max(t1, t2));
-        break;
+        auto pp = crt({t1, t2}, {loop1, loop2});
+        if (pp != P(0, 0))
+        {
+          ll num = pp.first;
+          if (num == 0) num = pp.second;
+          chmin(ans, num);
+        }
       }
-      if (loop1 < loop2)
-      {
-        t2 += loop2;
-        t1 += loop1 * (loop2 / loop1);
-        while (t1 + loop1 < t2) t1 += loop1;
-      }
-      else
-      {
-        t1 += loop1;
-        t2 += loop2 * (loop2 / loop1);
-        while (t2 + loop2 < t1) t2 += loop2;
-      }
-      if (t1 > 10000) break;
     }
+    if (ans == 1LL<<62) show("infinity");
+    else show(ans);
   }
 }
 
