@@ -65,11 +65,11 @@ tuple<ll, ll, ll> extgcd(ll a, ll b)
 
 // 素数判定
 bool isPrime(int a) {
-    if (a == 1) return false;
-    for (int i = 2; i * i <= a; i++) {
-        if(a % i == 0) return false;
-    }
-    return true;
+  if (a == 1) return false;
+  for (int i = 2; i * i <= a; i++) {
+      if(a % i == 0) return false;
+  }
+  return true;
 }
 
 // a^n % mod を計算する O(log n)
