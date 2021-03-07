@@ -29,78 +29,18 @@ void solve()
   vector<ll> a(n);
   vector<ll> hist(1500010, 0);
 
-  const ll INF = 1LL << 60;
-  ll ans = INF;
+  rep(i, n) cin >> a[i];
+  rep(i, m) hist[a[i]]++;
 
-  set<P> st;
-  st.insert(P(-INF, -INF));
-  st.insert(P(INF, INF));
-  rep(i, n)
+  ll ans = 0;
+  rep(i, 1500010) if(hist[i] == 0) { ans = i; break; }
+  repi(i, m, n)
   {
-    cin >> a[i];
     hist[a[i]]++;
-
-    // add
-    auto itr = st.lower_bound(P(a[i] + 1, a[i] + 1));
-    auto p_itr = prev(itr);
-
-    if (!(p_itr->first <= a[i] && a[i] <= p_itr->second))
-    {
-      ll right = a[i];
-      ll left = a[i];
-      if (a[i] + 1 == itr->first)
-      {
-        right = itr->second;
-        st.erase(itr);
-      }
-      if (p_itr->second + 1 == a[i])
-      {
-        left = p_itr->first;
-        st.erase(p_itr);
-      }
-      if (*p_itr != P(left, right))
-      {
-        st.insert(P(left, right));
-      }
-    }
-
-    if (i + 1 >= m)
-    {
-      // query
-      auto q_itr = st.lower_bound(P(0, 0));
-      if (q_itr->first == 0) chmin(ans, q_itr->second + 1);
-      else { ans = 0; break; }
-
-      // remove
-      ll ra = a[i - m + 1];
-      hist[ra]--;
-      if (hist[ra] <= 0)
-      {
-        auto r_itr = st.lower_bound(P(ra + 1, ra + 1));
-        r_itr = prev(r_itr);
-
-        if (*r_itr == P(ra, ra)) st.erase(r_itr);
-        else if (r_itr->first == ra)
-        {
-          st.insert(P(ra + 1, r_itr->second));
-          st.erase(r_itr);
-        }
-        else if (r_itr->second == ra)
-        {
-          st.insert(P(r_itr->first, ra - 1));
-          st.erase(r_itr);
-        }
-        else
-        {
-          ll left = r_itr->first;
-          ll right = r_itr->second;
-          st.erase(r_itr);
-          st.insert(P(left, ra - 1));
-          st.insert(P(ra + 1, right));
-        }
-      }
-    }
+    hist[a[i - m]]--;
+    if (hist[a[i - m]] <= 0) chmin(ans, a[i - m]);
   }
+
   show(ans);
 }
 
