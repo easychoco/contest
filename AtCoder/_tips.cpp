@@ -449,6 +449,15 @@ void tip_dp()
   */
 }
 
+void tip_mex()
+{
+  // https://atcoder.jp/contests/abc194/tasks/abc194_e
+  // https://atcoder.jp/contests/abc194/submissions/20747756
+
+  // えびちゃん
+  // https://rsk0315.hatenablog.com/entry/2020/10/11/125049
+}
+
 // =================================================================================================== //
 
 class UnionFind{
