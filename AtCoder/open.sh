@@ -10,5 +10,5 @@ else
   cp -r ./template ./$1/$2
 fi
 
-echo open $1/$2
+echo opening $1/$2 ...
 code . ./_tips.cpp ./$1/$2/in ./$1/$2/*.cpp
