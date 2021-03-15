@@ -12,7 +12,7 @@
 
 using namespace std;
 using namespace atcoder;
-using ll = long long;
+using ll = int;
 using P = pair<ll, ll>;
 void YN(bool a) { cout << (a ? "Yes" : "No") << endl; }
 template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
@@ -28,74 +28,20 @@ void solve()
   string s, x;
   cin >> n >> s >> x;
 
-  reverse(ALL(s));
-  vector<ll> num(n);
-  ll log = 1;
-  rep(i, n)
+  // dp[i] = i ラウンド目が終了したときにTを7で割った余りが rのとき、ここからゲームを続けるとTakahashiが勝つ
+  vector<vector<bool>> dp(n + 1, vector<bool>(7, false));
+
+  dp[n][0] = true;
+  for(int i = n - 1; i >= 0; --i)
   {
-    num[i] = ((int)(s[i] - '0') * log) % 7;
-    log *= 10;
-  }
-
-  reverse(ALL(s));
-  reverse(ALL(num));
-
-  // dp[i] = mod が i になるか
-  vector<bool> dp(7, false);
-
-
-  ll las_num = 1;
-  for(int i = n - 1; i >= 1; --i)
-  {
-    if (x[i] == x[i - 1]) las_num++;
-    else break;
-  }
-
-  dp[0] = true;
-  dp[num[0]] = true;
-  rep(i, n - las_num)
-  {
-    vector<bool> next(7, false);
-    rep(ii, 7) if (dp[ii]) next[(dp[ii] + num[i]) % 7] = true;
-
-    dp = next;
-  }
-
-  vector<bool> dpp(7, false);
-  dpp[0] = true;
-  dpp[num[n - las_num]] = true;
-  repi(i, n - las_num, n)
-  {
-    vector<bool> next(7, false);
-    rep(ii, 7) if (dpp[ii]) next[(dpp[ii] + num[i]) % 7] = true;
-
-    dpp = next;
-  }
-
-  // A : x7 はダメ
-  // T : x7 にしたい
-  if (s.back() == 'A')
-  {
-    rep(i, 7)
-    rep(ii, 7)
-    if (dp[i] + dpp[ii] != 0)
+    rep(res, 7)
     {
-      cout << "Aoki" << endl;
-      return;
+      bool p = dp[i + 1][(res * 10) % 7];
+      bool q = dp[i + 1][(res * 10 + (ll)(s[i] - '0')) % 7];
+      dp[i][res] = (x[i] == 'A') ? (p & q) : (p | q);
     }
-    cout << "Takahashi" << endl;
   }
-  else
-  {
-    rep(i, 7)
-    rep(ii, 7)
-    if (dp[i] + dpp[ii] == 0)
-    {
-      cout << "Takahashi" << endl;
-      return;
-    }
-    cout << "Aoki" << endl;
-  }
+  cout << ((dp[0][0]) ? "Takahashi" : "Aoki") << endl;
 }
 
 int main()
