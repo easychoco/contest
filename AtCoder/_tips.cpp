@@ -64,9 +64,9 @@ tuple<ll, ll, ll> extgcd(ll a, ll b)
 }
 
 // 素数判定
-bool isPrime(int a) {
+bool isPrime(ll a) {
   if (a == 1) return false;
-  for (int i = 2; i * i <= a; i++) {
+  for (ll i = 2; i * i <= a; i++) {
       if(a % i == 0) return false;
   }
   return true;
