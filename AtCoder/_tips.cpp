@@ -50,6 +50,16 @@ ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 // 最小公倍数 : 3,4 -> 12
 ll lcm(ll a, ll b) { return a * b / gcd(a, b); }
 
+void tip_div()
+{
+  ll a ,b;
+  // a / b の切り上げ
+  (a - 1) / b + 1;
+
+  // a / b の四捨五入
+  (a + b / 2) / b;
+}
+
 // https://www.youtube.com/watch?v=hY2FicqnAcc
 // 拡張GCD : O(log b)
 // a と b の gcd を求める
