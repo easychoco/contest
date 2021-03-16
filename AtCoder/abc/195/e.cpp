@@ -33,6 +33,7 @@ void solve()
   // A : x7 はダメ
   // T : x7 はOK
 
+  // dp[i][res] = iラウンド目が終了したときに7で割った余りが res のとき、ここからゲームを続けるとTakahashiが勝つ
   dp[n][0] = true;
   for(int i = n - 1; i >= 0; --i)
   {
