@@ -22,26 +22,28 @@ template <class Head, class... Tail>
 void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
 template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
 
+bool dp[200010][7];
+
 void solve()
 {
   ll n;
   string s, x;
   cin >> n >> s >> x;
 
-  // dp[i] = i ラウンド目が終了したときにTを7で割った余りが rのとき、ここからゲームを続けるとTakahashiが勝つ
-  vector<vector<bool>> dp(n + 1, vector<bool>(7, false));
+  // A : x7 はダメ
+  // T : x7 はOK
 
   dp[n][0] = true;
   for(int i = n - 1; i >= 0; --i)
   {
     rep(res, 7)
     {
-      bool p = dp[i + 1][(res * 10) % 7];
-      bool q = dp[i + 1][(res * 10 + (ll)(s[i] - '0')) % 7];
-      dp[i][res] = (x[i] == 'A') ? (p & q) : (p | q);
+      bool add0 = dp[i + 1][(res * 10) % 7];
+      bool adds = dp[i + 1][(res * 10 + (ll)(s[i] - '0')) % 7];
+      dp[i][res] = (x[i] == 'A') ? (add0 & adds) : (add0 | adds);
     }
   }
-  cout << ((dp[0][0]) ? "Takahashi" : "Aoki") << endl;
+  cout << (dp[0][0] ? "Takahashi" : "Aoki") << endl;
 }
 
 int main()
