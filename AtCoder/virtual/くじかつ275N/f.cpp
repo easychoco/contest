@@ -25,7 +25,104 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n, a, b, c;
+  cin >> n >> a >> b >> c;
 
+  if (a + b + c == 0)
+  {
+    YN(false);
+    return;
+  }
+
+  map<char, int> mp;
+  mp['A'] = a;
+  mp['B'] = b;
+  mp['C'] = c;
+  
+  vector<string> ss(n);
+  rep(i, n) cin >> ss[i];
+
+  if (a + b + c == 1)
+  {
+    string ans = "";
+    rep(i, n)
+    {
+      if (mp[ss[i][0]] + mp[ss[i][1]] == 0)
+      {
+        YN(false);
+        return;
+      }
+      else
+      {
+        if (mp[ss[i][0]] == 0) ans += ss[i][0];
+        else ans += ss[i][1];
+        swap(mp[ss[i][0]], mp[ss[i][1]]);
+      }
+    }
+    YN(true);
+    rep(i, n) show(ans[i]);
+    return;
+  }
+
+  // if (a + b + c >= 2)
+
+  if(mp[ss[0][0]] + mp[ss[0][1]] == 0)
+  {
+    YN(false);
+    return;
+  }
+
+  YN(true);
+  rep(i, n)
+  {
+    // ss[i][0] から引くか
+    bool first = true;
+
+    if (mp[ss[i][0]] >= 2)
+    {
+      first = true;
+    }
+    else if (mp[ss[i][0]] == 0)
+    {
+      first = false;
+    }
+    else if (mp[ss[i][0]] == 1)
+    {
+      if (mp[ss[i][1]] >= 2)
+      {
+        first = false;
+      }
+      else if (mp[ss[i][1]] == 0)
+      {
+        first = true;
+      }
+      else // if (mp[ss[i][1] == 1)
+      {
+        if (i == n - 1)
+        {
+          first = true;
+        }
+        else
+        {
+          first = !(ss[i][0] == ss[i + 1][0] || ss[i][0] == ss[i + 1][1]);
+        }
+      }
+    }
+
+    
+    if (first)
+    {
+      show(ss[i][1]);
+      mp[ss[i][0]]--;
+      mp[ss[i][1]]++;
+    }
+    else
+    {
+      show(ss[i][0]);
+      mp[ss[i][0]]++;
+      mp[ss[i][1]]--;
+    }
+  }
 }
 
 int main()
