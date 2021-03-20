@@ -26,21 +26,48 @@ void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<T
 template<class T> inline void show(T& begin, T& end) { for(auto itr = begin; itr != end; ++itr) cout<<(*itr)<<" "; cout<<endl; }
 template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
 
-ll getnum(ll pow)
-{ // 入力を文字列で受け取って、10^pow 倍して返す。小数の丸め誤差対策。
+string getIntStr(ll pow)
+{ // 入力を文字列で受け取って、10^pow 倍して整数部分を返す。小数の丸め誤差対策。
   string in;
   cin >> in;
+  string ret = "";
+
+  if (pow < 0)
+  {
+    reverse(ALL(in));
+    for(int i = 1; i < (int)in.length(); ++i)
+    {
+      if (in[i] == '.')
+      {
+        swap(in[i], in[i + 1]);
+        pow++;
+        if (pow == 0) break;
+      }
+    }
+    reverse(ALL(in));
+  }
+
+  if (pow == 0)
+  {
+    rep(i, in.length())
+    {
+      if (in[i] != '.') ret += in[i];
+      else break;
+    }
+    return ret;
+  }
+
   for(int i = 0; i < pow; ++i) in += '0';
-  for(int i = 1; i < in.length(); ++i)
+  for(int i = 1; i < (int)in.length(); ++i)
   {
     if (in[i] == '.')
     {
       swap(in[i], in[i + 1]);
+      ret += in[i];
       pow--;
       if (pow <= 0) break;
     }
   }
-  ll ret = stol(in);
   return ret;
 }
 
@@ -772,13 +799,14 @@ public:
 
 void solve()
 {
-  int x;
-  cin >> x;
+/*
+  int n;
+  cin >> n;
 
-  bool y = x > 0;
+  bool y = n > 0;
 
   YN(y);
-
+*/
 
   ll n;
   cin >> n;
