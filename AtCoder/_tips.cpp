@@ -104,7 +104,7 @@ tuple<ll, ll, ll> extgcd(ll a, ll b)
 bool isPrime(ll a) {
   if (a == 1) return false;
   for (ll i = 2; i * i <= a; i++) {
-      if(a % i == 0) return false;
+    if(a % i == 0) return false;
   }
   return true;
 }
