@@ -28,15 +28,32 @@ void solve()
 {
   ll n, m;
   cin >> n >> m;
-  vector<ll> z(n);
+  vector<ll> x(n);
   vector<ll> y(m);
   
-  rep(i, n) cin >> z[i];
+  rep(i, n) cin >> x[i];
   rep(i, m) cin >> y[i];
 
-  mint v = z.back() - z[0];
-  mint h = y.back() - y[0];
-  mint ans = v * h;
+
+  mint sumx = x[1] - x[0];
+  mint px = sumx;
+  repi(i, 2, n)
+  {
+    mint rx = x[i] - x[i - 1];
+    sumx += px + i * rx;
+    px += i * rx;
+  }
+
+  mint sumy = y[1] - y[0];
+  mint py = sumy;
+  repi(i, 2, m)
+  {
+    mint ry = y[i] - y[i - 1];
+    sumy += py + i * ry;
+    py += i * ry;
+  }
+
+  show((sumx * sumy).val());
 }
 
 int main()
