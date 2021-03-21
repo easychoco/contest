@@ -71,12 +71,6 @@ string getIntStr(ll pow)
   return ret;
 }
 
-// 最大公約数 : 3,4 ->  1
-ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
-
-// 最小公倍数 : 3,4 -> 12
-ll lcm(ll a, ll b) { return a * b / gcd(a, b); }
-
 void tip_div()
 {
   ll a ,b;
@@ -87,13 +81,18 @@ void tip_div()
   (a + b / 2) / b;
 }
 
+// 最大公約数 : 3,4 ->  1
+ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
+
+// 最小公倍数 : 3,4 -> 12
+ll lcm(ll a, ll b) { return a * b / gcd(a, b); }
+
 // https://www.youtube.com/watch?v=hY2FicqnAcc
 // 拡張GCD : O(log b)
 // a と b の gcd を求める
 // ax + by = gcd となるx, yを求める
 // b を mod にすると、mod が素数でないときも逆元を求められる
-tuple<ll, ll, ll> extgcd(ll a, ll b)
-{
+tuple<ll, ll, ll> extgcd(ll a, ll b) {
   if (b == 0) return make_tuple(a, 1LL, 0LL);
   ll g, x, y;
   tie(g, x, y) = extgcd(b, a % b);
