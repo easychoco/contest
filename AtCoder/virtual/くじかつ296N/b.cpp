@@ -1,3 +1,4 @@
+// https://atcoder.jp/contests/abc051/tasks/abc051_a
 #include <bits/stdc++.h>
 #include <atcoder/all>
 
