@@ -128,6 +128,27 @@ ll combmod(ll n, ll r, ll mod) {
   return x * powmod(y, mod - 2, mod) % mod;	// nCr = (分子) * (分母)^-1 mod M
 }
 
+// 座標圧縮 O (N log N)
+// 破壊的なので注意
+// 戻り値は重複を削除 ( sort & unique ) した vector
+template <typename T>
+vector<T> compress(vector<T> &vec)
+{
+  vector<T> ret = vec;
+
+  // 重複削除
+  sort(ALL(ret));
+  ret.erase(unique(ALL(ret)), ret.end());
+
+  // 各要素ごとに二分探索で位置を求める
+  rep (i, vec.size())
+  {
+    vec[i] = lower_bound(ALL(ret), ret[i]) - ret.begin();
+  }
+
+  return ret;
+}
+
 // =================================================================================================== //
 
 // 素因数分解
