@@ -24,7 +24,35 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n;
+  cin >> n;
+  vector<double> p(n);
+  rep(i, n)
+  {
+    cin >> p[i];
+    /*
+    string in;
+    cin >> in;
+    p[i] = stoll(in.substr(2));
+    */
+  }
 
+  // dp[i][j] = 初めの i 枚のコインを投げたときに、表が j 枚となる確率
+  vector< vector<double> > dp(3010, vector<double>(3010, 0.0));
+  dp[0][0] = 1.0;
+
+  rep(i, n) repie(j, 0, i)
+  {
+    // 表
+    dp[i + 1][j + 1] += dp[i][j] * p[i];
+
+    // 裏
+    dp[i + 1][j] += dp[i][j] * (1.0 - p[i]);
+  }
+
+  double ans = 0.0;
+  repie(i, n / 2 + 1, n) ans += dp[n][i];
+  printf("%.9lf", ans);
 }
 
 int main()

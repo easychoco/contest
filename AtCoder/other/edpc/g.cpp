@@ -24,7 +24,44 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n, m;
+  cin >> n >> m;
+  vector< vector<ll> > edge(n, vector<ll>()); // グラフ・DAG
+  vector<ll> deg(n, 0); // 入り次数
+  rep(i, m)
+  {
+    ll x, y;
+    cin >> x >> y;
+    x--; y--;
+    edge[x].emplace_back(y);
+    deg[y]++;
+  } 
 
+  vector<ll> sorted;
+  queue<ll> que;
+  rep(i, n) if (deg[i] == 0) que.push(i);
+  while(!que.empty())
+  {
+    ll now = que.front();
+    que.pop();
+    sorted.emplace_back(now);
+    for(const auto& to : edge[now])
+    {
+      deg[to]--;
+      if (deg[to] == 0) que.push(to);
+    }
+  }
+
+  vector<ll> dp(n, 0);
+  rep(i, n)
+  {
+    ll now = sorted[i];
+    for(auto to : edge[now])
+    {
+      chmax(dp[to], dp[now] + 1);
+    }
+  }
+  show(*max_element(ALL(dp)));
 }
 
 int main()
