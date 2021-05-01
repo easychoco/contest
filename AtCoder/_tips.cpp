@@ -288,7 +288,7 @@ void tip_bellman_ford()
 
 // Dijkstra法 ダイクストラ法
 // 単一始点最短経路問題 O(E log V)
-struct Edge{ ll cost, to; };
+
 void dijkstra()
 {
   // 重みに負値があるときはベルマンフォード法を使う
@@ -298,13 +298,14 @@ void dijkstra()
   // 下のtip_graph_bfsも検討
   ll n, u, v, w;
   cin >> n;
-  vector< vector<Edge> > G(n, vector<Edge>());
+  // tuple<cost, to>
+  vector< vector<tuple<ll, ll>> > G(n);
   for(int i = 0; i < n; ++i)
   {
     cin >> u >> v >> w;
     u--; v--;
-    G[u].emplace_back(Edge{w, v});
-    G[v].emplace_back(Edge{w, u}); // 無向グラフの場合
+    G[u].emplace_back(w, v);
+    G[v].emplace_back(w, u); // 無向グラフの場合
   }
 
   const ll INF = 1LL << 60;
@@ -320,10 +321,11 @@ void dijkstra()
     if (d[now] < p.first) continue;
     for (const auto& edge : G[now])
     {
-      if (d[edge.to] > d[now] + edge.cost)
+      ll cost, to;
+      tie(cost, to) = edge;
+      if (chmin(d[to], d[now] + cost))
       {
-        d[edge.to] = d[now] + edge.cost;
-        que.push(P(d[edge.to], edge.to));
+        que.push(P(d[to], to));
       }
     }
   }
