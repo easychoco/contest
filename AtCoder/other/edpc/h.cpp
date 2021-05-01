@@ -22,9 +22,41 @@ template <class Head, class... Tail>
 void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
 template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
 
+using mint = modint1000000007;
+
 void solve()
 {
+  ll h, w;
+  cin >> h >> w;
+  string mp[h];
+  rep(i, h) cin >> mp[i];
 
+  vector< vector<mint> > ans(1010, vector<mint>(1010, 0));
+
+  ans[0][0] = 1;
+  rep(y, h) rep(x, w)
+  {
+    if (mp[y][x] == '#') continue;
+
+    ll nx, ny;
+
+    // 右
+    nx = x + 1;
+    ny = y;
+    if (nx < w && mp[ny][nx] != '#')
+    {
+      ans[ny][nx] += ans[y][x];
+    }
+
+    // 下
+    nx = x;
+    ny = y + 1;
+    if (ny < h && mp[ny][nx] != '#')
+    {
+      ans[ny][nx] += ans[y][x];
+    }
+  }
+  show(ans[h - 1][w - 1].val());
 }
 
 int main()
