@@ -173,11 +173,11 @@ void tip_facotrization()
 // めぐる式
 void tip_binary_search()
 {
-  auto f = [&](ll arg)
+  auto f = [&](ll arg) -> bool
   {
-    return arg;
+    return arg > 0;
   };
-  ll ac = 0, wa = 1000000000LL;
+  ll ac = 0, wa = 1'000'000'000LL;
   while(wa - ac > 1)
   {
     ll wj = (ac + wa) / 2;
