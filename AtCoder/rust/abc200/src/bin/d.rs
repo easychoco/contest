@@ -23,18 +23,18 @@ fn main() {
         }
         if v[sum as usize].len() > 0 {
             println!("Yes");
-            print!("{} ", v[sum as usize].len());
             println!(
-                "{}",
+                "{} {}",
+                v[sum as usize].len(),
                 v[sum as usize]
                     .iter()
                     .map(|x| (x + 1).to_string())
                     .collect::<Vec<_>>()
                     .join(" ")
             );
-            print!("{} ", idx.len());
-            println!(
-                "{}",
+            print!(
+                "{} {}",
+                idx.len(),
                 idx.iter()
                     .map(|x| (x + 1).to_string())
                     .collect::<Vec<_>>()
