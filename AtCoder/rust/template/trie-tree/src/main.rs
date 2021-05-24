@@ -119,8 +119,10 @@ impl Trie {
   }
 
   pub fn predict(&self, s: &str) -> Vec<String> {
-    let ret = self.predict_impl(s, 0);
-    return ret.iter().map(|suffix| String::from(s) + suffix).collect();
+    self.predict_impl(s, 0)
+      .iter()
+      .map(|suffix| String::from(s) + suffix)
+      .collect()
   }
 
   fn predict_impl(&self, s: &str, idx: usize) -> Vec<String> {
@@ -154,7 +156,7 @@ impl Trie {
         return self.predict_impl(&s[1..], child_idx);
       }
     }
-    return vec![];
+    vec![]
   }
 }
 
