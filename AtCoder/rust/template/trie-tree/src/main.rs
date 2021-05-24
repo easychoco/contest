@@ -1,4 +1,5 @@
 use std::str;
+use std::collections::VecDeque;
 
 #[derive(Debug)]
 struct Node {
@@ -118,19 +119,39 @@ impl Trie {
   }
 
   pub fn predict(&self, s: &str) -> Vec<String> {
-    self.predict_dfs(s, 0)
+    let mut ret = self.predict_impl(s, 0);
+    return ret.iter().map(|suffix| String::from(s) + suffix).collect();
   }
 
-  fn predict_dfs(&self, s: &str, idx: usize) -> Vec<String> {
+  fn predict_impl(&self, s: &str, idx: usize) -> Vec<String> {
     if s.len() == 0 {
+      // ここでBFS をする
       let mut ret: Vec<String> = vec![];
+
+      let mut q = VecDeque::new();
+      for &i in &self.nodes[idx].children {
+        let qi = i;
+        q.push_back((qi, String::new()));
+      }
+      while let Some(front) = q.pop_front() {
+        let (idx, s) = front;
+        if &self.nodes[idx].prefix == "non" { continue; }
+        let now = String::from(s) + &self.nodes[idx].prefix;
+        if self.nodes[idx].is_leaf {
+          ret.push(now.clone());
+        }
+        for &i in &self.nodes[idx].children {
+          let qi = i;
+          q.push_back((qi, now.clone()));
+        }
+      }
       return ret;
     }
 
     for &i in &self.nodes[idx].children {
       if &self.nodes[i].prefix == &s[0..1] {
         let child_idx = i;
-        self.predict_dfs(&s[1..], child_idx);
+        return self.predict_impl(&s[1..], child_idx);
       }
     }
     return vec![];
@@ -140,6 +161,7 @@ impl Trie {
 fn main () {
   let mut trie = Trie::new();
   trie.insert("abc");
+  trie.insert("abca");
   trie.insert("abcaa");
   trie.insert("abcab");
   trie.insert("abcba");
@@ -148,8 +170,7 @@ fn main () {
     println!("{:?}", i);
   }
 
-  trie.predict("a");
-
+  println!("{:?}", trie.predict("a"));
   println!("{}", trie.exist("abc"));
   println!("{}", trie.exist("abcaa"));
   println!("{}", trie.exist("abcab"));
@@ -163,8 +184,11 @@ fn main () {
   println!("{}", trie.exist("c"));
   println!("------");
   trie.remove("abc");
+  trie.remove("abca");
   trie.remove("abcaa");
   trie.remove("abcab");
+  trie.remove("abcba");
+  trie.remove("acab");
   println!("{}", trie.exist("abc"));
   println!("{}", trie.exist("abcaa"));
   println!("{}", trie.exist("abcab"));
@@ -178,9 +202,11 @@ fn main () {
   println!("{}", trie.exist("aca"));
   println!("{}", trie.exist("c"));
   println!("------");
+  trie.insert("abcab");
   for i in &trie.nodes {
     println!("{:?}", i);
   }
+  println!("{:?}", trie.predict("a"));
 }
 
 /*
