@@ -119,7 +119,7 @@ impl Trie {
   }
 
   pub fn predict(&self, s: &str) -> Vec<String> {
-    let mut ret = self.predict_impl(s, 0);
+    let ret = self.predict_impl(s, 0);
     return ret.iter().map(|suffix| String::from(s) + suffix).collect();
   }
 
