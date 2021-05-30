@@ -186,6 +186,28 @@ void tip_binary_search()
   }
 }
 
+// 二次元累積和
+// O (X * Y)
+void accumulate_sum_2D()
+{
+  ll h, w;
+  vector<vector<ll>> a(h, vector<ll>(w, 0));
+  vector<vector<ll>> sum(h + 1, vector<ll>(w + 1, 0));
+  rep(y, h) rep(x, w) sum[y + 1][x + 1] = sum[y][x + 1] + sum[y + 1][x] - sum[y][x] + (a[y][x]);
+
+  ll ky = 3, kx = 4;
+  rep(y, h - ky + 1) rep(x, w - kx + 1)
+  {
+    // [x1, x2) x [y1, y2) の区間の和を求める
+    ll y1, y2, x1, x2;
+    y1 = y;
+    y2 = y + ky;
+    x1 = x;
+    x2 = x + kx;
+    ll sum_2D = sum[y2][x2] - sum[y1][x2] - sum[y2][x1] + sum[y1][x1];
+  }
+}
+
 // クラスカル法
 // 最小全域木問題
 // [UnionFind木] を貼る
