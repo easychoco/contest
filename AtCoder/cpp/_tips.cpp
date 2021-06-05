@@ -1,7 +1,7 @@
 // https://github.com/atcoder/live_library
 // https://qiita.com/kawa-Kotaro/items/782bc31b64e4ee13649a
 
-// g++ --std=c++14 -Wl,--stack,10485760
+// g++ --std=gnu++17 -I ~/pg/ac-library -Wall -Werror -O2
 
 #include <bits/stdc++.h>
 
