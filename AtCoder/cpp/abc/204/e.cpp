@@ -43,7 +43,6 @@ void solve()
   d[0] = 0;
   priority_queue<P, vector<P>, greater<P>> que;
   que.push(P(0, 0)); // P(time, start)
-  bool ok = false;
   while (!que.empty())
   {
     P p = que.top();
@@ -51,7 +50,6 @@ void solve()
 
     ll time, now;
     tie(time, now) = p;
-    if (now == n - 1) ok = true;
 
     if (d[now] < p.first) continue;
     for (const auto& edge : graph[now])
@@ -60,8 +58,9 @@ void solve()
       tie(to, cc, dd) = edge;
 
       ll nc = time + cc + dd / (time + 1);
-      ll sq = (ll)sqrt(dd); // 待ち時間
-      if (time <= sq) repie(t, max(0LL, sq - 1), sq + 1)
+      ll sq = (ll)sqrt(dd); // この時間に出発すれば一番早く目的地に着く
+      if (time <= sq) // sq - time 待つことになる / else なら、待てば待つほど遅くなるので即時出発する
+      repie(t, max(0LL, sq - 1), sq + 1)
       {
         chmin(nc, t + cc + dd / (t + 1));
       }
@@ -72,8 +71,7 @@ void solve()
       }
     }
   }
-  if (ok) show(d[n - 1]);
-  else show(-1);
+  show(d[n - 1] == INF ? -1 : d[n - 1]);
 }
 
 int main()
