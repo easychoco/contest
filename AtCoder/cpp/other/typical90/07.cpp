@@ -24,7 +24,33 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n;
+  cin >> n;
+  vector<ll> a(n);
+  rep(i, n) cin >> a[i];
 
+  sort(ALL(a));
+
+  ll q;
+  cin >> q;
+  rep(_, q)
+  {
+    ll b;
+    cin >> b;
+    auto iter = lower_bound(ALL(a), b);
+    ll ans = abs(a[0] - b);
+    if (iter != a.end())
+    {
+      chmin(ans, *iter - b);
+    }
+    if (iter != a.begin())
+    {
+      --iter;
+      chmin(ans, b - *iter);
+    }
+
+    show(ans);
+  }
 }
 
 int main()
