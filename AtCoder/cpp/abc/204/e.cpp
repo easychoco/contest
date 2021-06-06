@@ -59,14 +59,14 @@ void solve()
       ll to, cc, dd;
       tie(to, cc, dd) = edge;
 
-      ll sq = (ll)sqrt(dd);
-      ll nc = cc + dd / (time + 1);
-      repie(t, max(0LL, sq - 2), sq + 2)
+      ll nc = time + cc + dd / (time + 1);
+      ll sq = (ll)sqrt(dd); // 待ち時間
+      if (time <= sq) repie(t, max(0LL, sq - 1), sq + 1)
       {
-        chmin(nc, t + cc + dd / (time + t + 1));
+        chmin(nc, t + cc + dd / (t + 1));
       }
 
-      if (chmin(d[to], d[now] + nc))
+      if (chmin(d[to], nc))
       {
         que.push(P(d[to], to));
       }
