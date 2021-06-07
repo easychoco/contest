@@ -27,34 +27,42 @@ void solve()
   ll n, k;
   string s;
   cin >> n >> k >> s;
+
+  // 取り除く文字数
   ll cnt = n - k;
-  stack<char> st;
+
+  // 内定した文字をここに入れる
+  deque<char> deq;
   for(auto c : s)
   {
-    if (st.empty()) st.push(c);
-    else if (cnt == 0) st.push(c);
-    else
+    // 文字がないか、これ以上取り除けないとき
+    if (deq.empty() || cnt == 0)
     {
-      char top = st.top();
-      while(top > c && cnt > 0)
-      {
-        st.pop();
-        cnt--;
-        if (st.empty()) break;
-        top = st.top();
-      }
-      st.push(c);
+      deq.push_back(c);
+      continue;
     }
-  }
-  string ans = "";
-  while(!st.empty())
-  {
-    if (cnt == 0) ans += st.top();
-    else cnt--;
-    st.pop();
-  }
-  reverse(ALL(ans));
 
+    char back = deq.back();
+    // いまの文字(c)が最後尾よりも辞書順で小さい場合は
+    // 最後尾をいまの文字に差し替える
+    while(back > c && cnt > 0)
+    {
+      deq.pop_back();
+      cnt--;
+      if (deq.empty()) break;
+      back = deq.back();
+    }
+    // いまの文字(c)を最後尾に加える
+    deq.push_back(c);
+  }
+
+  // deq の先頭から k 文字が答え
+  string ans = "";
+  rep(i, k)
+  {
+    ans += deq.front();
+    deq.pop_front();
+  }
   show(ans);
 }
 
