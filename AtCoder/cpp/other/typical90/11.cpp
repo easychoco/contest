@@ -22,9 +22,36 @@ template <class Head, class... Tail>
 void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
 template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
 
+// dp[i][j] = i 番目まで見て j 日目のときの最大報酬値
+ll dp[5010][5010];
+
 void solve()
 {
+  ll n;
+  cin >> n;
+  vector< tuple<ll, ll, ll> > task(n);
 
+  rep(i, n)
+  {
+    ll d, c, s;
+    cin >> d >> c >> s;
+    task[i] = make_tuple(d, c, s);
+  }
+
+  sort(ALL(task));
+  rep(i, n)
+  {
+    ll d, c, s;
+    tie(d, c, s) = task[i];
+    rep(day, 5000)
+    {
+      if (day + c <= d) chmax(dp[i + 1][day + c], dp[i][day] + s);
+      chmax(dp[i + 1][day], dp[i][day]);
+    }
+  }
+  ll ans = 0;
+  repe(i, 5000) chmax(ans, dp[n][i]);
+  show(ans);
 }
 
 int main()
