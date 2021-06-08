@@ -24,7 +24,31 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n;
+  cin >> n;
+  vector<ll> sum1(n + 1, 0), sum2(n + 1, 0);
+  rep(i, n)
+  {
+    ll c, p;
+    cin >> c >> p;
+    if (c == 1) sum1[i + 1] = p;
+    if (c == 2) sum2[i + 1] = p;
+  }
 
+  rep(i, n)
+  {
+    sum1[i + 1] += sum1[i];
+    sum2[i + 1] += sum2[i];
+  }
+
+  ll q;
+  cin >> q;
+  rep(_, q)
+  {
+    ll l, r;
+    cin >> l >> r;
+    show(sum1[r] - sum1[l - 1], sum2[r] - sum2[l - 1]);
+  }
 }
 
 int main()
