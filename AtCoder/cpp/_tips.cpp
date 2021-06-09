@@ -318,11 +318,11 @@ void dijkstra()
   // w=1(固定長)の時はpriority_queueをqueueにするとO(NlogN)がO(logN)になる
   // 大抵は不要だけどO(NlogN)では厳しいときに
   // 下のtip_graph_bfsも検討
-  ll n, u, v, w;
-  cin >> n;
+  ll n, m, u, v, w;
+  cin >> n >> m;
   // tuple<cost, to>
   vector< vector<tuple<ll, ll>> > G(n);
-  for(int i = 0; i < n; ++i)
+  rep(i, m)
   {
     cin >> u >> v >> w;
     u--; v--;
