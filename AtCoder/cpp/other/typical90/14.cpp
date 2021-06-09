@@ -24,7 +24,18 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n;
+  cin >> n;
+  vector<ll> a(n), b(n);
+  rep(i, n) cin >> a[i];
+  rep(i, n) cin >> b[i];
 
+  sort(ALL(a));
+  sort(ALL(b));
+
+  ll ans = 0;
+  rep(i, n) ans += abs(a[i] - b[i]);
+  show(ans);
 }
 
 int main()

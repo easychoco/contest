@@ -24,7 +24,48 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n, m, u, v, w;
+  cin >> n >> m;
+  // tuple<cost, to>
+  vector< vector<tuple<ll, ll>> > G(n);
+  rep(i, m)
+  {
+    cin >> u >> v >> w;
+    u--; v--;
+    G[u].emplace_back(w, v);
+    G[v].emplace_back(w, u); // 無向グラフの場合
+  }
 
+  const ll INF = 1LL << 60;
+  ll start[2] = { 0, n - 1 };
+  vector<vector<ll> > d(2, vector<ll>(n, INF));
+  rep(i, 2)
+  {
+    d[i][start[i]] = 0;
+    priority_queue<P, vector<P>, greater<P>> que;
+    que.push(P(0, start[i])); // P(cost, start)
+    while (!que.empty())
+    {
+      P p = que.top();
+      que.pop();
+      ll now = p.second;
+      if (d[i][now] < p.first) continue;
+      for (const auto& edge : G[now])
+      {
+        ll cost, to;
+        tie(cost, to) = edge;
+        if (chmin(d[i][to], d[i][now] + cost))
+        {
+          que.push(P(d[i][to], to));
+        }
+      }
+    }
+  }
+
+  rep(i, n)
+  {
+    show(d[0][i] + d[1][i]);
+  }
 }
 
 int main()

@@ -24,7 +24,23 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n, ta, tb, tc;
+  cin >> n >> ta >> tb >> tc;
+  ll a = max({ta, tb, tc});
+  ll c = min({ta, tb, tc});
+  ll b = ta + tb + tc - a - c;
 
+  // a > b > c になっている
+  ll ans = 1LL << 60;
+  for (ll na = n / a; na >= 0; --na)
+  {
+    for (ll nb = (n - (na * a)) / b; nb >= 0; --nb)
+    {
+      if (na + nb >= 10000) break;
+      if ((n - (na * a) - (nb * b)) % c == 0) chmin(ans, na + nb + (n - (na * a) - (nb * b)) / c);
+    }
+  }
+  show(ans);
 }
 
 int main()
