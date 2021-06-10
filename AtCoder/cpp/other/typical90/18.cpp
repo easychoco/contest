@@ -24,7 +24,20 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll t, l, x, y, q;
+  cin >> t >> l >> x >> y >> q;
+  rep(_, q)
+  {
+    double e;
+    cin >> e;
 
+    double rad = 2.0 * M_PI * e / (double)t;
+    double yy = -l / 2.0 * sin(rad);
+    double zz = l / 2.0 - l / 2.0 * cos(rad);
+    double d = hypot(x, y - yy);
+
+    printf("%.8lf\n", atan2(zz, d) * 180 / M_PI);
+  }
 }
 
 int main()
