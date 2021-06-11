@@ -24,7 +24,11 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
-
+  ll a, b, c;
+  cin >> a >> b >> c;
+  ll pow = 1;
+  rep(i, b) pow *= c;
+  YN(a < pow);
 }
 
 int main()
