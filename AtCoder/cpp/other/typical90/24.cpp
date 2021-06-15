@@ -24,7 +24,15 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n, k;
+  cin >> n >> k;
+  vector<ll> a(n), b(n);
+  rep(i, n) cin >> a[i];
+  rep(i, n) cin >> b[i];
 
+  ll ans = 0;
+  rep(i, n) ans += abs(a[i] - b[i]);
+  YN(ans <= k && (k - ans) % 2 == 0);
 }
 
 int main()

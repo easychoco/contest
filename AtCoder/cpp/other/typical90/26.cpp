@@ -24,7 +24,48 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n;
+  cin >> n;
 
+  vector< vector<ll> > graph(n, vector<ll>());
+  rep(i, n - 1)
+  {
+    ll a, b;
+    cin >> a >> b;
+    a--; b--;
+    graph[a].emplace_back(b);
+    graph[b].emplace_back(a);
+  }
+
+  vector<ll> dist[2];
+  vector<bool> come(n, false);
+  queue<tuple<ll, ll>> que;
+  que.emplace(0, 0);
+  while(!que.empty())
+  {
+    ll now, d;
+    tie(now, d) = que.front();
+    que.pop();
+    if (come[now]) continue;
+    come[now] = true;
+    dist[d % 2].emplace_back(now);
+    for (auto& next : graph[now])
+    {
+      que.emplace(next, d + 1);
+    }
+  }
+
+  vector<ll> ans;
+  if ((ll)dist[0].size() >= n / 2)
+  {
+    rep(i, n / 2) ans.emplace_back(dist[0][i] + 1);
+  }
+  else if ((ll)dist[1].size() >= n / 2)
+  {
+    rep(i, n / 2) ans.emplace_back(dist[1][i] + 1);
+  }
+
+  showall(ans);
 }
 
 int main()
