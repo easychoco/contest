@@ -1,5 +1,6 @@
 // https://github.com/atcoder/live_library
 // https://qiita.com/kawa-Kotaro/items/782bc31b64e4ee13649a
+// https://atcoder.github.io/ac-library/production/document_ja/
 
 // g++ --std=gnu++17 -I ~/pg/ac-library -Wall -Werror -O2
 
@@ -187,12 +188,31 @@ void tip_binary_search()
 }
 
 // 二次元累積和
+// 二次元いもす法 imos
 // O (X * Y)
 void accumulate_sum_2D()
 {
-  ll h, w;
+  ll h, w, q;
   vector<vector<ll>> a(h, vector<ll>(w, 0));
   vector<vector<ll>> sum(h + 1, vector<ll>(w + 1, 0));
+
+  // いもすはこれ
+  rep(i, q)
+  {
+    ll lx, ly, rx, ry;
+    cin >> lx >> ly >> rx >> ry;
+    a[ly][lx] += 1;
+    a[ry][lx] += -1;
+    a[ly][rx] += -1;
+    a[ry][rx] += 1;
+    /* // どっちか
+    a[ly][lx] += 1;
+    a[ry + 1][lx] += -1;
+    a[ly][rx + 1] += -1;
+    a[ry + 1][rx + 1] += 1;
+    */
+  }
+
   rep(y, h) rep(x, w) sum[y + 1][x + 1] = sum[y][x + 1] + sum[y + 1][x] - sum[y][x] + (a[y][x]);
 
   ll ky = 3, kx = 4;
@@ -678,6 +698,16 @@ ll query(int a, int b, int k = 0, int l = 0, int r = N){
   return op(c1, c2);
 }
 // Segment Tree ここまで
+
+// Lazy Segment Tree
+// 遅延評価セグメント木
+// https://atcoder.github.io/ac-library/production/document_ja/lazysegtree.html
+// チートシート
+// https://betrue12.hateblo.jp/entry/2020/09/23/005940
+// apply(l, r, f) が区間更新
+// apply(p, f) が1点更新
+// prod(l, r) が区間取得
+// get(p) が 1点取得
 
 // BIT
 // Binary Indexed Tree
