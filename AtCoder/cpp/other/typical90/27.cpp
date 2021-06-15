@@ -24,7 +24,18 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
-
+  ll n;
+  cin >> n;
+  set<string> st;
+  rep(i, n)
+  {
+    string s;
+    cin >> s;
+    if (st.insert(s).second)
+    {
+      show(i + 1);
+    }
+  }
 }
 
 int main()

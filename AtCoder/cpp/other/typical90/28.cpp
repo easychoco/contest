@@ -24,7 +24,30 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n;
+  cin >> n;
 
+  ll h = 1010, w = 1010;
+  vector<vector<ll>> a(h, vector<ll>(w, 0));
+  rep(i, n)
+  {
+    ll lx, ly, rx, ry;
+    cin >> lx >> ly >> rx >> ry;
+    a[ly][lx] += 1;
+    a[ry][lx] += -1;
+    a[ly][rx] += -1;
+    a[ry][rx] += 1;
+  }
+
+  vector<vector<ll>> sum(h + 1, vector<ll>(w + 1, 0));
+  rep(y, h) rep(x, w) sum[y + 1][x + 1] = sum[y][x + 1] + sum[y + 1][x] - sum[y][x] + (a[y][x]);
+
+  vector<ll> ans(n + 1, 0);
+  rep(y, h) rep(x, w)
+  {
+    ans[sum[y][x]]++;
+  }
+  repie(i, 1, n) show(ans[i]);
 }
 
 int main()
