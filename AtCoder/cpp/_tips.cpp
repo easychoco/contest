@@ -144,7 +144,7 @@ vector<T> compress(vector<T> &vec)
   // 各要素ごとに二分探索で位置を求める
   rep (i, vec.size())
   {
-    vec[i] = lower_bound(ALL(ret), ret[i]) - ret.begin();
+    vec[i] = lower_bound(ALL(ret), vec[i]) - ret.begin();
   }
 
   return ret;
