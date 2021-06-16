@@ -22,9 +22,48 @@ template <class Head, class... Tail>
 void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
 template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
 
+template <typename T>
+vector<T> compress(vector<T> &vec)
+{
+  vector<T> ret = vec;
+
+  // 重複削除
+  sort(ALL(ret));
+  ret.erase(unique(ALL(ret)), ret.end());
+
+  // 各要素ごとに二分探索で位置を求める
+  rep (i, vec.size())
+  {
+    vec[i] = lower_bound(ALL(ret), vec[i]) - ret.begin();
+  }
+
+  return ret;
+}
+
 void solve()
 {
+  ll n, k;
+  cin >> n >> k;
+  vector<ll> a(n);
+  rep(i, n) cin >> a[i];
 
+  ll sz = (ll)compress(a).size();
+
+  ll ri = 0;
+  ll kind = 0;
+  ll ans = 0;
+  vector<ll> hist(sz + 1, 0);
+  rep(li, n)
+  {
+    while(ri < n)
+    {
+      if (kind == k && hist[a[ri]] == 0) break;
+      if (hist[a[ri++]]++ == 0) kind++;
+    }
+    chmax(ans, ri - li);
+    if (hist[a[li]]-- == 1) kind--;
+  }
+  show(ans);
 }
 
 int main()

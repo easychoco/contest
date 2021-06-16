@@ -24,7 +24,10 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
-
+  ll h, w;
+  cin >> h >> w;
+  if (h == 1 || w == 1) show(h * w);
+  else show( ((h - 1) / 2 + 1) * ((w - 1) / 2 + 1) );
 }
 
 int main()

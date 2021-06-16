@@ -24,7 +24,51 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n;
+  cin >> n;
+  ll a[10][10];
+  rep(y, n)
+  {
+    rep(x, n)
+    {
+      cin >> a[y][x];
+    }
+  }
 
+  ll m;
+  cin >> m;
+  vector< vector<bool> > yes(10, vector<bool>(10, true));
+  rep(i, m)
+  {
+    ll x, y;
+    cin >> x >> y;
+    x--; y--;
+    yes[x][y] = false;
+    yes[y][x] = false;
+  }
+
+  vector<ll> seq(n);
+  iota(ALL(seq), 0LL);
+
+  const ll INF = 1LL << 60;
+  ll ans = INF;
+  do {
+    ll cost = a[seq[0]][0];
+    repi(i, 1, n)
+    {
+      ll now = seq[i - 1];
+      ll next = seq[i];
+      if (yes[now][next]) cost += a[next][i];
+      else
+      {
+        cost = INF;
+        break;
+      }
+    }
+    chmin(ans, cost);
+  } while(next_permutation(ALL(seq)));
+  if (ans == INF) show(-1);
+  else show(ans);
 }
 
 int main()
