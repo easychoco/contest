@@ -22,9 +22,17 @@ template <class Head, class... Tail>
 void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
 template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
 
+// 最大公約数 : 3,4 ->  1
+ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
+
 void solve()
 {
-
+  ll a, b;
+  cin >> a >> b;
+  ll g = gcd(a, b);
+  a /= g;
+  if (a > 1'000'000'000'000'000'000LL / b) show("Large");
+  else show(a * b);
 }
 
 int main()

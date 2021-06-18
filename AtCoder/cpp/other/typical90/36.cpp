@@ -24,7 +24,31 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n, q;
+  cin >> n >> q;
+  vector<ll> x(n), y(n);
+  vector<ll> xx(n), yy(n);
+  rep(i, n)
+  {
+    ll xi, yi;
+    cin >> xi >> yi;
+    xx[i] = xi - yi;
+    yy[i] = xi + yi;
+    x[i] = xi - yi;
+    y[i] = xi + yi;
+    // x[i] = make_tuple(xi - yi, i);
+    // y[i] = make_tuple(xi + yi, i);
+  }
+  sort(ALL(x));
+  sort(ALL(y));
 
+  rep(i, q)
+  {
+    ll qi;
+    cin >> qi;
+    qi--;
+    show(max(max(xx[qi] - x[0], x.back() - xx[qi]), max(yy[qi] - y[0], y.back() - yy[qi])));
+  }
 }
 
 int main()
