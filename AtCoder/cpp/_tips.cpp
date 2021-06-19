@@ -640,12 +640,13 @@ public:
     if(p[x] == -1) return x;
     else return p[x] = root(p[x]); // 深さを 1 にしている
   }
-  void unite(int x, int y){
+  bool unite(int x, int y){
     x = root(x); y = root(y);
-    if(x == y)return;
+    if(x == y) return false;
     if(rank[x] > rank[y]) swap(x, y); // rankの小さいものを下につける
     rank[y] += rank[x];
     p[x] = y;
+    return true;
   }
   // グループの数
   ll root_num() {
