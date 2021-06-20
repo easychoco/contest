@@ -22,9 +22,28 @@ template <class Head, class... Tail>
 void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
 template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
 
+using mint = modint1000000007;
+
 void solve()
 {
+  ll k;
+  cin >> k;
+  if (k % 9 != 0)
+  {
+    show(0);
+    return;
+  }
 
+  vector<mint> dp(k + 10, 0);
+  dp[0] = 1;
+  repe(i, k)
+  {
+    repie(j, 1, 9)
+    {
+      dp[i + j] += dp[i];
+    }
+  }
+  show(dp[k].val());
 }
 
 int main()

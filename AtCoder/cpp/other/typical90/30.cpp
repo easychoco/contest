@@ -24,7 +24,19 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n, k;
+  cin >> n >> k;
 
+  vector<ll> hist(n + 1, 0);
+  repie(i, 2, n)
+  {
+    if (hist[i] >= 1) continue;
+    for(ll j = i; j <= n; j += i) hist[j]++;
+  }
+
+  ll ans = 0;
+  repie(i, 2, n) if (hist[i] >= k) ans++;
+  show(ans);
 }
 
 int main()

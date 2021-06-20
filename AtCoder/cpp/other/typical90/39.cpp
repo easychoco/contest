@@ -13,6 +13,8 @@
 using namespace std;
 using namespace atcoder;
 using ll = long long;
+using vl = vector<ll>;
+using vvl = vector<vector<ll>>;
 using P = pair<ll, ll>;
 void YN(bool a) { cout << (a ? "Yes" : "No") << endl; }
 template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
@@ -22,9 +24,40 @@ template <class Head, class... Tail>
 void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
 template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
 
+vvl graph;
+vl come;
+ll n;
+ll cnt = 0;
+ll ans = 0;
+void dfs(ll now)
+{
+  if (come[now]) return;
+  come[now] = true;
+  ll in_cnt = cnt;
+  cnt++;
+  for(auto next : graph[now])
+  {
+    dfs(next);
+  }
+  ll diff = cnt - in_cnt;
+  ans += diff * (n - diff);
+}
+
 void solve()
 {
-
+  cin >> n;
+  graph.resize(n);
+  come.resize(n, false);
+  rep(i, n - 1)
+  {
+    ll a, b;
+    cin >> a >> b;
+    a--; b--;
+    graph[a].emplace_back(b);
+    graph[b].emplace_back(a);
+  }
+  dfs(0);
+  show(ans);
 }
 
 int main()
