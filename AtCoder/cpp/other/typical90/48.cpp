@@ -24,7 +24,34 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n, k;
+  cin >> n >> k;
+  vector<ll> a(n), b(n);
+  rep(i, n)
+  {
+    cin >> a[i] >> b[i];
+  }
+  
+  const ll INF = 1LL << 60;
+  priority_queue<tuple<ll, ll>> que;
+  rep(i, n)
+  {
+    que.emplace(b[i], i);
+  }
 
+  ll ans = 0;
+  rep(i, k)
+  {
+    ll score, idx;
+    tie(score, idx) = que.top();
+    que.pop();
+    ans += score;
+    if (idx < INF)
+    {
+      que.emplace(a[idx] - b[idx], INF);
+    }
+  }
+  show(ans);
 }
 
 int main()

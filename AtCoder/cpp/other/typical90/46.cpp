@@ -24,7 +24,26 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n;
+  cin >> n;
+  vector<ll> ha(46, 0), hb(46, 0), hc(46, 0);
+  
+  rep(i, n) { ll a; cin >> a; ha[a % 46]++; }
+  rep(i, n) { ll b; cin >> b; hb[b % 46]++; }
+  rep(i, n) { ll c; cin >> c; hc[c % 46]++; }
 
+  ll ans = 0;
+  rep(a, 46)
+  {
+    if (ha[a] == 0) continue;
+    rep(b, 46)
+    {
+      if (hb[b] == 0) continue;
+      ll c = (92 - a - b) % 46;
+      ans += ha[a] * hb[b] * hc[c];
+    }
+  }
+  show(ans);
 }
 
 int main()

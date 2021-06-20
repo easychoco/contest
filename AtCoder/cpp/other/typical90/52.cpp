@@ -22,9 +22,20 @@ template <class Head, class... Tail>
 void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
 template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
 
+using mint = modint1000000007;
+
 void solve()
 {
-
+  ll n;
+  cin >> n;
+  mint ans = 1;
+  rep(i, n)
+  {
+    ll a1, a2, a3, a4, a5, a6;
+    cin >> a1 >> a2 >> a3 >> a4 >> a5 >> a6;
+    ans *= (a1 + a2 + a3 + a4 + a5 + a6);
+  }
+  show(ans.val());
 }
 
 int main()

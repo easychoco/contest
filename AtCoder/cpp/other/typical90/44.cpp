@@ -24,7 +24,31 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n, q;
+  cin >> n >> q;
+  vector<ll> a(n);
+  rep(i, n) cin >> a[i];
 
+  ll st = 0;
+  rep(i, q)
+  {
+    ll t, x, y;
+    cin >> t >> x >> y;
+    if (t == 1)
+    {
+      x--; y--;
+      swap(a[(st + x) % n], a[(st + y) % n]);
+    }
+    else if (t == 2)
+    {
+      st += n - 1;
+      if (st >= n) st -= n;
+    }
+    else
+    {
+      show(a[(st + x - 1) % n]);
+    }
+  }
 }
 
 int main()
