@@ -24,7 +24,30 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n, p, q;
+  cin >> n >> p >> q;
+  vector<ll> a(n);
+  rep(i, n) cin >> a[i];
 
+  ll ans = 0;
+  rep(i1, n)
+  rep(i2, i1)
+  rep(i3, i2)
+  rep(i4, i3)
+  rep(i5, i4)
+  {
+    ll num = a[i1];
+    num *= a[i2];
+    num %= p;
+    num *= a[i3];
+    num %= p;
+    num *= a[i4];
+    num %= p;
+    num *= a[i5];
+    num %= p;
+    if (num == q) ans++;
+  }
+  show(ans);
 }
 
 int main()
