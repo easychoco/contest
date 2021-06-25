@@ -24,7 +24,30 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
-
+  ll q;
+  cin >> q;
+  ll t, x;
+  vector<ll> deck(2 * q + 2, 0);
+  ll fi = q, bi = q + 1;
+  rep(i, q)
+  {
+    cin >> t >> x;
+    if (t == 1)
+    {
+      deck[fi] = x;
+      fi--;
+    }
+    else if (t == 2)
+    {
+      deck[bi] = x;
+      bi++;
+    }
+    else
+    {
+      ll idx = fi + x;
+      show(deck[idx]);
+    }
+  }
 }
 
 int main()
