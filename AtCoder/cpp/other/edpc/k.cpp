@@ -24,7 +24,24 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n, k;
+  cin >> n >> k;
+  vector<ll> a(n);
+  rep(i, n) cin >> a[i];
 
+  ll sz = 2 * k + 10;
+  vector<ll> gr(sz, -1);
+  gr[0] = 0;
+  rep(now, k)
+  {
+    rep(i, n)
+    {
+      chmax(gr[now + a[i]], ((gr[now] <= 0) ? 1LL : 0LL));
+    }
+  }
+
+  if (gr[k] == 0) show("Second");
+  else show("First");
 }
 
 int main()
