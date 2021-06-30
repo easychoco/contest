@@ -4,16 +4,21 @@
 #define fastio ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
 #define endl "\n"
 #define rep(i,n) repi(i,0,n)
-#define repi(i,a,n) for(ll i=a;i<(ll)n;++i)
+#define repi(i,a,n) for(ll i=(a);i<(ll)(n);++i)
 #define repe(i,n) repie(i,0,n)
-#define repie(i,a,n) for(ll i=a;i<=(ll)n;++i)
+#define repie(i,a,n) for(ll i=(a);i<=(ll)(n);++i)
+#define rrep(i,n) rrepi(i,n,0)
+#define rrepi(i,n,a) for(ll i=(n);i>=(a);--i)
 #define ALL(a) (a).begin(),(a).end()
 #define RALL(a) (a).rbegin(),(a).rend()
 
 using namespace std;
 using namespace atcoder;
 using ll = long long;
+using vl = vector<ll>;
+using vvl = vector<vector<ll>>;
 using P = pair<ll, ll>;
+const ll INF = 1LL << 60;
 void YN(bool a) { cout << (a ? "Yes" : "No") << endl; }
 template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
 template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true; } return false; }
@@ -24,7 +29,29 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  string n;
+  ll k;
+  cin >> n >> k;
 
+  rep(i, k)
+  {
+    ll num10 = 0;
+    ll oct_digit = 1;
+    rrep(i, n.length() - 1)
+    {
+      num10 += (ll)(n[i] - '0') * oct_digit;
+      oct_digit *= 8;
+    }
+    string next = ((num10 == 0) ? "0" : "");
+    while (num10 > 0)
+    {
+      next += to_string(num10 % 9 == 8 ? 5 : num10 % 9);
+      num10 /= 9;
+    }
+    reverse(ALL(next));
+    n = next;
+  }
+  show(n);
 }
 
 int main()
