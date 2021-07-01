@@ -22,9 +22,35 @@ template <class Head, class... Tail>
 void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
 template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
 
+using mint = modint1000000007;
+
 void solve()
 {
+  ll n, k;
+  cin >> n >> k;
 
+  if (n == 1)
+  {
+    show(k);
+    return;
+  }
+
+  if (n == 2 && k == 2)
+  {
+    show(2);
+    return;
+  }
+
+  if (k <= 2)
+  {
+    show(0);
+    return;
+  }
+
+  mint ans = k;
+  ans *= (k - 1);
+  ans *= mint(k - 2).pow(n - 2);
+  show(ans.val());
 }
 
 int main()
