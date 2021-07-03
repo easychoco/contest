@@ -22,9 +22,47 @@ template <class Head, class... Tail>
 void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
 template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
 
+ll h, w;
+ll sx, sy;
+ll ans = 0;
+const ll dx[4] = { 0, 1, 0, -1 };
+const ll dy[4] = { 1, 0, -1, 0 };
+bool come[20][20];
+vector<string> mp;
+ll dfs(ll y, ll x)
+{
+  if (y == sy && x == sx) return 0;
+  if (y < 0 || h <= y) return -10000;
+  if (x < 0 || w <= x) return -10000;
+  if (mp[y][x] == '#') return -10000;
+  if (come[y][x]) return -10000;
+
+  ll ret = -10000;
+  come[y][x] = true;
+  rep(i, 4)
+  {
+    chmax(ret, 1 + dfs(y + dy[i], x + dx[i]));
+  }
+  come[y][x] = false;
+  return ret;
+}
+
 void solve()
 {
+  cin >> h >> w;
+  mp.resize(h);
+  rep(i, h) cin >> mp[i];
 
+  ll ans = 0;
+  rep(y, h)
+  rep(x, w)
+  {
+    sy = y;
+    sx = x;
+    if (mp[y][x] == '#') continue;
+    rep(i, 4) chmax(ans, dfs(y + dy[i], x + dx[i]));
+  }
+  show(ans < 2 ? -1 : ans + 1);
 }
 
 int main()
