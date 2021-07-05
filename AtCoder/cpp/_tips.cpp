@@ -281,16 +281,16 @@ void tip_kruskal()
 // ワーシャルフロイド法
 // 全点対最短経路 O(n^3)
 void tip_warshall_floyd(int n) {
-  const ll INF = 100100100100;
-  const int N = 300;
-  ll d[N][N];
-  rep(i, N) rep(j, N) d[i][j] = INF;
-  rep(i, N) d[i][i] = 0;
+  const ll INF = 1'001'001'001'001;
+  const int n = 300;
+  vector< vector<ll> > dist(n, vector<ll>(n, INF));
+  rep(i, n) rep(j, n) dist[i][j] = INF;
+  rep(i, n) dist[i][i] = 0;
 
   rep (k, n){       // 経由する頂点
     rep (i, n) {    // 始点
       rep (j, n) {  // 終点
-        d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+        chmin(dist[i][j], dist[i][k] + dist[k][j]);
       }
     }
   }
@@ -344,12 +344,13 @@ void dijkstra()
   // w=1(固定長)の時はpriority_queueをqueueにするとO(NlogN)がO(logN)になる
   // 大抵は不要だけどO(NlogN)では厳しいときに
   // 下のtip_graph_bfsも検討
-  ll n, m, u, v, w;
+  ll n, m;
   cin >> n >> m;
   // tuple<cost, to>
   vector< vector<tuple<ll, ll>> > G(n);
   rep(i, m)
   {
+    ll u, v, w;
     cin >> u >> v >> w;
     u--; v--;
     G[u].emplace_back(w, v);
