@@ -24,7 +24,43 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
+  ll n;
+  cin >> n;
+  ll sz = n * 2;
+  ll round = 0;
+  vector<ll> a(sz);
+  rep(i, n) {
+    ll ai;
+    cin >> ai;
+    a[i] = a[i + n] = ai;
+    round += ai;
+  }
 
+  if (round % 10 != 0)
+  {
+    YN(false);
+    return;
+  }
+
+  ll li = 0, ri = 0;
+  ll sum = 0;
+  ll ans = round / 10;
+  while(li < sz)
+  {
+    while (ri < sz && sum < ans)
+    {
+      sum += a[ri];
+      ri++;
+    }
+    if (sum == ans)
+    {
+      YN(true);
+      return;
+    }
+    sum -= a[li];
+    li++;
+  }
+  YN(false);
 }
 
 int main()

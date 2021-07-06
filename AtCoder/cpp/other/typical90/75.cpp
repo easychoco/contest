@@ -22,9 +22,46 @@ template <class Head, class... Tail>
 void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
 template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
 
+// 素数判定
+bool isPrime(ll a) {
+  if (a == 1) return false;
+  for (ll i = 2; i * i <= a; i++) {
+    if(a % i == 0) return false;
+  }
+  return true;
+}
+
 void solve()
 {
+  ll n;
+  cin >> n;
 
+  map<ll, ll> primes;
+  ll factor = 2;
+  while(factor * factor <= n)
+  {
+    if (n % factor == 0)
+    {
+      primes[factor]++;
+      n /= factor;
+    }
+    else ++factor;
+  }
+  primes[n]++;
+
+  ll ans = 0;
+  ll sum = 0;
+  for(auto mp : primes)
+  {
+    sum += mp.second;
+  }
+  sum--;
+  while(sum > 0)
+  {
+    sum /= 2;
+    ans++;
+  }
+  show(ans);
 }
 
 int main()
