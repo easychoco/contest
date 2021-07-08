@@ -24,7 +24,30 @@ template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<
 
 void solve()
 {
-
+  ll n, m;
+  cin >> n >> m;
+  vector< vector<ll> > graph(n);
+  rep(i, m)
+  {
+    ll a, b;
+    cin >> a >> b;
+    a--;
+    b--;
+    graph[a].emplace_back(b);
+    graph[b].emplace_back(a);
+  }
+  
+  ll ans = 0;
+  rep(i, n)
+  {
+    ll cnt = 0;
+    for(auto v : graph[i])
+    {
+      if (v < i) cnt++;
+    }
+    ans += (cnt == 1);
+  }
+  show(ans);
 }
 
 int main()
