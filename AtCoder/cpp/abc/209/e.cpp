@@ -27,14 +27,94 @@ template <class Head, class... Tail>
 void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
 template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
 
+constexpr ll MAX_N = 52 * 52 * 52;
+
+ll char_to_ll(char c)
+{
+  if (isupper(c)) return c - 'A';
+  return c - 'a' + 26;
+}
+
+ll string_to_ll(char a, char b, char c)
+{
+  return 
+    char_to_ll(a) * 52 * 52 + 
+    char_to_ll(b) * 52 + 
+    char_to_ll(c);
+}
+
 void solve()
 {
   ll n;
   cin >> n;
-  vector<ll> a(n);
+  vector<P> edge(n);
+  vvl rev(MAX_N);
+  vl cnt(MAX_N, 0); // このワードの出次数 / rev での入次数
   rep(i, n)
   {
-    cin >> a[i];
+    string s;
+    cin >> s;
+    ll sz = s.length();
+    ll from = string_to_ll(s[0], s[1], s[2]);
+    ll to   = string_to_ll(s[sz - 3], s[sz - 2], s[sz - 1]);
+    edge[i] = make_pair(from, to);
+    cnt[from]++;
+    rev[to].emplace_back(from);
+  }
+
+  // 端点は負け
+  // (移動先は相手の状態)
+  // 負けの頂点にいけるなら勝ち
+  // 勝ちの頂点だけにいけるなら負け
+  // 引き分けと勝ちの頂点にいけるなら引き分け
+  // 引き分けと負けの頂点にいけるなら勝ち
+
+  //  0: 負け
+  //  1: 勝ち
+  // -1: 引き分け
+
+  vl ans(MAX_N, -1);
+  queue<int> que;
+  rep(i, MAX_N)
+  {
+    if (cnt[i] == 0) // 端点からスタートする
+    {
+      ans[i] = 0;
+      que.push(i);
+    }
+  }
+  while(!que.empty())
+  {
+    ll to = que.front();
+    que.pop();
+    for (ll from : rev[to])
+    {
+      // もう決まっているということは勝ちの頂点
+      if (ans[from] != -1) continue;
+
+      cnt[from]--;
+
+      if (ans[to] == 0)
+      {
+        // 負けの頂点に行けるなら勝ち
+        ans[from] = 1;
+        que.push(from);
+      }
+      else if (cnt[from] == 0)
+      {
+        // 更新されていない = 勝ちの頂点だけに行けるなら負け
+        ans[from] = 0;
+        que.push(from);
+      }
+    }
+  }
+
+  rep(i, n)
+  {
+    ll to = edge[i].second;
+    if (ans[to] == -1) show("Draw");
+    if (ans[to] ==  0) show("Takahashi");
+    if (ans[to] ==  1) show("Aoki");
   }
 }
 
