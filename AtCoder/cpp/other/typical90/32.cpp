@@ -1,0 +1,80 @@
+#include <bits/stdc++.h>
+#include <atcoder/all>
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define endl "\n"
+#define rep(i,n) repi(i,0,n)
+#define repi(i,a,n) for(ll i=a;i<(ll)n;++i)
+#define repe(i,n) repie(i,0,n)
+#define repie(i,a,n) for(ll i=a;i<=(ll)n;++i)
+#define ALL(a) (a).begin(),(a).end()
+#define RALL(a) (a).rbegin(),(a).rend()
+
+using namespace std;
+using namespace atcoder;
+using ll = long long;
+using P = pair<ll, ll>;
+void YN(bool a) { cout << (a ? "Yes" : "No") << endl; }
+template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
+template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true; } return false; }
+void show(){ cout << endl; }
+template <class Head, class... Tail>
+void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
+template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
+
+void solve()
+{
+  ll n;
+  cin >> n;
+  ll a[10][10];
+  rep(y, n)
+  {
+    rep(x, n)
+    {
+      cin >> a[y][x];
+    }
+  }
+
+  ll m;
+  cin >> m;
+  vector< vector<bool> > yes(10, vector<bool>(10, true));
+  rep(i, m)
+  {
+    ll x, y;
+    cin >> x >> y;
+    x--; y--;
+    yes[x][y] = false;
+    yes[y][x] = false;
+  }
+
+  vector<ll> seq(n);
+  iota(ALL(seq), 0LL);
+
+  const ll INF = 1LL << 60;
+  ll ans = INF;
+  do {
+    ll cost = a[seq[0]][0];
+    repi(i, 1, n)
+    {
+      ll now = seq[i - 1];
+      ll next = seq[i];
+      if (yes[now][next]) cost += a[next][i];
+      else
+      {
+        cost = INF;
+        break;
+      }
+    }
+    chmin(ans, cost);
+  } while(next_permutation(ALL(seq)));
+  if (ans == INF) show(-1);
+  else show(ans);
+}
+
+int main()
+{
+  fastio;
+  solve();
+
+  return 0;
+}
