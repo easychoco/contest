@@ -6,5 +6,4 @@ else
 fi
 
 echo opening $1 ...
-cd $1
-code . ./src/bin/*.rs
+code _tips.rs $1 $1/src/bin/*.rs
