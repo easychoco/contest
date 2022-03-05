@@ -40,19 +40,21 @@ void solve()
   rep(i, n) rep(j, n) dist[i][j] = distance(i, j);
 
   const ll INF = 1LL << 60;
-  // dp[i][j] = いまiにいて、j(mask)の街に訪れているときのコストの最小値
+  // dp[i][j] = いまjにいて、i(mask)の街に訪れているときのコストの最小値
   vector< vector<ll> > dp(1<<n, vector<ll>(n, INF));
-  repi(i, 1, n) dp[1<<i][i] = distance(0, i);
+  repi(i, 1, n) dp[1<<i][i] = dist[0][i];
 
   rep(mask, 1<<n)
   {
     rep(now, n)
     {
-      if (1 << now & mask)
+      // now の街に来ていなかったら return
+      if (~mask >> now & 1) continue;
       rep(next, n)
       {
-        if (1 << next & mask) continue;
-        chmin(dp[mask | (1<<next)][next], dp[mask][now] + dist[now][next]);
+        // next の街に来ていたら return
+        if (mask >> next & 1) continue;
+        chmin(dp[mask | (1 << next)][next], dp[mask][now] + dist[now][next]);
       }
     }
   }

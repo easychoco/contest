@@ -17,21 +17,38 @@
 #define rrepi(i,n,a) for(ll i=(n);i>=(a);--i)
 #define ALL(a) (a).begin(),(a).end()
 #define RALL(a) (a).rbegin(),(a).rend()
+#define pb push_back
+#define eb emplace_back
 
 using namespace std;
 using namespace atcoder;
-using ll = long long;
+using vb = vector<bool>;
+using vvb = vector<vb>;
+using ll = int_fast64_t;
 using vl = vector<ll>;
-using vvl = vector<vector<ll>>;
+using vvl = vector<vl>;
 using P = pair<ll, ll>;
+using vp = vector<P>;
+using vvp = vector<vp>;
+using T = tuple<ll, ll, ll>;
+using vt = vector<T>;
 const ll INF = 1LL << 60;
-void YN(bool a) { cout << (a ? "Yes" : "No") << endl; }
+void YN(bool a, string whenT="Yes", string whenF="No") { cout << (a ? whenT : whenF) << endl; }
 template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
 template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true; } return false; }
-void show(){ cout << endl; }
+void print() { cout << endl; }
 template <class Head, class... Tail>
-void show(Head&& head, Tail&&... tail){ cout << head << " "; show(std::forward<Tail>(tail)...); }
-template<class T> inline void showall(T& a) { for(auto v:a) cout<<v<<" "; cout<<endl; }
+void print(Head &&head, Tail &&...tail){ cout << head << " "; print(std::forward<Tail>(tail)...); }
+void printd(double d) { cout << std::fixed << setprecision(13) << d << endl; }
+template <class T>
+inline void printv(T &v){ for (auto a : v) print(a); }
+template <class T>
+inline void printvp(T &p){ for (auto [a, b] : p) print(a, b); }
+template <class T>
+inline void printvt(T &t){ for (auto [a, b, c] : t) print(a, b, c); }
+void debug() { cerr << endl; }
+template <class Head, class... Tail>
+void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward<Tail>(tail)...); }
 
 string getIntStr(ll pow)
 { // 入力を文字列で受け取って、10^pow 倍して整数部分を返す。小数の丸め誤差対策。
@@ -135,6 +152,18 @@ ll combmod(ll n, ll r, ll mod) {
   return x * powmod(y, mod - 2, mod) % mod;	// nCr = (分子) * (分母)^-1 mod M
 }
 
+// nCr を計算する
+vvl comb(ll n) {
+  vvl ret(n + 1, vl(n + 1, 0));
+  repe(i, n) {
+    ret[i][0] = 1;
+    ret[i][i] = 1;
+  }
+  repie(j, 1, n)
+  repi (k, 1, j) ret[j][k] = (ret[j - 1][k - 1] + ret[j - 1][k]);
+  return ret;
+}
+
 // 座標圧縮 O (N log N)
 // 破壊的なので注意
 // 戻り値は重複を削除 ( sort & unique ) した vector
@@ -193,6 +222,32 @@ void tip_binary_search()
   }
 }
 
+// 区間スケジューリング
+// O(N log N)
+void tip_segment_scheduling()
+{
+  ll n;
+  vp range(n);
+  rep(i, n)
+  {
+    ll from, to;
+    cin >> from >> to;
+    range[i] = make_pair(to - 1, from); // 半開区間 [from, to) でやっているので注意
+  }
+
+  sort(ALL(range));
+  ll last = -1; // from の最小値未満にする
+  ll ans = 0; // 選べるものの個数
+  for (auto [to, from] : range)
+  {
+    if (last < from) // 半開区間 [from, to) でやっているので注意
+    {
+      ans++;
+      last = to;
+    }
+  }
+}
+
 // 二次元累積和
 // 二次元いもす法 imos
 // O (X * Y)
@@ -234,22 +289,137 @@ void accumulate_sum_2D()
   }
 }
 
+/**
+ * @brief ループの始点と周期を求める
+ * 
+ * @tparam T target の型
+ * @param target 検証対象の vector
+ * @param next ひとつ進める function / target の index をもらって、次の index を返す
+ * @param first_index 検証を始める index
+ * @return pair<start_index, loop_size>
+ */
+template <class T>
+pair<ll, ll> detect_cycle_loop(
+  const vector<T>& target,
+  function<ll(ll)> next,
+  ll first_index = 0
+) {
+  ll sz = target.size();
+  vl loop(sz, -1);
+  ll now = first_index;
+  rep (i, sz + 1) {
+    now = next(now);
+    if (loop[now] == -1) loop[now] = i;
+    else return P(now, i - loop[now]);
+  }
+  return P(-1, 0);
+}
+
+/**
+ * @brief ループの始点と周期と累計スコアを計算する
+ * ```cpp
+ * // https://atcoder.jp/contests/abc241/tasks/abc241_e
+  auto next = [&](ll acc, ll now){ return acc % n; };
+  auto calc = [&](ll acc, ll now){ return acc + a[now]; };
+  auto [_1, _2, t] = detect_cycle_loop_acc<ll, ll>(a, next, calc, k);
+ * ```
+ * 
+ * @tparam T target の型
+ * @tparam U score の型 / ll か mint の想定
+ * @param target 検証対象の vector
+ * @param next ひとつ進める function
+ * @param calc 値を計算する function
+ * @param loop_count 繰り返す回数
+ * @param first_index 検証の開始位置
+ * @return tuple<start_index, loop_size, score>
+ */
+template <class T, class U>
+tuple<ll, ll, U> detect_cycle_loop_acc(
+  const vector<T>& target,
+  function<ll(U, ll)> next,
+  function<U(U, ll)> calc,
+  ll loop_count,
+  ll first_index = 0
+) {
+  U acc = 0; // 累計値 : accumulate
+  ll sz = target.size();
+  ll now = first_index;
+
+  // ループ数が小さい時は直接やる
+  if (loop_count <= sz) {
+    rep(i, loop_count) {
+      acc = calc(acc, now);
+      now = next(acc, now);
+    }
+    return make_tuple(-1, -1, acc);
+  }
+
+  // P(最後に来た時の loop, 最後に来た時のスコア)
+  const pair<ll, U> init = P(-1, 0);
+  vector<pair<ll, U>> loop(sz, init);
+  rep(i, sz + 1) {
+    acc = calc(acc, now);
+    now = next(acc, now);
+
+    if (loop[now] == init) {
+      // 初めてくるものなら記録する
+      loop[now] = make_pair(i, acc);
+      continue;
+    }
+
+    // ループした
+    auto [li, lx] = loop[now];
+    ll loop_size = i - li;   // 周期
+    U loop_score = acc - lx; // 1周期のスコア
+    acc += ((loop_count - i - 1) / loop_size) * loop_score;
+
+    // 残りのループ回数
+    rep(_, (loop_count - i - 1) % loop_size) {
+      acc = calc(acc, now);
+      now = next(acc, now);
+    }
+    return make_tuple(li, loop_size, acc);
+  }
+  return make_tuple(-1, -1, 0);
+}
+
+class UnionFind{
+public:
+  vector<ll> p;		// 親
+  vector<ll> rank;	// サイズ・各集合の根のみ有効
+  ll root_num; // 連結成分の数
+  UnionFind(ll n) : root_num(n) {
+    p.resize(n, -1);
+    rank.resize(n, 1);
+  }
+  ll root(ll x){
+    if(p[x] == -1) return x;
+    else return p[x] = root(p[x]); // 深さを 1 にしている
+  }
+  bool unite(ll x, ll y){
+    x = root(x); y = root(y);
+    if(x == y) return false;
+    if(rank[x] > rank[y]) swap(x, y); // rankの小さいものを下につける
+    rank[y] += rank[x];
+    p[x] = y;
+    root_num--;
+    return true;
+  }
+  // グループごとに頂点をまとめる: O(N log N)
+  map<ll, vector<ll>> groups(){
+    map<ll, vector<ll>> ret;
+    rep(i, p.size()) ret[root(i)].emplace_back(i);
+    return ret;
+  }
+  //xが属すグループのサイズ
+  ll size(ll x){ return rank[root(x)]; }
+  bool same(ll x, ll y){ return (root(x) == root(y)); }
+};
+
 // クラスカル法
 // 最小全域木問題
-// [UnionFind木] を貼る
 void tip_kruskal()
 {
-  // ======================================
-  // このクラスはいらない
-  // コンパイルを通すためのダミークラス
-  class UnionFind{ 
-    public: UnionFind(ll a){}
-    bool same(ll a, ll b){ return true; }
-    void unite(ll a, ll b){}
-  };
-  // ここまでいらない
-  // ======================================
-
   ll n = 1;
   //     tuple<cost, from, to>
   vector<tuple<ll, ll, ll> > G;
@@ -415,6 +585,51 @@ void tip_graph_bfs()
   }
 }
 
+// from から to への最短経路を計算する O(edge_num)
+// graph[from] = Pair(to, idx)
+// use_cnt[idx] = idx の枝が使われる回数
+// cf. ABC222-E
+void bfs_shortest_path(vector< vector<P> >& graph, vl& use_cnt, ll from, ll to)
+{
+  /* graph の入力
+  rep(i, n - 1)
+  {
+    ll u, v;
+    cin >> u >> v;
+    u--; v--;
+    graph[u].emplace_back(v, i);
+    graph[v].emplace_back(u, i);
+  }
+  */
+
+  ll sz = graph.size();
+  queue<P> que;
+  que.push(P(from, -1));
+  vector<P> prev(sz, P(-1, -1));
+  vector<bool> come(sz, false);
+  while(!que.empty())
+  {
+    auto [now, _] = que.front();
+    que.pop();
+    if (now == to) break;
+    come[now] = true;
+    for (auto [next, idx]: graph[now])
+    {
+      if (come[next]) continue;
+      que.push(P(next, idx));
+      prev[next] = P(now, idx);
+    }
+  }
+
+  ll now = to;
+  while(now != from)
+  {
+    auto [next_rev, idx] = prev[now];
+    now = next_rev;
+    use_cnt[idx]++;
+  }
+}
+
 // トポロジカルソート
 // topological sort
 // O(V + E)
@@ -445,6 +660,10 @@ void tip_topological_sort()
       deg[to]--;
       if (deg[to] == 0) que.push(to);
     }
+  }
+  if (sorted.size() < n)
+  {
+    // not DAG
   }
 }
 
@@ -611,9 +830,9 @@ void tip_dp()
 
   rep(mask, 1<<n) rep(now, n)
   {
-    if (1 << now & mask) rep(next, n)
+    if (now >> mask & 1) rep(next, n)
     {
-      if (1 << next & mask) continue;
+      if (next >> mask & 1) continue;
       chmin(dp[mask | (1<<next)][next], dp[mask][now] + dist[now][next]);
     }
   }
@@ -635,44 +854,8 @@ void tip_mex()
 
 // =================================================================================================== //
 
-class UnionFind{
-public:
-  vector<int> p;		// 親
-  vector<int> rank;	// サイズ・各集合の根のみ有効
-  UnionFind(int n){
-    p.resize(n, -1);
-    rank.resize(n, 1);
-  }
-  int root(int x){
-    if(p[x] == -1) return x;
-    else return p[x] = root(p[x]); // 深さを 1 にしている
-  }
-  bool unite(int x, int y){
-    x = root(x); y = root(y);
-    if(x == y) return false;
-    if(rank[x] > rank[y]) swap(x, y); // rankの小さいものを下につける
-    rank[y] += rank[x];
-    p[x] = y;
-    return true;
-  }
-  // グループの数
-  ll root_num() {
-    ll num = 0;
-    for(ll x : p) if (x < 0) num++;
-    return num;
-  }
-  // グループごとに頂点をまとめる: O(N log N)
-  map<int, vector<int>> groups(){
-    map<int, vector<int>> ret;
-    rep(i, p.size()) ret[root(i)].emplace_back(i);
-    return ret;
-  }
-  //xが属すグループのサイズ
-  int size(int x){ return rank[root(x)]; }
-  bool same(int x, int y){ return (root(x) == root(y)); }
-};
-
 // Segment Tree
+// segment_tree / SegmentTree
 // セグメント木
 // https://www.creativ.xyz/segment-tree-entrance-999/
 // 使用関数の引数は全て1-index
@@ -716,34 +899,6 @@ ll query(int a, int b, int k = 0, int l = 0, int r = N){
 // apply(p, f) が1点更新
 // prod(l, r) が区間取得
 // get(p) が 1点取得
-
-// BIT
-// Binary Indexed Tree
-// https://scrapbox.io/pocala-kyopro/%E8%BB%A2%E5%80%92%E6%95%B0
-// 1-index
-struct BIT {
-private:
-  vector<int> bit;
-  int N;
-
-public:
-  BIT(int size) {
-    N = size;
-    bit.resize(N + 1);
-  }
-
-  // 一点更新
-  void add(int a, int w) {
-    for (int x = a; x <= N; x += x & -x) bit[x] += w;
-  }
-
-  // 1~Nまでの和を求める。
-  int sum(int a) {
-    int ret = 0;
-    for (int x = a; x > 0; x -= x & -x) ret += bit[x];
-    return ret;
-  }
-};
 
 // Mo's algorithm
 // クエリ平方分割
@@ -794,6 +949,24 @@ struct Mo {
   // =======================================================
 };
 // Mo's algorithm ここまで
+
+// 分数を扱う
+// 偏角ソート用に演算子を指定する
+// https://atcoder.jp/contests/abc225/editorial/2853
+struct Fraction {
+  // y / x
+  ll y, x;
+  Fraction(ll _y = 0, ll _x = 1): y(_y), x(_x) {}
+  bool operator < (const Fraction &other) const {
+    return y * other.x < other.y * x;
+  }
+  bool operator <= (const Fraction &other) const {
+    return y * other.x <= other.y * x;
+  }
+  void show() {
+    cout << y << " / " << x << endl;
+  }
+};
 
 // 行列クラス
 // - 任意のサイズの行列同士の演算[+][-][x]
@@ -959,7 +1132,7 @@ void solve()
 
   ll n;
   cin >> n;
-  vector<ll> a(n);
+  vl a(n);
   rep(i, n)
   {
     cin >> a[i];

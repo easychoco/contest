@@ -39,27 +39,31 @@ void solve()
 
   ll ans = INF;
 
-  // dp[y][x] = どこかに駅を建設していて (i, j) にいるときの最小値
-  vvl dp(1010, vl(1010, INF));
-  rep(i, 4)
+  // dp[y][x] = どこかに駅を建設していて (y, x) にいるときの最小値
+  rep(_, 2)
   {
-    rep(y, h) rep(x, w)
+    vvl dp(1010, vl(1010, INF));
+
+    repi(y, 1, h) dp[y][0] = min(dp[y - 1][0], mp[y - 1][0]) + c;
+    repi(x, 1, w) dp[0][x] = min(dp[0][x - 1], mp[0][x - 1]) + c;
+
+    repi(y, 1, h) repi(x, 1, w)
     {
-      dp[y + 1][x + 1] = min(mp[y + 1][x + 1], min(dp[y][x + 1], dp[y + 1][x]) + c);
+      dp[y][x] = min(
+        min(dp[y - 1][x], dp[y][x - 1]),
+        min(mp[y - 1][x], mp[y][x - 1])
+      ) + c;
     }
 
     rep(y, h) rep(x, w)
     {
-      chmin(ans, min(dp[y][x + 1], dp[y + 1][x]) + c + mp[y + 1][x + 1]);
+      chmin(ans, dp[y][x] + mp[y][x]);
     }
 
-    rep(y, 1001)
-    rep(x, 1001)
+    rep(y, h / 2)
     {
-      swap(dp[y][x], dp[x][1000 - y]);
-      swap(mp[y][x], mp[x][1000 - y]);
+      swap(mp[y], mp[h - y - 1]);
     }
-    swap(h, w);
   }
 
   show(ans);
