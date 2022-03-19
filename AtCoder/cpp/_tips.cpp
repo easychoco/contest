@@ -50,6 +50,8 @@ void debug() { cerr << endl; }
 template <class Head, class... Tail>
 void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward<Tail>(tail)...); }
 
+using mint = modint998244353;
+
 string getIntStr(ll pow)
 { // 入力を文字列で受け取って、10^pow 倍して整数部分を返す。小数の丸め誤差対策。
   string in;
@@ -150,6 +152,16 @@ ll combmod(ll n, ll r, ll mod) {
   for(ll i = 0; i < r; ++i) { x = x * (n - i) % mod; }	// 分子
   for(ll i = 1; i <= r; ++i) { y = y * i % mod; }			// 分母
   return x * powmod(y, mod - 2, mod) % mod;	// nCr = (分子) * (分母)^-1 mod M
+}
+
+// nCr % mod を計算する O(r)
+// mint version
+mint combmod(ll n, ll r) {
+  mint x = 1, y = 1;
+  r = min(n - r, r);
+  for(ll i = 0; i < r; ++i) { x = x * (n - i); }	// 分子
+  for(ll i = 1; i <= r; ++i) { y = y * i; }			// 分母
+  return x * y.inv();	// nCr = (分子) / (分母)
 }
 
 // nCr を計算する
