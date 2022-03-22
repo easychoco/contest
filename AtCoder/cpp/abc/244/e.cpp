@@ -70,29 +70,10 @@ void solve()
     rep(i, m)
     {
       auto [u, v] = edge[i];
-      // u -> v
-      if (v == x)
-      {
-        nx[v][1] += dp[u][0];
-        nx[v][0] += dp[u][1];
-      }
-      else
-      {
-        nx[v][0] += dp[u][0];
-        nx[v][1] += dp[u][1];
-      }
-
-      // v -> u
-      if (u == x)
-      {
-        nx[u][1] += dp[v][0];
-        nx[u][0] += dp[v][1];
-      }
-      else
-      {
-        nx[u][0] += dp[v][0];
-        nx[u][1] += dp[v][1];
-      }
+      nx[v][0] += dp[u][(v == x)];
+      nx[v][1] += dp[u][1 ^ (v == x)];
+      nx[u][0] += dp[v][(u == x)];
+      nx[u][1] += dp[v][1 ^ (u == x)];
     }
     dp = nx;
   }
