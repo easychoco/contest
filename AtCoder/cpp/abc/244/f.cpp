@@ -46,7 +46,52 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
+  ll n, m;
+  cin >> n >> m;
+  vvl graph(n);
+  rep(i, m)
+  {
+    ll u, v;
+    cin >> u >> v;
+    u--; v--;
+    graph[u].pb(v);
+    graph[v].pb(u);
+  }
 
+  vvl ans(1 << n, vl(n, INF));
+  rep(i, n) ans[0][i] = 0;
+
+  // T<dist, mask, last_node>
+  queue<T> que;
+
+  vl a(1 << n, INF);
+  rep(i, n)
+  {
+    ans[1 << i][i] = 1;
+    que.push(T(1, 1 << i, i));
+  }
+
+  a[0] = 0;
+  rep(i, n) a[1 << i] = 1;
+
+  while(!que.empty())
+  {
+    auto [dist, mask, last_node] = que.front();
+    que.pop();
+
+    for (auto u : graph[last_node])
+    {
+      // last_node から u に移動する
+      ll b = mask ^ (1 << u);
+      ll d = dist + 1;
+      if (chmin(ans[b][u], d))
+      {
+        que.push(T(d, b, u));
+        chmin(a[b], d);
+      }
+    }
+  }
+  print(accumulate(ALL(a), 0LL));
 }
 
 int main()
