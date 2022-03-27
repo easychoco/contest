@@ -462,7 +462,7 @@ void tip_kruskal()
 
 // ワーシャルフロイド法
 // 全点対最短経路 O(n^3)
-void tip_warshall_floyd(int n) {
+void tip_warshall_floyd() {
   const ll INF = 1'001'001'001'001;
   const int n = 300;
   vector< vector<ll> > dist(n, vector<ll>(n, INF));
@@ -659,9 +659,14 @@ void tip_topological_sort()
     deg[v]++;
   }
 
-  vector<ll> sorted;
   queue<ll> que;
-  rep(i, n) if (deg[i] == 0) que.push(i);
+  vector<ll> sorted;
+  vector<ll> depth(n, -1); // 最長経路
+  rep(i, n) if (deg[i] == 0)
+  {
+    que.push(i);
+    depth[i] = 0;
+  }
   while(!que.empty())
   {
     ll now = que.front();
@@ -670,27 +675,34 @@ void tip_topological_sort()
     for(const auto& to : edge[now])
     {
       deg[to]--;
-      if (deg[to] == 0) que.push(to);
+      if (deg[to] == 0)
+      {
+        que.push(to);
+        chmax(depth[to], depth[now] + 1);
+      }
     }
   }
   if (sorted.size() < n)
   {
     // not DAG
+    // 閉路に含まれる頂点を知りたいなら SCC をする
   }
 }
+
+namespace topological { // shadowing でエラーが出るので対策
 
 // トポロジカルソート(DFS)
 // topological sort
 // O(V + E)
 vector<P> sorted;
-vector< vector<ll> > g;
-vector<bool> come(100010, false);
+vector< vector<ll> > graph;
+vector<bool> come;
 void topo_dfs(int prev, int now)
 {
   if (come[now]) return;
   come[now] = true;
 
-  for (auto& i: g[now]) topo_dfs(now, i);
+  for (auto& i: graph[now]) topo_dfs(now, i);
   // 帰りがけ順で追加
   sorted.push_back(P(prev, now));
 };
@@ -698,70 +710,86 @@ void tip_topologicalsort_dfs()
 {
   ll n, m;
   cin >> n;
-  g = vector< vector<ll> >(n, vector<ll>());
+  come.resize(n, false);
+  graph.resize(n);
   vector<ll> deg(n, 0); // 入り次数
   rep(i, n)
   {
     ll a, b;
     cin >> a >> b;
     a--; b--;
-    g[a].emplace_back(b);
+    graph[a].emplace_back(b);
   }
   rep(i, n) topo_dfs(-1, i);
   reverse(ALL(sorted));
 }
 
+} // end of namespace topological
+
+namespace scc{ // shadowing でエラーが出るので対策
+
 // SCC : Strongly Connected Component
 // 強連結成分分解 きょうれんけつせいぶんぶんかい
 // O(V + E)
-vector< vector<ll> > graph; // 順方向の
+ll n, m;
+vector< vector<ll> > graph; // 順方向
 vector< vector<ll> > graph_rev; // 逆方向
-vector<ll> group; // 各ノードがどのグループに属するか
-vector<ll> seq; // 帰りがけ順の並び
 vector<bool> come;
-vector<ll> hist; // 各グループに属する
+vector<ll> seq; // 帰りがけ順の並び
+vector<ll> hist; // 各グループのサイズ
+vector<ll> group; // 各ノードがどのグループに属するか
 
 // 1回目の DFS
 // 帰りがけ順に記録する
 void scc_dfs(ll now)
 {
+  if (come[now]) return;
   come[now] = true;
   for (const auto& next : graph[now])
   {
-    if (!come[next]) scc_dfs(next);
+    scc_dfs(next);
   }
   seq.emplace_back(now);
 }
 
 // 2回目の DFS
 // 記録した番号の大きい順にDFSをして、訪れたノードが強連結成分
-void scc_dfs_rev(ll now, ll grp)
+void scc_dfs_rev(ll now, ll group_id)
 {
+  if (come[now]) return;
   come[now] = true;
-  group[now] = grp;
-  hist[grp]++;
+  group[now] = group_id;
+  hist[group_id]++;
   for (const auto& next : graph_rev[now])
   {
-    if (!come[next]) scc_dfs_rev(next, grp);
+    scc_dfs_rev(next, group_id);
   }
+}
+
+// 閉路に含まれる要素を返す
+// O(N)
+vl scc_get_loop_node()
+{
+  vl ret;
+  rep(i, n) if (hist[group[i]] > 1) ret.pb(i);
+  return ret;
 }
 
 void tip_scc()
 {
-  ll n, m;
   cin >> n >> m;
-  graph.resize(n, vector<ll>());
-  graph_rev.resize(n, vector<ll>());
+  graph.resize(n);
+  graph_rev.resize(n);
   group.resize(n, 0);
   come.resize(n, false);
   hist.resize(n, 0);
   rep(i, m)
   {
-    ll a, b;
-    cin >> a >> b;
-    a--; b--;
-    graph[a].emplace_back(b);
-    graph_rev[b].emplace_back(a);
+    ll u, v;
+    cin >> u >> v;
+    u--; v--;
+    graph[u].emplace_back(v);
+    graph_rev[v].emplace_back(u);
   }
 
   fill(ALL(come), false);
@@ -771,13 +799,17 @@ void tip_scc()
   }
 
   fill(ALL(come), false);
-  ll grp = 0;
+  ll group_id = 0;
   for(ll i = seq.size() - 1; i >= 0; --i)
   {
-    if (!come[seq[i]]) scc_dfs_rev(seq[i], grp++);
+    if (!come[seq[i]]) scc_dfs_rev(seq[i], group_id++);
   }
+
+  // hist が 2 以上のグループは閉路・ループになっている
+  vl looping = scc_get_loop_node();
 }
 
+} // end of namespace scc
 
 // =================================================================================================== //
 
@@ -1001,6 +1033,7 @@ public:
     for(int x = 0; x < size_x; ++x) {
       this->val[y][x] *= -1;
     }
+    return *this;
   }
   Matrix operator + (Matrix right) const {
     auto left = *this;
