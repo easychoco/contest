@@ -44,43 +44,100 @@ void debug() { cerr << endl; }
 template <class Head, class... Tail>
 void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward<Tail>(tail)...); }
 
-// 出次数が 0 の頂点は題意を満たさないので除く
-// 除いた後、出次数が 0 になる頂点があったら除く
-// これを繰り返して残った頂点が題意を満たすもの
+// SCC でループに含まれる頂点を抽出する
+// 抽出した頂点からたどれる頂点は題意を満たすので
+// DFS で探索する
 
-// 実装では、逆順に辺を張ってトポロジカルソートをすればいい
-// deg が 0 のものは題意を満たさない
+// SCC : Strongly Connected Component
+// 強連結成分分解 きょうれんけつせいぶんぶんかい
+// O(V + E)
+ll n, m;
+vector< vector<ll> > graph; // 順方向の
+vector< vector<ll> > graph_rev; // 逆方向
+vector<ll> group; // 各ノードがどのグループに属するか
+vector<ll> seq; // 帰りがけ順の並び
+vector<bool> come;
+vector<ll> hist; // 各グループに属する
+
+// 1回目の DFS
+// 帰りがけ順に記録する
+void scc_dfs(ll now)
+{
+  if (come[now]) return;
+  come[now] = true;
+  for (const auto& next : graph[now])
+  {
+    scc_dfs(next);
+  }
+  seq.emplace_back(now);
+}
+
+// 2回目の DFS
+// 記録した番号の大きい順にDFSをして、訪れたノードが強連結成分
+void scc_dfs_rev(ll now, ll group_id)
+{
+  if (come[now]) return;
+  come[now] = true;
+  group[now] = group_id;
+  hist[group_id]++;
+  for (const auto& next : graph_rev[now])
+  {
+    scc_dfs_rev(next, group_id);
+  }
+}
+
+// 閉路に含まれる要素を返す
+vl scc_get_loop_node()
+{
+  vl ret;
+  rep(i, n) if (hist[group[i]] > 1) ret.pb(i);
+  return ret;
+}
+
+ll ans = 0;
+void dfs(ll now)
+{
+  if (come[now]) return;
+  come[now] = true;
+  ans++;
+  for (auto next : graph_rev[now]) dfs(next);
+}
 
 void solve()
 {
-  ll n, m;
   cin >> n >> m;
-  vvl graph_rev(n);
-  vl deg(n, 0);
+  graph.resize(n);
+  graph_rev.resize(n);
+  group.resize(n, 0);
+  come.resize(n, false);
+  hist.resize(n, 0);
   rep(i, m)
   {
-    ll u , v;
-    cin >> u >> v;
-    u--; v--;
-    graph_rev[v].pb(u);
-    deg[u]++;
+    ll a, b;
+    cin >> a >> b;
+    a--; b--;
+    graph[a].emplace_back(b);
+    graph_rev[b].emplace_back(a);
   }
 
-  queue<ll> que;
-  rep(i, n) if (deg[i] == 0) que.push(i);
-  while(!que.empty())
+  fill(ALL(come), false);
+  rep(i, n)
   {
-    ll now = que.front();
-    que.pop();
-    for (auto next : graph_rev[now])
-    {
-      deg[next]--;
-      if (deg[next] == 0) que.push(next);
-    }
+    scc_dfs(i);
   }
 
-  ll ans = n;
-  rep(i, n) if (deg[i] == 0) ans--;
+  fill(ALL(come), false);
+  ll group_id = 0;
+  for(ll i = seq.size() - 1; i >= 0; --i)
+  {
+    scc_dfs_rev(seq[i], group_id++);
+  }
+
+  fill(ALL(come), false);
+  for (auto now : scc_get_loop_node())
+  {
+    dfs(now);
+  }
   print(ans);
 }
 
