@@ -44,9 +44,55 @@ void debug() { cerr << endl; }
 template <class Head, class... Tail>
 void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward<Tail>(tail)...); }
 
+bool cinb(T choco, T box)
+{
+  auto [c1, c2, c3] = choco;
+  auto [b1, b2, b3] = box;
+  return c1 <= b1 && c2 <= b2;
+}
+
+// choco と box をいっしょにまとめて sort して
+// choco がきたらよけて box がきたときに中に入る最大の choco を選ぶ 
+// もしくは
+// box をよけて choco がきたときに中にはいる最小の box を選ぶ
+
 void solve()
 {
+  ll n, m;
+  cin >> n >> m;
+  vl a(n), b(n), c(m), d(m);
+  rep(i, n) cin >> a[i];
+  rep(i, n) cin >> b[i];
+  rep(i, m) cin >> c[i];
+  rep(i, m) cin >> d[i];
 
+  vt mixed;
+  rep(i, n) mixed.pb( T(a[i], b[i], 0) );
+  rep(i, m) mixed.pb( T(c[i], d[i], 1) );
+
+  sort(ALL(mixed));
+  multiset<ll> res;
+
+  rep (i, n + m)
+  {
+    auto [x, y, k] = mixed[i];
+    if (k == 0)
+    {
+      // choco
+      res.insert(y);
+    }
+    else
+    {
+      // box
+      if (!res.empty())
+      {
+        auto itr = res.upper_bound(y);
+        if (itr == res.begin()) continue;
+        res.erase(--itr);
+      }
+    }
+  }
+  YN(res.empty());
 }
 
 int main()
