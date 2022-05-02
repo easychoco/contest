@@ -44,9 +44,53 @@ void debug() { cerr << endl; }
 template <class Head, class... Tail>
 void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward<Tail>(tail)...); }
 
+using mint = modint998244353;
+
 void solve()
 {
+  ll n, l;
+  cin >> n >> l;
+  vector<string> s(n);
+  rep(i, n)
+  {
+    cin >> s[i];
+  }
 
+  // 18 のとき
+  // 1 + 2 + ... + 18
+  // - 1&2 + 1&3 + ... + 17%18
+  // + 
+  //
+  // pop_count が
+  // 奇数の時は +
+  // 偶数の時は -
+  //
+
+  mint ans = 0;
+  repi(mask, 1, 1 << n)
+  {
+    ll pop_count = 0;
+    vl ok(26, 0);
+    rep(i, n)
+    {
+      if (mask >> i & 1)
+      {
+        pop_count++;
+        for (auto c : s[i])
+        {
+          ll ni = (int)(c - 'a');
+          ok[ni]++;
+        }
+      }
+    }
+    mint common = 0;
+    rep(i, 26)
+    {
+      common += (ok[i] == pop_count);
+    }
+    ans += common.pow(l) * ((pop_count & 1) ? 1 : -1);
+  }
+  print(ans.val());
 }
 
 int main()
