@@ -137,6 +137,22 @@ bool isPrime(ll a) {
   return true;
 }
 
+// エラトステネスの篩
+// [1, size] の範囲を素数判定する
+// O (n  log log n)
+vb calcSieve(ll n) {
+  vb sieve(n + 1, true);
+  sieve[0] = sieve[1] = false;
+
+  // 偶数を先につぶす
+  for (ll i = 4; i <= n + 1; i += 2) sieve[i] = false;
+  for (ll i = 3; i * i <= n + 1; i += 2) {
+    if (!sieve[i]) continue;
+    for (ll j = i * 2; j <= n + 1; j += i) sieve[j] = false;
+  }
+  return sieve;
+}
+
 // a^n % mod を計算する O(log n)
 ll powmod(ll a, ll n, ll mod) {
   ll ret = 1;
