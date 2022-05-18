@@ -2,18 +2,27 @@
 
 set -eu
 
-usage()
-{
+# init() {
+# }
+
+usage() {
   echo ''
   echo 'C++:' 1>&2
-  echo 'cp abc xxx       [C++] ABCxxx を VSCode で開く' 1>&2
-  echo 'cp arc xxx       [C++] ARCxxx を VSCode で開く' 1>&2
-  echo 'cp agc xxx       [C++] AGCxxx を VSCode で開く' 1>&2
-  echo 'cp mono xxx      [C++] xxx.cpp という名前のファイルを mono フォルダに作って VSCode で開く' 1>&2
+  echo '  cp abc xxx       [C++] ABCxxx を VSCode で開く' 1>&2
+  echo '  cp arc xxx       [C++] ARCxxx を VSCode で開く' 1>&2
+  echo '  cp agc xxx       [C++] AGCxxx を VSCode で開く' 1>&2
+  echo '  cp mono xxx      [C++] xxx.cpp という名前のファイルを mono フォルダに作って VSCode で開く' 1>&2
+  echo '  a                [C++] ./a.out' 1>&2
+  echo '  ain              [C++] ./a.out < in' 1>&2
   echo ''
   echo 'Python:' 1>&2
-  echo 'py abc xxx       [Python] ABCxxx を VSCode で開く' 1>&2
-  echo 'py arc xxx       [Python] ARCxxx を VSCode で開く' 1>&2
-  echo 'py agc xxx       [Python] AGCxxx を VSCode で開く' 1>&2
-  echo 'py mono xxx      [Python] xxx.py という名前のファイルを mono フォルダに作って VSCode で開く' 1>&2
+  echo '  py abc xxx       [Python] ABCxxx を VSCode で開く' 1>&2
+  echo '  py arc xxx       [Python] ARCxxx を VSCode で開く' 1>&2
+  echo '  py agc xxx       [Python] AGCxxx を VSCode で開く' 1>&2
+  echo '  py mono xxx      [Python] xxx.py という名前のファイルを mono フォルダに作って VSCode で開く' 1>&2
+  echo '  p a              [Python] python a.py' 1>&2
+  echo '  pin a            [Python] python a.py < in' 1>&2
+  echo ''
 }
+
+usage
