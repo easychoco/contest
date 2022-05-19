@@ -27,8 +27,8 @@ else
 fi
 
 echo opening "$CONTEST_NAME_PATH" ...
-code $REPOSITORY_ROOT/cpp \
-  $REPOSITORY_ROOT/cpp/_tips.cpp \
+code "$REPOSITORY_ROOT"/cpp \
+  "$REPOSITORY_ROOT"/cpp/_tips.cpp \
   "$TARGET_CONTEST_FOLDER"/in \
   "$TARGET_CONTEST_FOLDER"/*.cpp
 
