@@ -1,5 +1,11 @@
 #!/bin/sh
 
+echo "kitakitayo mono"
+echo $1
+echo $2
+echo $#
+return
+
 if [ -e "mono/${1}.cpp" ]; then
   echo "$1" is already exist.
 else
