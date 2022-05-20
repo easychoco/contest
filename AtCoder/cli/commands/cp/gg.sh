@@ -5,13 +5,15 @@ set -eu
 gg() {
   # 引数がないときはさようなら
   if [ ! $# -eq 1 ]; then
-    usage && return 1
+    usage
+    return 1
   fi
 
   if [ ! -e "${CURRENT_DIR_PATH}/${1}.cpp" ]; then
     echo '  unknown file:' 1>&2
     echo "    ${CURRENT_DIR_PATH}/${1}.cpp" 1>&2
-    usage && return 1;
+    usage
+    return 1;
   fi
 
   g++ \

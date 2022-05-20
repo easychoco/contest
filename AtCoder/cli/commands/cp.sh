@@ -34,6 +34,7 @@ usage() {
   cat <<- END 1>&2
 
   atc cp gg c             c.cpp をコンパイルする
+  atc cp run              a.out を実行する
   atc cp abc 123          abc/123 を開く
   atc cp mono abc123-d    mono/abc123-d を開く
 END

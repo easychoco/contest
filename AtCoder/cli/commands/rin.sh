@@ -61,8 +61,8 @@ usage() {
   cat <<- END 1>&2
       いまいるディレクトリを解析して、プログラムを実行する
 
-      [C++] atc run
-      [Python] atc run a
+      [C++] atc rin
+      [Python] atc rin a
 END
 }
 
