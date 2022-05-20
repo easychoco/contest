@@ -10,6 +10,10 @@ cp() {
     run) SUBCOMMAND_SCRIPT="$COMMAND_ROOT"/run.sh ;;
     rin) SUBCOMMAND_SCRIPT="$COMMAND_ROOT"/rin.sh ;;
     mono) SUBCOMMAND_SCRIPT="$COMMAND_ROOT"/cp/mono.sh ;;
+    h|help|usage)
+      usage
+      exit
+    ;;
     *)
       # これだけ引数がフォルダ名を示すので、別の処理にする
       CURRENT_DIR_PATH="$CURRENT_DIR_PATH" \
@@ -29,10 +33,9 @@ cp() {
 usage() {
   cat <<- END 1>&2
 
-  you need args:
-    ex)
-      atc cp abc 123
-      atc cp mono abc123-d
+  atc cp gg c             c.cpp をコンパイルする
+  atc cp abc 123          abc/123 を開く
+  atc cp mono abc123-d    mono/abc123-d を開く
 END
 }
 

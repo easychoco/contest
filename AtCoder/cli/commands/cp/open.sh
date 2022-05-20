@@ -1,8 +1,14 @@
 #!/bin/sh
 
+if [ ! $# -eq 2 ]; then
+  echo "you need two args."
+  return 1
+fi
+
 if [ ! -e "${REPOSITORY_ROOT}/cpp/${1}" ]; then
   echo "${1} is not exist."
-  return
+  echo "not create cpp/${1}/${2}. bye."
+  return 1
 fi
 
 TARGET_CONTEST_FOLDER="${REPOSITORY_ROOT}/cpp/${1}/${2}"

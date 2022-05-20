@@ -2,6 +2,11 @@
 
 set -eu
 
+if [ ! $# -eq 1 ]; then
+  echo "you need one args."
+  return 1
+fi
+
 TARGET_CPP_FILE="${REPOSITORY_ROOT}/cpp/mono/${1}.cpp"
 
 if [ -e "$TARGET_CPP_FILE" ]; then

@@ -22,7 +22,7 @@ run_cpp() {
   if [ ! -e "$CURRENT_DIR_PATH"/a.out ]; then
     echo '  not found:' 1>&2
     echo "    ${CURRENT_DIR_PATH}/a.out" 1>&2
-    exit
+    return 1
   fi
 
   "$CURRENT_DIR_PATH"/a.out
@@ -32,14 +32,14 @@ run_python() {
   if [ ! $# -eq 1 ]; then 
     echo "  you need arg" 1>&2
     usage
-    exit
+    return 1
   fi
 
   if [ ! -e "${CURRENT_DIR_PATH}/${1}" ]; then
     echo '  not found:' 1>&2
     echo "    ${CURRENT_DIR_PATH}/${1}" 1>&2
     usage
-    exit
+    return 1
   fi
 
   python3 "${CURRENT_DIR_PATH}/${1}"

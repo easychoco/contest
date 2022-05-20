@@ -51,7 +51,7 @@ usage() {
     cp arc xxx         [C++] ARCxxx を VSCode で開く
     cp agc xxx         [C++] AGCxxx を VSCode で開く
     cp mono xxx        [C++] xxx.cpp という名前のファイルを mono フォルダに作って VSCode で開く
-    cp gg xxx          [C++] ./xxx.cpp をコンパイルする
+    gg xxx             [C++] ./xxx.cpp をコンパイルする
     run / r            [C++] ./a.out
     rin / rin          [C++] ./a.out < in
   
