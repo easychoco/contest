@@ -30,6 +30,8 @@ rin() {
 usage() {
   cat <<- END 1>&2
 
+[ python/rin.sh ]
+
   Python のプログラムを実行する
 
     atc rin a       pythno3 a.py < in

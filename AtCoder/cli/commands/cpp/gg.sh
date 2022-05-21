@@ -28,6 +28,8 @@ gg() {
 usage() {
   cat <<- END 1>&2
 
+[ cpp/gg.sh ]
+
   you need args:
     ex)
       atc gg a

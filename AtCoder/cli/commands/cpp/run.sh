@@ -16,6 +16,8 @@ run() {
 usage() {
   cat <<- END 1>&2
 
+[ cpp/run.sh ]
+
   C++ のプログラムを実行する
 
     atc run       ./a.out

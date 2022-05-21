@@ -23,6 +23,8 @@ rin() {
 usage() {
   cat <<- END 1>&2
 
+[ cpp/rin.sh ]
+
   C++ のプログラムを実行する
 
     atc rin        ./a.out < in

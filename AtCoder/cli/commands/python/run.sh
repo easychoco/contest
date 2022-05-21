@@ -22,6 +22,8 @@ run() {
 usage() {
   cat <<- END 1>&2
 
+[ python/run.sh ]
+
   Python のプログラムを実行する
 
     atc rin         pythno3 a.py

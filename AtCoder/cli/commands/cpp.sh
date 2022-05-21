@@ -5,11 +5,21 @@ set -eu
 cpp() {
   SUB_COMMAND="$1"
   case "$SUB_COMMAND" in
-    gg) SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp/gg.sh" ;;
-    r)   SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp/run.sh" ;;
-    run) SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp/run.sh" ;;
-    rin) SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp/rin.sh" ;;
-    mono) SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/mono.sh cpp cpp" ;;
+    gg)
+      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp/gg.sh"
+    ;;
+    r|run)
+      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp/run.sh"
+    ;;
+    rin)
+      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp/rin.sh"
+    ;;
+    mono)
+      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/common/mono.sh cpp cpp"
+    ;;
+    t|temp|template)
+      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/common/template.sh cpp cpp"
+    ;;
     h|help|usage)
       usage
       exit
@@ -18,7 +28,7 @@ cpp() {
       # これだけ引数がフォルダ名を示すので、別の処理にする
       CURRENT_DIR_PATH="$CURRENT_DIR_PATH" \
       REPOSITORY_ROOT="$REPOSITORY_ROOT" \
-      "${COMMAND_ROOT}/open.sh cpp cpp" "$@"
+        "${COMMAND_ROOT}/common/open.sh" cpp cpp "$@"
       exit
     ;;
   esac
@@ -32,6 +42,8 @@ cpp() {
 
 usage() {
   cat <<- END 1>&2
+
+[ cpp.sh ]
 
   atc cpp gg c             c.cpp をコンパイルする
   atc cpp run              a.out を実行する
