@@ -80,16 +80,18 @@ usage() {
     atc cp agc xxx         [C++] AGCxxx を VSCode で開く
     atc cp mono xxx        [C++] xxx.cpp という名前のファイルを mono フォルダに作って VSCode で開く
     atc gg xxx             [C++] ./xxx.cpp をコンパイルする
-    atc run / r            [C++] ./a.out
-    atc rin / rin          [C++] ./a.out < in
+    atc r|run              [C++] ./a.out
+    atc rin                [C++] ./a.out < in
+    atc cp template        [C++] C++ のプログラムテンプレートをコピーする
 
   Python:
     atc py abc xxx         [Python] ABCxxx を VSCode で開く
     atc py arc xxx         [Python] ARCxxx を VSCode で開く
     atc py agc xxx         [Python] AGCxxx を VSCode で開く
     atc py mono xxx        [Python] xxx.py という名前のファイルを mono フォルダに作って VSCode で開く
-    atc run a / r a        [Python] python a.py
+    atc r|run a            [Python] python a.py
     atc rin a              [Python] python a.py < in
+    atc py template        [Python] Python のプログラムテンプレートをコピーする
 
 END
 }

@@ -51,10 +51,10 @@ open() {
   fi
 
   echo "opening ${CONTEST_NAME_PATH} ..."
-  code "${PYTHON_ROOT}" \
-    "${PYTHON_ROOT}/_tips.${EXT}" \
+  code "${LANGUAGE_ROOT}" \
+    "${LANGUAGE_ROOT}/_tips.${EXT}" \
     "${TARGET_CONTEST_FOLDER}/in" \
-    "${TARGET_CONTEST_FOLDER}/*.${EXT}"
+    "${TARGET_CONTEST_FOLDER}"/*."${EXT}"
   echo "done."
   echo "  ${TARGET_CONTEST_FOLDER}"
 }
