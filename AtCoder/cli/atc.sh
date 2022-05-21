@@ -10,29 +10,38 @@ atc() {
     pwd
   )
 
-  COMMAND_ROOT="$REPOSITORY_ROOT"/cli/commands
+  COMMAND_ROOT="${REPOSITORY_ROOT}/cli/commands"
 
   if [ $# -eq 0 ]; then
     usage
     exit
   fi
 
+  LANG=$(guess_lang "$CURRENT_DIR_PATH")
+  if [ "$CURRENT_DIR_PATH" = "$LANG" ]; then
+    echo "directory meybe wrong."
+    usage
+    return 1;
+  fi
+
   SUB_COMMAND="$1"
   shift
   case "$SUB_COMMAND" in
     # C++
-    c)   SUBCOMMAND_SCRIPT="$COMMAND_ROOT"/cp.sh ;;
-    cp)  SUBCOMMAND_SCRIPT="$COMMAND_ROOT"/cp.sh ;;
-    gg)  SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cp.sh gg" ;;
+    c)   SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp.sh" ;;
+    cp)  SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp.sh" ;;
+    cpp) SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp.sh" ;;
+    gg)  SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp.sh gg" ;;
 
     # Python
-    p)   SUBCOMMAND_SCRIPT="$COMMAND_ROOT"/py.sh ;;
-    py)  SUBCOMMAND_SCRIPT="$COMMAND_ROOT"/py.sh ;;
+    p)   SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/python.sh" ;;
+    py)  SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/python.sh" ;;
+    python)  SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/python.sh" ;;
 
     # run program
-    r)   SUBCOMMAND_SCRIPT="$COMMAND_ROOT"/run.sh ;;
-    run) SUBCOMMAND_SCRIPT="$COMMAND_ROOT"/run.sh ;;
-    rin) SUBCOMMAND_SCRIPT="$COMMAND_ROOT"/rin.sh ;;
+    r)   SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/${LANG}/run.sh" ;;
+    run) SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/${LANG}/run.sh" ;;
+    rin) SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/${LANG}/rin.sh" ;;
 
     *) usage ;;
   esac
@@ -41,6 +50,15 @@ atc() {
   REPOSITORY_ROOT="$REPOSITORY_ROOT" \
   COMMAND_ROOT="$COMMAND_ROOT" \
   $SUBCOMMAND_SCRIPT "$@"
+}
+
+guess_lang() {
+  # 抽出対象
+  CPP="cpp"
+  PY="PY"
+
+  LANG=$(echo "$CURRENT_DIR_PATH" | sed -r "s/.*\/AtCoder\/(${CPP}|${PY}).*/\1/")
+  echo "$LANG"
 }
 
 usage() {
@@ -60,8 +78,8 @@ usage() {
     py arc xxx         [Python] ARCxxx を VSCode で開く
     py agc xxx         [Python] AGCxxx を VSCode で開く
     py mono xxx        [Python] xxx.py という名前のファイルを mono フォルダに作って VSCode で開く
-    run a / pun a      [Python] python a.py
-    rip a / pin a      [Python] python a.py < in
+    run a / r a        [Python] python a.py
+    rin a              [Python] python a.py < in
   
 END
 }
