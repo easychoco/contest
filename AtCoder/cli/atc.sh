@@ -44,6 +44,7 @@ atc() {
     ;;
 
     *)
+      echo 'unknown'
       usage
     ;;
   esac
@@ -57,7 +58,7 @@ atc() {
 guess_lang() {
   # 抽出対象
   CPP="cpp"
-  PY="PY"
+  PY="python"
 
   LANG=$(echo "$CURRENT_DIR_PATH" | sed -r "s/.*\/AtCoder\/(${CPP}|${PY}).*/\1/")
   if [ "$CURRENT_DIR_PATH" = "$LANG" ]; then

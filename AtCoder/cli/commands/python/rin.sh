@@ -3,19 +3,6 @@
 set -eu
 
 rin() {
-  if [ ! $# -eq 1 ]; then 
-    echo "  you need arg" 1>&2
-    usage
-    return 1
-  fi
-
-  if [ ! -e "${CURRENT_DIR_PATH}/${1}".py ]; then
-    echo "  not found:" 1>&2
-    echo "    ${CURRENT_DIR_PATH}/${1}.py" 1>&2
-    usage
-    return 1
-  fi
-
   if [ ! -e "$CURRENT_DIR_PATH"/in ]; then
     echo base
     echo "  not found:" 1>&2
@@ -24,7 +11,9 @@ rin() {
     return 1
   fi
 
-  python3 "${CURRENT_DIR_PATH}/${1}.py" < "$CURRENT_DIR_PATH"/in
+  CURRENT_DIR_PATH="$CURRENT_DIR_PATH" \
+  REPOSITORY_ROOT="$REPOSITORY_ROOT" \
+  "${COMMAND_ROOT}/python/run.sh" "$@" < "$CURRENT_DIR_PATH"/in   
 }
 
 usage() {

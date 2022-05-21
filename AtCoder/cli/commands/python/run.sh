@@ -9,14 +9,16 @@ run() {
     return 1
   fi
 
-  if [ ! -e "${CURRENT_DIR_PATH}/${1}" ]; then
+  TARGET_FILE="${CURRENT_DIR_PATH}/${1}.py"
+
+  if [ ! -e "${TARGET_FILE}" ]; then
     echo "  not found:" 1>&2
-    echo "    ${CURRENT_DIR_PATH}/${1}" 1>&2
+    echo "    ${TARGET_FILE}" 1>&2
     usage
     return 1
   fi
 
-  python3 "${CURRENT_DIR_PATH}/${1}"
+  python3 "${TARGET_FILE}"
 }
 
 usage() {

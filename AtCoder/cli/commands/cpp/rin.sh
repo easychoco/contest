@@ -3,13 +3,6 @@
 set -eu
 
 rin() {
-  if [ ! -e "$CURRENT_DIR_PATH"/a.out ]; then
-    echo "  not found:" 1>&2
-    echo "  ${CURRENT_DIR_PATH}/a.out" 1>&2
-    usage
-    return 1
-  fi
-
   if [ ! -e "$CURRENT_DIR_PATH"/in ]; then
     echo "  not found:" 1>&2
     echo "    ${CURRENT_DIR_PATH}/in" 1>&2
@@ -17,7 +10,9 @@ rin() {
     return 1
   fi
 
-  "$CURRENT_DIR_PATH"/a.out < "$CURRENT_DIR_PATH"/in
+  CURRENT_DIR_PATH="$CURRENT_DIR_PATH" \
+  REPOSITORY_ROOT="$REPOSITORY_ROOT" \
+  "${COMMAND_ROOT}/cpp/run.sh" "$@" < "$CURRENT_DIR_PATH"/in   
 }
 
 usage() {
