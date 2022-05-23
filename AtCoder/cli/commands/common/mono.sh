@@ -13,8 +13,8 @@ set -eu
 
 mono() {
   if [ ! $# -eq 3 ]; then
-    echo "you need 3 args."
-    echo "$@"
+    echo "you need 3 args." 1>&2
+    echo "$@" 1>&2
     usage
     return 1
   fi
@@ -24,19 +24,19 @@ mono() {
   TARGET_FILE="${LANGUAGE_ROOT}/mono/${3}.${EXT}"
 
   if [ -e "$TARGET_FILE" ]; then
-    echo "${3} is already exist."
+    echo "${3} is already exist." 1>&2
   else
-    echo "create mono/${3}.${EXT}"
+    echo "create mono/${3}.${EXT}" 1>&2
     cp "${LANGUAGE_ROOT}/template/_.${EXT}" "$TARGET_FILE"
   fi
 
-  echo "opening mono/${3}.${EXT}..."
+  echo "opening mono/${3}.${EXT}..." 1>&2
   code "${LANGUAGE_ROOT}" \
     "${LANGUAGE_ROOT}/_tips.${EXT}" \
     "${LANGUAGE_ROOT}/mono/in" \
     "$TARGET_FILE"
-  echo "done."
-  echo "  ${LANGUAGE_ROOT}/mono"
+  echo "done." 1>&2
+  echo "  ${LANGUAGE_ROOT}/mono" 1>&2
 }
 
 usage() {

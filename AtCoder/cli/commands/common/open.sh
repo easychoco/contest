@@ -14,7 +14,7 @@ set -eu
 
 open() {
   if [ ! $# -eq 4 ]; then
-    echo "you need 4 args."
+    echo "you need 4 args." 1>&2
     usage
     return 1
   fi
@@ -23,8 +23,8 @@ open() {
   EXT="$2"
 
   if [ ! -e "${LANGUAGE_ROOT}/${3}" ]; then
-    echo "${3} is not exist."
-    echo "not create ${LANGUAGE_ROOT}/${3}/${4}. bye."
+    echo "${3} is not exist." 1>&2
+    echo "not create ${LANGUAGE_ROOT}/${3}/${4}. bye." 1>&2
     usage
     return 1
   fi
@@ -34,9 +34,9 @@ open() {
   CONTEST_NAME_PATH="${3}/${4}"
 
   if [ -e "$TARGET_CONTEST_FOLDER" ]; then
-    echo "${4} is already exist."
+    echo "${4} is already exist." 1>&2
   else
-    echo "creating ${CONTEST_NAME_PATH}..."
+    echo "creating ${CONTEST_NAME_PATH}..." 1>&2
     mkdir -p "$TARGET_CONTEST_FOLDER"
     cp "${TEMPLATE_FOLDER}/_.${EXT}" "${TARGET_CONTEST_FOLDER}/a.${EXT}"
     cp "${TEMPLATE_FOLDER}/_.${EXT}" "${TARGET_CONTEST_FOLDER}/b.${EXT}"
@@ -47,16 +47,16 @@ open() {
     cp "${TEMPLATE_FOLDER}/_.${EXT}" "${TARGET_CONTEST_FOLDER}/g.${EXT}"
     cp "${TEMPLATE_FOLDER}/_.${EXT}" "${TARGET_CONTEST_FOLDER}/h.${EXT}"
     cp "${TEMPLATE_FOLDER}/in" "${TARGET_CONTEST_FOLDER}/in"
-    echo "done"
+    echo "done" 1>&2
   fi
 
-  echo "opening ${CONTEST_NAME_PATH} ..."
+  echo "opening ${CONTEST_NAME_PATH} ..." 1>&2
   code "${LANGUAGE_ROOT}" \
     "${LANGUAGE_ROOT}/_tips.${EXT}" \
     "${TARGET_CONTEST_FOLDER}/in" \
     "${TARGET_CONTEST_FOLDER}"/*."${EXT}"
-  echo "done."
-  echo "  ${TARGET_CONTEST_FOLDER}"
+  echo "done." 1>&2
+  echo "  ${TARGET_CONTEST_FOLDER}" 1>&2
 }
 
 usage() {

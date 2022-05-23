@@ -44,7 +44,7 @@ atc() {
     ;;
 
     *)
-      echo 'unknown'
+      echo 'unknown' 1>&2
       usage
     ;;
   esac
@@ -62,7 +62,7 @@ guess_lang() {
 
   LANG=$(echo "$CURRENT_DIR_PATH" | sed -r "s/.*\/AtCoder\/(${CPP}|${PY}).*/\1/")
   if [ "$CURRENT_DIR_PATH" = "$LANG" ]; then
-    echo "directory meybe wrong."
+    echo "directory meybe wrong." 1>&2
     usage
     return 1;
   fi

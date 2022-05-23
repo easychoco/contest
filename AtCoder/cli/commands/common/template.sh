@@ -12,8 +12,8 @@ set -eu
 
 template() {
   if [ ! $# -eq 2 ]; then
-    echo "you need 2 args."
-    echo "$@"
+    echo "you need 2 args." 1>&2
+    echo "$@" 1>&2
     usage
     return 1
   fi
@@ -21,8 +21,8 @@ template() {
   TARGET_FILE="${REPOSITORY_ROOT}/${1}/template/_.${2}"
 
   if [ ! -e "$TARGET_FILE" ]; then
-    echo "not found:"
-    echo "  $TARGET_FILE"
+    echo "not found:" 1>&2
+    echo "  $TARGET_FILE" 1>&2
     usage
     return 1
   fi
