@@ -61,7 +61,11 @@ void solve()
   ll ans = n * (n - 1) * (n - 2) / 6;
   repe(i, 200000)
   {
-    ans -= hist[i] * (hist[i] - 1) / 2;
+    // 同じ数字を2つとるもの
+    ans -= hist[i] * (hist[i] - 1) / 2 * (n - hist[i]);
+
+    // 同じ数字を3つとるもの
+    ans -= hist[i] * (hist[i] - 1) * (hist[i] - 2) / 6;
   }
   print(ans);
 }

@@ -51,6 +51,8 @@ void solve()
 {
   ll n, m;
   cin >> n >> m;
+
+  // queue<T> = <0 からの距離, 今の頂点, 枝のインデックス>
   priority_queue<T, vector<T>, greater<T>> que;
   vector<vector<T>> graph(n);
   rep(i, m)
