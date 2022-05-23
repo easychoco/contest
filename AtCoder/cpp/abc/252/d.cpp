@@ -49,7 +49,21 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
-
+  ll n;
+  cin >> n;
+  vl hist(200001, 0);
+  rep(i, n)
+  {
+    ll a;
+    cin >> a;
+    hist[a]++;
+  }
+  ll ans = n * (n - 1) * (n - 2) / 6;
+  repe(i, 200000)
+  {
+    ans -= hist[i] * (hist[i] - 1) / 2;
+  }
+  print(ans);
 }
 
 int main()

@@ -51,26 +51,27 @@ void solve()
 {
   ll n, l;
   cin >> n >> l;
+  ll sum = 0;
   priority_queue<ll, vector<ll>, greater<ll>> que;
   rep(i, n)
   {
     ll a;
     cin >> a;
+    sum += a;
     que.push(a);
   }
   ll ans = 0;
+  if (l > sum) que.push(l - sum);
   while(que.size() >= 2)
   {
-    ll a1 = que.top();
+    auto a1 = que.top();
     que.pop();
-    ll a2 = que.top();
+    auto a2 = que.top();
     que.pop();
 
     ans += a1 + a2;
     que.push(a1 + a2);
   }
-
-  if (que.top() < l) ans += l;
   print(ans);
 }
 
