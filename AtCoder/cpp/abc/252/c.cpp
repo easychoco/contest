@@ -49,7 +49,38 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
-
+  ll n;
+  cin >> n;
+  vs s(n);
+  rep(i, n)
+  {
+    cin >> s[i];
+  }
+  
+  ll ans = INF;
+  rep(now, 10)
+  {
+    ll score = INF;
+    ll cnt = 0;
+    vl stopped(n, 0);
+    rep(t, 10 * n)
+    {
+      rep(i, n)
+      {
+        if (stopped[i]) continue;
+        if (s[i][t % 10] == (char)(now + '0'))
+        {
+          cnt++;
+          stopped[i] = 1;
+          break;
+        }
+      }
+      score = t;
+      if (cnt == n) break;
+    }
+    chmin(ans, score);
+  }
+  print(ans);
 }
 
 int main()
