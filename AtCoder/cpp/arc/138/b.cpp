@@ -49,7 +49,37 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
+  ll n;
+  cin >> n;
+  deque<ll> d;
+  rep(i, n)
+  {
+    ll a;
+    cin >> a;
+    d.push_back(a);
+  }
 
+  ll target = 0;
+  while(d.size())
+  {
+    // 後ろから 0 を取り除く
+    if (d.back() == target)
+    {
+      d.pop_back();
+      continue;
+    }
+    // 前から 0 を取り除いて flip する
+    if (d[0] == target)
+    {
+      d.pop_front();
+      target ^= 1;
+      continue;
+    }
+
+    YN(false);
+    return;
+  }
+  YN(true);
 }
 
 int main()
