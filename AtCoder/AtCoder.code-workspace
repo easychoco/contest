@@ -1,0 +1,36 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": "."
+    },
+    {
+      "name": "cpp",
+      "path": "cpp"
+    },
+    {
+      "name": "python",
+      "path": "python"
+    },
+    {
+      "name": "cli",
+      "path": "cli"
+    },
+  ],
+  "settings": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "recommendations": [
+      "ms-vscode.cpptools",
+      "ms-vscode.cpptools-extension-pack",
+      "austin.code-gnu-global",
+      "ms-python.python",
+      "ms-python.vscode-pylance",
+      "timonwong.shellcheck",
+      "DavidAnson.vscode-markdownlint",
+      "Asuka.insertnumbers",
+      "PKief.material-icon-theme",
+      "ms-vscode-remote.remote-wsl"
+    ]
+  },
+}
