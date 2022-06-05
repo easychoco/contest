@@ -16,11 +16,12 @@ gg() {
     return 1;
   fi
 
+  # -Werror \ <- これをつけると、warning が error になる
+
   g++ \
     --std=gnu++17 \
     -I ~/pg/ac-library \
     -Wall \
-    -Werror \
     -O2 \
     "$1".cpp
 }
