@@ -96,6 +96,12 @@ static uint32_t randXor()
   return w = (w ^ (w >> 19)) ^ (t ^ (t >> 8));
 }
 
+// 0以上1未満の小数をとる乱数
+static double rand01()
+{
+    return (randXor() + 0.5) * (1.0 / UINT_MAX);
+}
+
 const ll L = 0b0001;
 const ll U = 0b0010;
 const ll R = 0b0100;
@@ -209,8 +215,9 @@ UnionFind buildUF()
 ll calcScoreWithUF(UnionFind uf)
 {
   ll sz = uf.max_size();
-  ll point = 500000LL * sz / (n * n - 1);
-  return point;
+  return sz;
+  // ll point = 500000LL * sz / (n * n - 1);
+  // return point;
 }
 
 ll calcScore()
@@ -545,34 +552,34 @@ pair<string, ll> step(pair<ll, vl> initial_group)
     //   "LDR", "LUR", "ULD", "URD", "RUL", "RDL", "DRU", "DLU",
     // };
 
-    for (auto r : generateSearchRoute(4))
+    for (auto r : generateSearchRoute(2))
     {
       auto [route, sz] = localSearch(r, target_group_root);
       if (chmax(now_group_size, sz)) next_route = route; 
     }
 
-    // 焼きなましみたいなことをしてみる
-    if ((ll)next_route.length() > 0) not_update_count = 0;
-    else
-    {
-      // tryMove(init_route, true);
-      // init_route = "";
+    // // 焼きなましみたいなことをしてみる
+    // if ((ll)next_route.length() > 0) not_update_count = 0;
+    // else
+    // {
+    //   // tryMove(init_route, true);
+    //   // init_route = "";
 
-      not_update_count++;
-      if ((ll)now_route.length() < t / 3 && randXor() % t < not_update_count)
-      {
-        char unit[4] = { 'L', 'U', 'R', 'D' };
-        ll move_dist = 1 + (randXor() % n) / 2;
-        // vs candidate;
-        // if (now_route.back() != 'D') candidate.pb(string(move_dist, 'U'));
-        // if (now_route.back() != 'L') candidate.pb(string(move_dist, 'R'));
-        // if (now_route.back() != 'U') candidate.pb(string(move_dist, 'D'));
-        // if (now_route.back() != 'R') candidate.pb(string(move_dist, 'L'));
-        next_route = string(move_dist, unit[randXor() % 4]);
-        not_update_count = 0;
-        // clockwise = !clockwise;
-      }
-    }
+    //   not_update_count++;
+    //   if ((ll)now_route.length() < t / 3 && randXor() % t < not_update_count)
+    //   {
+    //     char unit[4] = { 'L', 'U', 'R', 'D' };
+    //     ll move_dist = 1 + (randXor() % n) / 2;
+    //     // vs candidate;
+    //     // if (now_route.back() != 'D') candidate.pb(string(move_dist, 'U'));
+    //     // if (now_route.back() != 'L') candidate.pb(string(move_dist, 'R'));
+    //     // if (now_route.back() != 'U') candidate.pb(string(move_dist, 'D'));
+    //     // if (now_route.back() != 'R') candidate.pb(string(move_dist, 'L'));
+    //     next_route = string(move_dist, unit[randXor() % 4]);
+    //     not_update_count = 0;
+    //     // clockwise = !clockwise;
+    //   }
+    // }
 
     // update map, route, score
     if ((ll)(now_route + init_route + next_route).length() <= t)
@@ -590,6 +597,20 @@ pair<string, ll> step(pair<ll, vl> initial_group)
   return make_pair(max_score_route, max_score);
 }
 
+bool apply(
+  double current_score,
+  double next_score,
+  const double max_temp,
+  const double min_temp,
+  double now_time,
+  const double max_time
+){
+  // 今の温度
+  double temp = max(0.0000000001, min_temp + (max_temp - min_temp) * (max_time - now_time) / max_time);
+  double prob = exp((next_score - current_score) / temp);
+  return rand01() <= prob;
+}
+
 // =======================================
 //                  main
 // =======================================
@@ -605,13 +626,27 @@ void solve()
   const static double END_TIME = 2.80; // 終了時間（秒）
   double time = 0.0; // 経過時間（秒）
 
+  const double max_temp = n * n;
+  const double min_temp = 0.0;
+
   UnionFind uf = buildUF();
   do {
     for (auto g : uf.groups())
     {
       initialize();
       auto [a, s] = step(g);
-      if (chmax(score, s)) ans = a;
+      if (apply(
+        score,
+        s,
+        max_temp,
+        min_temp,
+        time,
+        END_TIME
+      ))
+      {
+        score = s;
+        ans = a;
+      }
       time = (duration_cast<microseconds>(system_clock::now() - startClock).count() * 1e-6);
       if (time > END_TIME) break;
     }
