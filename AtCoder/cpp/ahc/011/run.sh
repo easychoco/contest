@@ -9,7 +9,7 @@ run() {
     return 1
   fi
 
-  a gg a
+  a gg sa
   rm result -rf
   cd tools
   for i in $(seq "$1")
