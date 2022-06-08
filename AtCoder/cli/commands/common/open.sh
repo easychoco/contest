@@ -51,17 +51,17 @@ open() {
   fi
 
   echo "opening ${CONTEST_NAME_PATH} ..." 1>&2
-  code "${REPOSITORY_ROOT}" \
-    "${LANGUAGE_ROOT}" \
+  code "${REPOSITORY_ROOT}/AtCoder.code-workspace" \
     "${LANGUAGE_ROOT}/_tips.${EXT}" \
     "${TARGET_CONTEST_FOLDER}/in" \
     "${TARGET_CONTEST_FOLDER}"/*."${EXT}"
   echo "done." 1>&2
-  echo "  ${TARGET_CONTEST_FOLDER}" 1>&2
 
-  # todo: コピーしようとするとパスとして扱われて壊れる
-  # clip.exe < "${TARGET_CONTEST_FOLDER}"
-  # echo "    パスをコピーしました" 1>&2
+  echo "${TARGET_CONTEST_FOLDER}" | clip.exe
+
+  echo "" 1>&2
+  echo "  パスをコピーしました" 1>&2
+  echo "  ${TARGET_CONTEST_FOLDER}" 1>&2
 }
 
 usage() {
