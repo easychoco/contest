@@ -51,12 +51,17 @@ open() {
   fi
 
   echo "opening ${CONTEST_NAME_PATH} ..." 1>&2
-  code "${LANGUAGE_ROOT}" \
+  code "${REPOSITORY_ROOT}" \
+    "${LANGUAGE_ROOT}" \
     "${LANGUAGE_ROOT}/_tips.${EXT}" \
     "${TARGET_CONTEST_FOLDER}/in" \
     "${TARGET_CONTEST_FOLDER}"/*."${EXT}"
   echo "done." 1>&2
   echo "  ${TARGET_CONTEST_FOLDER}" 1>&2
+
+  # todo: コピーしようとするとパスとして扱われて壊れる
+  # clip.exe < "${TARGET_CONTEST_FOLDER}"
+  # echo "    パスをコピーしました" 1>&2
 }
 
 usage() {

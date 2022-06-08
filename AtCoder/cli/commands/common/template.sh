@@ -28,6 +28,7 @@ template() {
   fi
 
   clip.exe < "$TARGET_FILE"
+  echo "  テンプレートをコピーしました" 1>&2
 }
 
 usage() {
