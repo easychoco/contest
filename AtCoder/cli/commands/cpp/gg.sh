@@ -20,7 +20,7 @@ gg() {
 
   g++ \
     --std=gnu++17 \
-    -I ~/pg/ac-library \
+    -I "${REPOSITORY_ROOT}/../../ac-library" \
     -Wall \
     -O2 \
     "$1".cpp
