@@ -16,10 +16,10 @@
 
 using namespace std;
 using namespace atcoder;
+using ll = long long;
 using vb = vector<bool>;
 using vvb = vector<vb>;
 using vs = vector<string>;
-using ll = int_fast64_t;
 using vl = vector<ll>;
 using vvl = vector<vl>;
 using P = pair<ll, ll>;
