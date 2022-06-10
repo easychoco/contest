@@ -20,8 +20,9 @@ mono() {
   fi
 
   LANGUAGE_ROOT="${REPOSITORY_ROOT}/${1}"
+  TARGET_CONTEST_FOLDER="${LANGUAGE_ROOT}/mono"
   EXT="$2"
-  TARGET_FILE="${LANGUAGE_ROOT}/mono/${3}.${EXT}"
+  TARGET_FILE="${TARGET_CONTEST_FOLDER}/${3}.${EXT}"
 
   if [ -e "$TARGET_FILE" ]; then
     echo "${3} is already exist." 1>&2
@@ -31,12 +32,17 @@ mono() {
   fi
 
   echo "opening mono/${3}.${EXT}..." 1>&2
-  code "${LANGUAGE_ROOT}" \
+  code "${REPOSITORY_ROOT}/AtCoder.code-workspace" \
     "${LANGUAGE_ROOT}/_tips.${EXT}" \
-    "${LANGUAGE_ROOT}/mono/in" \
-    "$TARGET_FILE"
+    "${TARGET_CONTEST_FOLDER}/in" \
+    "${TARGET_FILE}"
   echo "done." 1>&2
-  echo "  ${LANGUAGE_ROOT}/mono" 1>&2
+
+  echo "${TARGET_CONTEST_FOLDER}" | clip.exe
+
+  echo "" 1>&2
+  echo "  パスをコピーしました" 1>&2
+  echo "  ${TARGET_CONTEST_FOLDER}" 1>&2
 }
 
 usage() {
