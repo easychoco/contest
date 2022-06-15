@@ -49,7 +49,23 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
+  string s;
+  cin >> s;
+  ll sz = s.length();
+  ll all = 1;
+  all += sz * (sz - 1) / 2;
 
+  vl hist(26, 0);
+  rep(i, sz)
+  {
+    hist[(int)(s[i] - 'a')]++;
+  }
+  rep(i, 26)
+  {
+    all -= hist[i] * (hist[i] - 1) / 2;
+  }
+
+  print(all);
 }
 
 int main()
