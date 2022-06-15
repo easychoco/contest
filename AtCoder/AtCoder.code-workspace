@@ -31,6 +31,9 @@
       "Asuka.insertnumbers",
       "PKief.material-icon-theme",
       "ms-vscode-remote.remote-wsl"
-    ]
+    ],
+    "files.associations": {
+      "iostream": "cpp"
+    }
   },
 }
