@@ -195,6 +195,8 @@ vvl comb(ll n) {
   return ret;
 }
 
+// =================================================================================================== //
+
 // 座標圧縮 O (N log N)
 // 破壊的なので注意
 // 戻り値は重複を削除 ( sort & unique ) した vector
@@ -214,6 +216,24 @@ vector<T> compress(vector<T> &vec)
   }
 
   return ret;
+}
+
+/**
+ * @brief
+ * ランレングス圧縮 runlength encoding
+ * O(|S|)
+ * 
+ * @param s ランレングス圧縮をする文字列
+ * @return vector< pair<文字, 個数> > を返す
+ */
+vector<pair<char, ll>> run_length_encoding(const string s) {
+  vector<pair<char, ll>> runlength { make_pair(s[0], 1) };
+  repi (i, 1, s.length()) {
+    const char now = s[i];
+    if (runlength.back().first == now) runlength.back().second++;
+    else runlength.pb(make_pair(now, 1));
+  }
+  return runlength;
 }
 
 // =================================================================================================== //
