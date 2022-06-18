@@ -456,6 +456,7 @@ public:
     root_num--;
     return true;
   }
+  bool merge(ll x, ll y){ return unite(x, y); }
   // グループごとに頂点をまとめる: O(N log N)
   map<ll, vector<ll>> groups(){
     map<ll, vector<ll>> ret;
