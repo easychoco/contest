@@ -33,7 +33,8 @@
       "ms-vscode-remote.remote-wsl"
     ],
     "files.associations": {
-      "iostream": "cpp"
+      "iostream": "cpp",
+      "tuple": "cpp"
     }
   },
 }
