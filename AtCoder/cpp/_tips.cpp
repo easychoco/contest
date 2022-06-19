@@ -273,32 +273,6 @@ void tip_binary_search()
   }
 }
 
-// 区間スケジューリング
-// O(N log N)
-void tip_segment_scheduling()
-{
-  ll n;
-  vp range(n);
-  rep(i, n)
-  {
-    ll from, to;
-    cin >> from >> to;
-    range[i] = make_pair(to - 1, from); // 半開区間 [from, to) でやっているので注意
-  }
-
-  sort(ALL(range));
-  ll last = -1; // from の最小値未満にする
-  ll ans = 0; // 選べるものの個数
-  for (auto [to, from] : range)
-  {
-    if (last < from) // 半開区間 [from, to) でやっているので注意
-    {
-      ans++;
-      last = to;
-    }
-  }
-}
-
 // 二次元累積和
 // 二次元いもす法 imos
 // O (X * Y)
@@ -339,6 +313,52 @@ void accumulate_sum_2D()
     ll sum_2D = sum[y2][x2] - sum[y1][x2] - sum[y2][x1] + sum[y1][x1];
   }
 }
+
+// C++20 の　std::ranges::range で書きたい
+// 区間を扱うクラス
+class SegmentMap{
+public:
+  vector<T> raw; // vector< pair< from, to > >
+  void add(ll from, ll to) { add(P(from, to)); }
+  void add(P segment) { raw.pb(make_tuple(segment.first, segment.second, (ll)raw.size())); }
+
+  // 区間スケジューリング
+  // O ( N log N )
+  // vector<from, to, index>
+  vector<T> schedule() {
+    vector<T> ret; vector<T> segments(raw);
+    sort(segments.begin(), segments.end(), [&](const T &a, const T &b) { return get<1>(a) < get<1>(b); });
+    ll last = get<1>(segments[0]);
+    ret.pb(segments[0]);
+    for (auto seg : segments) {
+      auto [from, to, idx] = seg;
+      if (last < from) {
+        ret.pb(seg);
+        last = to;
+      }
+    }
+    return ret;
+  } 
+
+  // 区間を合成したものを返す
+  // O ( N log N )
+  vector<P> composite() {
+    vector<P> ret; vector<T> segments(raw);
+    sort(ALL(segments));
+    auto [from, to, _] = segments[0];
+    for (auto seg : segments) {
+      auto [pf, pt, _] = seg;
+      if (pf <= to) chmax(to, pt);
+      else {
+        ret.eb(from, to);
+        from = pf;
+        to = pt;
+      }
+    }
+    ret.eb(from, to);
+    return ret;
+  }
+};
 
 /**
  * @brief ループの始点と周期を求める
