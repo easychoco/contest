@@ -378,7 +378,8 @@ pair<ll, ll> detect_cycle_loop(
   ll sz = target.size();
   vl loop(sz, -1);
   ll now = first_index;
-  rep (i, sz + 1) {
+  loop[now] = 0;
+  repi (i, 1, sz + 2) {
     now = next(now);
     if (loop[now] == -1) loop[now] = i;
     else return P(now, i - loop[now]);
