@@ -1077,6 +1077,7 @@ struct Fraction {
 // - 任意のサイズの行列同士の演算[+][-][x]
 // - Matrix::E(int n) でn次単位行列
 // - .val[][] で要素にアクセス
+template<class T>
 class Matrix {
 protected:
   int size_y, size_x;
@@ -1085,9 +1086,9 @@ public:
   Matrix(int _y, int _x) {
     size_y = _y;
     size_x = _x;
-    val = vector<vector<ll>>(_y, vector<ll>(_x, 0));
+    val = vector<vector<T>>(_y, vector<T>(_x, 0));
   }
-  vector<vector<ll>> val;
+  vector<vector<T>> val;
 
   Matrix operator - () {
     for(int y = 0; y < size_y; ++y)
@@ -1123,8 +1124,8 @@ public:
     }
 
     auto ret = Matrix(left.y(), right.x());
-    for(int y = 0; y < (int)ret.val.size(); ++y)
-    for(int x = 0; x < (int)ret.val[0].size(); ++x) {
+    for(int y = 0; y < left.y(); ++y)
+    for(int x = 0; x < right.x(); ++x) {
       for(int i = 0; i < left.x(); ++i) {
         ret.val[y][x] += left.val[y][i] * right.val[i][x];
       }
@@ -1132,6 +1133,20 @@ public:
     return ret;
   }
   void operator *= (Matrix right) { *this = *this * right; }
+
+  // 2x1 をまわす
+  // それ以外は弾いていない
+  void rotate(int angle) {
+    angle %= 360;
+    double cs = cos(M_PI / 180.0 * (double)angle);
+    double sn = sin(M_PI / 180.0 * (double)angle);
+    Matrix<T> left = E(2);
+    left.val[0][0] = cs;
+    left.val[0][1] = -sn;
+    left.val[1][0] = sn;
+    left.val[1][1] = cs;
+    *this = left * *this;
+  }
 
   static Matrix E(int _size) {// ::演算子でアクセス
     auto ret = Matrix(_size, _size);
@@ -1143,10 +1158,11 @@ public:
   int x() const { return this->size_x; }
   int y() const { return this->size_y; }
   bool same_size(Matrix* other) const { return ((this->x() == other->x()) && (this->y() == other->y())); }
-  void print() const {
+  void show() const {
     for(int y = 0; y < size_y; ++y) {
       for(int x = 0; x < size_x; ++x) {
-        cout << val[y][x] << " ";
+        cout << std::fixed << setprecision(13) << val[y][x];
+        if (x < size_x - 1) cout << " ";
       }
       cout << endl;
     }
@@ -1159,7 +1175,7 @@ public:
 // - 原点中心の回転
 // - スキュー
 // - x軸反転・y軸反転
-class AffineMatrix : public Matrix {
+class AffineMatrix : public Matrix<ll> {
 public:
   AffineMatrix() : Matrix(3, 3){ val[2][2] = 1; }
   void operator = (Matrix other) {
