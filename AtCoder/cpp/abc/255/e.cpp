@@ -49,13 +49,49 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
-  ll n;
-  cin >> n;
-  vl a(n);
-  rep(i, n)
+  ll n, m;
+  cin >> n >> m;
+  vl s(n - 1), x(m), b(n, 0);
+  rep(i, n - 1) cin >> s[i];
+  rep(i, m) cin >> x[i];
+
+  // s[0] = a[0] + a[1]
+  // s[1] = a[1] + a[2]
+  // s[2] = a[2] + a[3]
+  // s[3] = a[3] + a[4]
+  // a[1] = s[0] - a[0] = s[0] - a[0] -> b[0] - a[0] = x
+  // a[2] = s[1] - a[1] = s[1] - s[0] + a[0] -> b[1] + a[0] = x
+  // a[3] = s[2] - a[2] = s[2] - s[1] + s[0] - a[0] -> b[2] - a[0] = x
+  // a[4] = s[3] - a[3] = s[3] - s[2] + s[1] - s[0] + a[0] -> b[3] + a[0] = x
+  // ->
+  // a[1] = b[0] - a[0] = x
+  // a[2] = b[1] + a[0] = x
+  // a[3] = b[2] - a[0] = x
+  // a[4] = b[3] + a[0] = x
+
+  unordered_map<ll, ll> hist;
+
+  // a[0] = 0 としたときの差
+  rep(i, n - 1)
   {
-    cin >> a[i];
+    b[i + 1] = s[i] - b[i];
   }
+
+  rep(i, n)
+  rep(j, m)
+  {
+    // a[0] を a0 にすると、a[i] が x[j] になる
+
+    ll a0 = x[j] - b[i];
+    // このときは -a[0] になっているので a[0] にもどす
+    if ((i + 1) & 1) a0 *= -1;
+
+    hist[a0]++;
+  }
+
+  ll ans = 0;
+  for (auto [_k, v] : hist) chmax(ans, v);
+  print(ans);
 }
 
 int main()
