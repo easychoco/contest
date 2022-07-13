@@ -1136,6 +1136,7 @@ public:
 
   // 2x1 をまわす
   // それ以外は弾いていない
+  // https://atcoder.jp/contests/abc259/submissions/33171135
   void rotate(int angle) {
     angle %= 360;
     double cs = cos(M_PI / 180.0 * (double)angle);
