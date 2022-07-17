@@ -51,27 +51,33 @@ void solve()
 {
   ll s, t, m;
   cin >> s >> t >> m;
-  vvl graph(s + t, vl(0));
+  vvl graph(s, vl(0));
   rep(i, m)
   {
     ll u, v;
     cin >> u >> v;
     u--; v--;
-    graph[u].pb(v);
-    graph[v].pb(u);
+    graph[min(u, v)].pb(max(u, v) - s);
   }
 
-  rep(t1, t)
-  rep(t2, t1)
+  vvl hist(t, vl(t, -1));
+
+  rep(si, s)
   {
-    ll i1 = s + t1;
-    ll i2 = s + t2;
-
-    vl v1 = graph[i1];
-    vl v2 = graph[i2];
-
-    // v1 と v2 の共通部分を O ( log N ) で求められたらなー
+    for (auto x : graph[si])
+    for (auto y : graph[si])
+    {
+      if (x == y) continue;
+      // print(x, y);
+      if (hist[x][y] == -1) hist[x][y] = si;
+      else
+      {
+        print(x + s + 1, y + s + 1, hist[x][y] + 1, si + 1);
+        return;
+      }
+    }
   }
+  print(-1);
 }
 
 int main()
