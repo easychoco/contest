@@ -53,8 +53,8 @@ void solve()
 {
   ll n;
   cin >> n;
-  map<ll, vector<ll>> primes;
   vvp inputs(n);
+  map<ll, ll> mx;
   rep(i, n)
   {
     ll m;
@@ -64,36 +64,32 @@ void solve()
       ll p, e;
       cin >> p >> e;
       inputs[i].pb(P(p, e));
-      primes[p].pb(e);
+      chmax(mx[p], e);
     }
-    sort(ALL(inputs[i]));
-  }
-  for (auto& v : primes)
-  {
-    sort(RALL(v.second));
-    v.second.pb(0);
   }
 
-  sort(ALL(inputs));
-  inputs.erase(unique(ALL(inputs)), inputs.end());
-  n = inputs.size();
+  map<ll, ll> cnt;
+  ll ans = 0;
 
-  set<vp> ans;
   rep(i, n)
   {
-    vp score;
     for (auto [p, e] : inputs[i])
     {
-      const auto vec = primes[p];
-      if (vec[0] == e && vec[1] < e)
-      {
-        score.pb(P(p, vec[0] - vec[1]));
-      }
+      if (mx[p] == e) cnt[p]++;
     }
-    ans.insert(score);
   }
 
-  print(ans.size());
+  rep(i, n)
+  {
+    bool ok = false;
+    for (auto [p, e] : inputs[i])
+    {
+      if (mx[p] == e && cnt[p] == 1) ok = true;
+    }
+    ans += ok;
+  }
+  if (ans < n) ans++;
+  print(ans);
 }
 
 int main()
