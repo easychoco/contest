@@ -49,7 +49,10 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
-
+  ll n, m, x, t, d;
+  cin >> n >> m >> x >> t >> d;
+  if (x <= m) print(t);
+  else print(t - (x - m) * d);
 }
 
 int main()

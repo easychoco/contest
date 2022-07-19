@@ -47,9 +47,44 @@ void debug() { cerr << endl; }
 template <class Head, class... Tail>
 void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward<Tail>(tail)...); }
 
+/**
+ * @brief
+ * ランレングス圧縮 runlength encoding
+ * O(|S|)
+ * 
+ * @param s ランレングス圧縮をする文字列
+ * @return vector< pair<文字, 個数> > を返す
+ */
+vector<pair<char, ll>> run_length_encoding(const string s) {
+  vector<pair<char, ll>> runlength { make_pair(s[0], 1) };
+  repi (i, 1, s.length()) {
+    const char now = s[i];
+    if (runlength.back().first == now) runlength.back().second++;
+    else runlength.pb(make_pair(now, 1));
+  }
+  return runlength;
+}
+
 void solve()
 {
-
+  string s, t;
+  cin >> s >> t;
+  auto ps = run_length_encoding(s);
+  auto pt = run_length_encoding(t);
+  if (ps.size() != pt.size()) YN(false);
+  else
+  {
+    bool ok = true;
+    rep(i, ps.size())
+    {
+      auto [sc, sn] = ps[i];
+      auto [tc, tn] = pt[i];
+      if (sc != tc) ok = false;
+      if (sn == 1 && tn > 1) ok = false;
+      if (sn > tn) ok = false;
+    }
+    YN(ok);
+  }
 }
 
 int main()
