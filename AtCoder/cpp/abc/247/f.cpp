@@ -46,15 +46,75 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 using mint = modint998244353;
 
+class UnionFind{
+public:
+  vector<ll> p;		// 親
+  vector<ll> rank;	// サイズ・各集合の根のみ有効
+  ll root_num; // 連結成分の数
+  UnionFind(ll n) : root_num(n) {
+    p.resize(n, -1);
+    rank.resize(n, 1);
+  }
+  ll root(ll x){
+    if(p[x] == -1) return x;
+    else return p[x] = root(p[x]); // 深さを 1 にしている
+  }
+  bool unite(ll x, ll y){
+    x = root(x); y = root(y);
+    if(x == y) return false;
+    if(rank[x] > rank[y]) swap(x, y); // rankの小さいものを下につける
+    rank[y] += rank[x];
+    p[x] = y;
+    root_num--;
+    return true;
+  }
+  bool merge(ll x, ll y){ return unite(x, y); }
+  // グループごとに頂点をまとめる: O(N log N)
+  map<ll, vector<ll>> groups(){
+    map<ll, vector<ll>> ret;
+    rep(i, p.size()) ret[root(i)].emplace_back(i);
+    return ret;
+  }
+  //xが属すグループのサイズ
+  ll size(ll x){ return rank[root(x)]; }
+  bool same(ll x, ll y){ return (root(x) == root(y)); }
+};
+
 void solve()
 {
   ll n;
   cin >> n;
   vl p(n), q(n);
-  rep(i, n) cin >> p[i];
-  rep(i, n) cin >> q[i];
+  rep(i, n) cin >> p[i], p[i]--;
+  rep(i, n) cin >> q[i], q[i]--;
 
-  
+  UnionFind uf(n);
+  rep(i, n) uf.unite(p[i], q[i]);
+
+  // dp1[i] = 1~i から連続する2数のどちらかを選ぶ個数
+  // i を選ぶかどうかでわかれる
+  vector<mint> dp1(n + 1);
+  dp1[1] = 2;
+  dp1[2] = 3;
+  repie(i, 3, n)
+  {
+    dp1[i] = dp1[i - 1] + dp1[i - 2];
+  }
+
+  // dp2[i] = 頂点数が i のサイクルグラフの辺被覆の個数
+  // ループのうち、1-i 辺を選ぶかどうかでわける
+  vector<mint> dp2(n + 1);
+  dp2[1] = 1;
+  dp2[2] = 3;
+  dp2[3] = 4;
+  repie(i, 4, n)
+  {
+    dp2[i] = dp1[i - 1] + dp1[i - 3];
+  }
+
+  mint ans = 1;
+  for (auto v : uf.groups()) ans *= dp2[v.second.size()];
+  print(ans.val());
 }
 
 int main()
