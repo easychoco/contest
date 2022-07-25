@@ -49,7 +49,9 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
-
+  ll a, b, c, d;
+  cin >> a >> b >> c >> d;
+  print(max(0LL, min(b, d) - max(a, c)));
 }
 
 int main()
