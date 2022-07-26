@@ -13,6 +13,10 @@
       "path": "python"
     },
     {
+      "name": "rust",
+      "path": "rust"
+    },
+    {
       "name": "cli",
       "path": "cli"
     },
