@@ -49,7 +49,21 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
-
+  ll n;
+  cin >> n;
+  map<string, ll> mp;
+  rep(_, n)
+  {
+    string s;
+    cin >> s;
+    cout << s;
+    auto& val = mp[s];
+    if (val > 0) {
+      cout << '(' << val << ')';
+    }
+    cout << endl;
+    val++;
+  }
 }
 
 int main()

@@ -49,7 +49,28 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
+  ll n;
+  cin >> n;
+  vs mp(n);
+  rep (i, n) cin >> mp[i];
 
+  auto c2i = [&](char c)
+  {
+    if (c == 'W') return 1;
+    if (c == 'L') return -1;
+    return 0;
+  };
+
+  ll sum = 0;
+  rep (i1, n)
+  rep (i2, i1)
+  {
+    ll v1 = c2i(mp[i1][i2]);
+    ll v2 = c2i(mp[i2][i1]);
+    sum += abs(v1 + v2);
+  }
+
+  YN(sum == 0, "correct", "incorrect");
 }
 
 int main()
