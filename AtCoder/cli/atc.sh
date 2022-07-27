@@ -29,7 +29,7 @@ atc() {
     ;;
 
     # Python
-    p|py|pythn)
+    p|py|python)
       SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/python.sh"
     ;;
 
