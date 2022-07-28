@@ -49,7 +49,36 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
+  ll n, m;
+  cin >> n >> m;
 
+  vl x(n);
+  vl bonus(n + 1, 0);
+  rep(i, n)
+  {
+    cin >> x[i];
+  }
+  rep(i, m)
+  {
+    ll c, y;
+    cin >> c >> y;
+    bonus[c] += y;
+  }
+
+  // dp[i][j] = i番目のカウンタが j の時の最大値
+  vvl dp(n + 1, vl(n + 1, -INF));
+  dp[0][0] = 0;
+  rep(i, n)
+  rep(j, n)
+  {
+    // 表
+    dp[i + 1][j + 1] = dp[i][j] + x[i] + bonus[j + 1];
+
+    // 裏
+    chmax(dp[i + 1][0], dp[i][j]);
+  }
+
+  print(*max_element(ALL(dp[n])));
 }
 
 int main()
