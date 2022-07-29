@@ -33,8 +33,13 @@ atc() {
       SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/python.sh"
     ;;
 
+    # Rust
+    r|rs|rust)
+      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/rust.sh"
+    ;;
+
     # common
-    r|run)
+    run)
       LANG=$(guess_lang "$CURRENT_DIR_PATH")
       SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/${LANG}/run.sh"
     ;;
@@ -58,9 +63,10 @@ atc() {
 guess_lang() {
   # 抽出対象
   CPP="cpp"
-  PY="python"
+  PYTHON="python"
+  RUST="rust"
 
-  LANG=$(echo "$CURRENT_DIR_PATH" | sed -r "s/.*\/AtCoder\/(${CPP}|${PY}).*/\1/")
+  LANG=$(echo "$CURRENT_DIR_PATH" | sed -r "s/.*\/AtCoder\/(${CPP}|${PYTHON}|${RUST}).*/\1/")
   if [ "$CURRENT_DIR_PATH" = "$LANG" ]; then
     echo "directory meybe wrong." 1>&2
     usage
@@ -93,6 +99,15 @@ usage() {
     atc r|run a            [Python] python a.py
     atc rin a              [Python] python a.py < in
     atc py template        [Python] Python のプログラムテンプレートをコピーする
+
+  Rust:
+    atc rust abc xxx       [Rust] ABCxxx を VSCode で開く
+    atc rust arc xxx       [Rust] ARCxxx を VSCode で開く
+    atc rust agc xxx       [Rust] AGCxxx を VSCode で開く
+    atc rust mono xxx      [Rust] xxx.py という名前のファイルを mono フォルダに作って VSCode で開く
+    atc r|run a            [Rust] cargo run a.rs
+    atc rin a              [Rust] cargo run a.rs < in
+    atc rust template      [Rust] Rust のプログラムテンプレートをコピーする
 
 END
 }
