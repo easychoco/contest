@@ -16,9 +16,7 @@ cargo() {
     return 1;
   fi
 
-  # -Werror \ <- これをつけると、warning が error になる
-
-  cargo build
+  cargo check
 }
 
 usage() {

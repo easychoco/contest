@@ -21,10 +21,10 @@ rust() {
       SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/rust/rin.sh"
     ;;
     mono)
-      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/common/mono.sh rust rust"
+      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/common/mono.sh rust rs"
     ;;
     t|temp|template)
-      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/common/template.sh rust rust"
+      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/common/template.sh rust rs"
     ;;
     h|help|usage)
       usage
@@ -34,7 +34,7 @@ rust() {
       # これだけ引数がフォルダ名を示すので、別の処理にする
       CURRENT_DIR_PATH="$CURRENT_DIR_PATH" \
       REPOSITORY_ROOT="$REPOSITORY_ROOT" \
-        "${COMMAND_ROOT}/common/open.sh" rust rust "$@"
+        "${COMMAND_ROOT}/common/open.sh" rust rs "$@"
       exit
     ;;
   esac
