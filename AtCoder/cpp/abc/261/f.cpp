@@ -49,7 +49,38 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
+  ll n;
+  cin >> n;
+  vl c(n), x(n);
+  vvl single(n, vl());
+  rep(i, n) cin >> c[i], c[i]--;
+  rep(i, n)
+  {
+    cin >> x[i];
+    x[i]--;
+    single[c[i]].pb(x[i]);
+  }
 
+  ll ans = 0;
+  fenwick_tree<ll> bit(n);
+  rep(i, n)
+  {
+    ans += i - bit.sum(0, x[i] + 1);
+    bit.add(x[i], 1);
+  }
+  rep(i, n) bit.add(x[i], -1);
+
+  rep(i, n)
+  {
+    ll sz = single[i].size();
+    rep(j, sz)
+    {
+      ans -= bit.sum(single[i][j] + 1, n);
+      bit.add(single[i][j], 1);
+    }
+    rep(j, sz) bit.add(single[i][j], -1);
+  }
+  print(ans);
 }
 
 int main()
