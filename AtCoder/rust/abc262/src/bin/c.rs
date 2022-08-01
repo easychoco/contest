@@ -21,11 +21,12 @@ fn main() {
     .count()
   ;
 
-  let mut ans = same_count * (same_count - 1) / 2;
-  for (i, v) in a.iter().enumerate() {
-    if a[*v] == i && *v < i { // この程度なら filter().count() でやろうかと思ったけどやめた
-      ans += 1;
-    }
-  }
+  let ans = same_count * (same_count - 1) / 2 +
+    a.iter()
+    .enumerate()
+    .filter(|(i, &v)| a[v] == *i && v < *i)
+    .count()
+  ;
+  
   println!("{}", ans);
 }
