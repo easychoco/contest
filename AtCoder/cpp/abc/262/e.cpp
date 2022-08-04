@@ -47,9 +47,55 @@ void debug() { cerr << endl; }
 template <class Head, class... Tail>
 void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward<Tail>(tail)...); }
 
+using mint = modint998244353;
+
+// combination mod prime
+// https://www.youtube.com/watch?v=8uowVvQ_-Mo&feature=youtu.be&t=1619
+struct combination {
+  vector<mint> fact, ifact;
+  combination(int n):fact(n+1),ifact(n+1) {
+    fact[0] = 1;
+    for (int i = 1; i <= n; ++i) fact[i] = fact[i-1]*i;
+    ifact[n] = fact[n].inv();
+    for (int i = n; i >= 1; --i) ifact[i-1] = ifact[i]*i;
+  }
+  mint operator()(int n, int k) {
+    if (k < 0 || k > n) return 0;
+    return fact[n]*ifact[k]*ifact[n-k];
+  }
+} c (210000);
+
 void solve()
 {
+  ll n, m, k;
+  cin >> n >> m >> k;
+  vl degree(n, 0);
+  rep(i, m)
+  {
+    ll u, v;
+    cin >> u >> v;
+    u--; v--;
+    degree[u] ^= 1;
+    degree[v] ^= 1;
+  }
 
+  ll one_count = accumulate(ALL(degree), 0LL);
+  ll zero_count = n - one_count;
+
+  mint ans = 0;
+
+  // 奇数を i 個選ぶ
+  repe(i, k)
+  {
+    if (i & 1) continue;
+    if (i > one_count) continue;
+    if (k - i > zero_count) continue;
+    mint score = 1;
+    score *= c(one_count, i);
+    score *= c(zero_count, k - i);
+    ans += score;
+  }
+  print(ans.val());
 }
 
 int main()
