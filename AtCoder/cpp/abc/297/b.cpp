@@ -49,77 +49,32 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
-  ll h, w, n, sr, sc;
-  string s, t;
-  cin >> h >> w >> n >> sr >> sc >> s >> t;
+  string s;
+  cin >> s;
 
-  // 左ぶっぱ
-  ll ny = sr;
-  ll nx = sc;
-
-  rep(i, n)
+  ll bb = 0;
+  ll rr = -1;
+  bool ans = true;
+  rep(i, 8)
   {
-    if (s[i] == 'L') nx--;
-    if (nx <= 0)
-    {
-      print("NO");
-      debug("L", i);
-      return;
-    }
-    if (t[i] == 'R') nx = min(w, nx + 1);
+    if (s[i] == 'B') bb += i;
   }
 
-  // 右ぶっぱ
-  ny = sr;
-  nx = sc;
+  ans &= (bb & 1);
 
-  rep(i, n)
+  rep(i, 8)
   {
-    if (s[i] == 'R') nx++;
-    if (nx > w)
+    if (s[i] == 'R')
     {
-      print("NO");
-      debug("R", i);
-      return;
+      if (rr != -1) { ans = false; break; }
+      else rr = i;
     }
-    if (t[i] == 'L') nx = max(1LL, nx - 1);
-  }
-
-
-  // 上ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'U') ny--;
-    if (ny <= 0)
+    else if (s[i] == 'K')
     {
-      print("NO");
-      debug("U", i);
-      return;
+      if (rr != -1) { ans &= true; break; }
     }
-    if (t[i] == 'D') ny = min(h, ny + 1);
   }
-
-
-  // 下ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'D') ny++;
-    if (ny > h)
-    {
-      print("NO");
-      debug("D", i);
-      return;
-    }
-    if (t[i] == 'U') ny = max(1LL, ny - 1);
-  }
-
-  print("YES");
+  YN(ans);
 }
 
 int main()

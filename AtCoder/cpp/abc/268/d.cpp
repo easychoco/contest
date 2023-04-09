@@ -49,77 +49,51 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
-  ll h, w, n, sr, sc;
-  string s, t;
-  cin >> h >> w >> n >> sr >> sc >> s >> t;
+  ll n, m;
+  cin >> n >> m;
+  vs s(n);
+  rep(i, n) cin >> s[i];
 
-  // 左ぶっぱ
-  ll ny = sr;
-  ll nx = sc;
-
-  rep(i, n)
+  set<string> t;
+  rep(i, m)
   {
-    if (s[i] == 'L') nx--;
-    if (nx <= 0)
-    {
-      print("NO");
-      debug("L", i);
-      return;
-    }
-    if (t[i] == 'R') nx = min(w, nx + 1);
+    string it;
+    cin >> it;
+    t.insert(it);
   }
 
-  // 右ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
+  if (n == 1 && s[0] == *(t.begin()))
   {
-    if (s[i] == 'R') nx++;
-    if (nx > w)
-    {
-      print("NO");
-      debug("R", i);
-      return;
-    }
-    if (t[i] == 'L') nx = max(1LL, nx - 1);
+    print(-1);
+    return;
   }
 
+  ll sum = 0;
+  rep(i, n) sum += s[i].length();
 
-  // 上ぶっぱ
-  ny = sr;
-  nx = sc;
+  vl perm(n);
+  iota(ALL(perm), 0);
+  set<string> cand;
 
-  rep(i, n)
-  {
-    if (s[i] == 'U') ny--;
-    if (ny <= 0)
+  do {
+    string now = s[perm[0]];
+    repi(i, 1, n)
     {
-      print("NO");
-      debug("U", i);
+      now += string('_', 1);
+      now += s[perm[1]];
+    }
+    cand.insert(now);
+  } while(next_permutation(ALL(perm)));
+  for (auto is : cand)
+  {
+    // print(is);
+    if (t.find(is) == t.end())
+    {
+      print(is);
       return;
     }
-    if (t[i] == 'D') ny = min(h, ny + 1);
   }
-
-
-  // 下ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'D') ny++;
-    if (ny > h)
-    {
-      print("NO");
-      debug("D", i);
-      return;
-    }
-    if (t[i] == 'U') ny = max(1LL, ny - 1);
-  }
-
-  print("YES");
+  print(-1);
 }
 
 int main()

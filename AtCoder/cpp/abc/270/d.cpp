@@ -49,77 +49,25 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
-  ll h, w, n, sr, sc;
-  string s, t;
-  cin >> h >> w >> n >> sr >> sc >> s >> t;
+  ll n, k;
+  cin >> n >> k;
+  vl a(k);
+  rep(i, k) cin >> a[i];
 
-  // 左ぶっぱ
-  ll ny = sr;
-  ll nx = sc;
+  // dp[i] = 残りの石が i個あるときに、高橋くんが取り除ける最大数
+  vl dp(n + 1, 0);
 
-  rep(i, n)
+  ll ai = 0;
+  repe(i, n)
   {
-    if (s[i] == 'L') nx--;
-    if (nx <= 0)
+    rep(j, k)
     {
-      print("NO");
-      debug("L", i);
-      return;
+      if (i - a[j] < 0) break;
+      chmax(dp[i], i - dp[i - a[j]]);
+      // print(i, j, dp[i]);
     }
-    if (t[i] == 'R') nx = min(w, nx + 1);
   }
-
-  // 右ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'R') nx++;
-    if (nx > w)
-    {
-      print("NO");
-      debug("R", i);
-      return;
-    }
-    if (t[i] == 'L') nx = max(1LL, nx - 1);
-  }
-
-
-  // 上ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'U') ny--;
-    if (ny <= 0)
-    {
-      print("NO");
-      debug("U", i);
-      return;
-    }
-    if (t[i] == 'D') ny = min(h, ny + 1);
-  }
-
-
-  // 下ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'D') ny++;
-    if (ny > h)
-    {
-      print("NO");
-      debug("D", i);
-      return;
-    }
-    if (t[i] == 'U') ny = max(1LL, ny - 1);
-  }
-
-  print("YES");
+  print(dp[n]);
 }
 
 int main()

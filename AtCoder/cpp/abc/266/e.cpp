@@ -49,77 +49,55 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
-  ll h, w, n, sr, sc;
-  string s, t;
-  cin >> h >> w >> n >> sr >> sc >> s >> t;
+  ll n;
+  cin >> n;
 
-  // 左ぶっぱ
-  ll ny = sr;
-  ll nx = sc;
+  // i 回投げた時の最大値の期待値
+  vector<double> ex(n + 1, 0.0);
 
-  rep(i, n)
+  // n 回投げた時に m より大きい数が出る確率
+  auto f1 = [&](ll n, ll m)
   {
-    if (s[i] == 'L') nx--;
-    if (nx <= 0)
+    return 1.0 - pow(m / 6.0, n);
+  };
+
+  // n 回なげて
+  auto f2 = [&](ll n, ll m)
+  {
+
+  };
+
+  // 6 が出たら終わり
+  // n 回なげていちどでも 6　が出る確率
+  double d6 = f1(n, 5);
+
+  // i が出た時に f1(n, i) が 0.5以上ならもう一度投げる
+
+  // dp[i][j] = i 回なげてスコアが j になる確率
+  vector< vector<double> > dp(n + 1, vector<double>(6, 0.0));
+  rep(i, 6) dp[1][i] = 1 / 6.0;
+
+  // i 回なげて
+  repi(i, 1, n)
+  {
+    dp[i + 1][5] = dp[i][5];
+
+    double sum = 0.0;
+    repie(j, 1, 5)
     {
-      print("NO");
-      debug("L", i);
-      return;
+      double p = f1(n - i, 1);
+      if (p >= 0.5)
+      {
+        sum += dp[i][j] / 6.0;
+        dp[i + 1][5] += dp[i][j] / 6.0;
+      }
     }
-    if (t[i] == 'R') nx = min(w, nx + 1);
+    rep(j, 5) dp[i + 1][j] = sum;
   }
 
-  // 右ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'R') nx++;
-    if (nx > w)
-    {
-      print("NO");
-      debug("R", i);
-      return;
-    }
-    if (t[i] == 'L') nx = max(1LL, nx - 1);
-  }
-
-
-  // 上ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'U') ny--;
-    if (ny <= 0)
-    {
-      print("NO");
-      debug("U", i);
-      return;
-    }
-    if (t[i] == 'D') ny = min(h, ny + 1);
-  }
-
-
-  // 下ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'D') ny++;
-    if (ny > h)
-    {
-      print("NO");
-      debug("D", i);
-      return;
-    }
-    if (t[i] == 'U') ny = max(1LL, ny - 1);
-  }
-
-  print("YES");
+  double ans = 0.0;
+  rep(i, 6) ans += (i + 1) * dp[n][i];
+  print(ans);
 }
 
 int main()

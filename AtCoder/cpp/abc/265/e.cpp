@@ -22,6 +22,7 @@ using vvb = vector<vb>;
 using vs = vector<string>;
 using vl = vector<ll>;
 using vvl = vector<vl>;
+using vvvl = vector<vvl>;
 using P = pair<ll, ll>;
 using vp = vector<P>;
 using vvp = vector<vp>;
@@ -47,79 +48,63 @@ void debug() { cerr << endl; }
 template <class Head, class... Tail>
 void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward<Tail>(tail)...); }
 
+using mint = modint998244353;
+
+using vm = vector<mint>;
+using vvm = vector<vm>;
+using vvvm = vector<vvm>;
+
 void solve()
 {
-  ll h, w, n, sr, sc;
-  string s, t;
-  cin >> h >> w >> n >> sr >> sc >> s >> t;
-
-  // 左ぶっぱ
-  ll ny = sr;
-  ll nx = sc;
-
-  rep(i, n)
+  ll n, m, a, b, c, d, e, f;
+  cin >> n >> m >> a >> b >> c >> d >> e >> f;
+  set<P> st;
+  rep(i, m)
   {
-    if (s[i] == 'L') nx--;
-    if (nx <= 0)
-    {
-      print("NO");
-      debug("L", i);
-      return;
-    }
-    if (t[i] == 'R') nx = min(w, nx + 1);
+    ll x, y;
+    cin >> x >> y;
+    st.insert(P(x, y));
   }
 
-  // 右ぶっぱ
-  ny = sr;
-  nx = sc;
+  // dp[i][j][k] =
+  // i 回動いて
+  // ワープ1 を j 回
+  // ワープ1 を k 回
+  // の時の組み合わせ
+  vvvm dp(n + 10, vvm(n + 10, vm(n + 10, 0)));
+  dp[0][0][0] = 1;
 
-  rep(i, n)
+  repe(all, n)
   {
-    if (s[i] == 'R') nx++;
-    if (nx > w)
+    repe(i1, all)
     {
-      print("NO");
-      debug("R", i);
-      return;
+      repe(i2, all)
+      {
+        ll i3 = all - i1 - i2;
+        if (i3 < 0) break;
+
+        ll tx = a * i1 + c * i2 + e * i3;
+        ll ty = b * i1 + d * i2 + f * i3;
+        if (st.find(P(tx, ty)) != st.end())
+        {
+          dp[all][i1][i2] = 0;
+          continue;
+        }
+
+        dp[all + 1][i1 + 1][i2] += dp[all][i1][i2];
+        dp[all + 1][i1][i2 + 1] += dp[all][i1][i2];
+        dp[all + 1][i1][i2] += dp[all][i1][i2];
+      }
     }
-    if (t[i] == 'L') nx = max(1LL, nx - 1);
   }
 
-
-  // 上ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
+  mint ans = 0;
+  repe(i1, n)
+  repe(i2, n)
   {
-    if (s[i] == 'U') ny--;
-    if (ny <= 0)
-    {
-      print("NO");
-      debug("U", i);
-      return;
-    }
-    if (t[i] == 'D') ny = min(h, ny + 1);
+    ans += dp[n][i1][i2];
   }
-
-
-  // 下ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'D') ny++;
-    if (ny > h)
-    {
-      print("NO");
-      debug("D", i);
-      return;
-    }
-    if (t[i] == 'U') ny = max(1LL, ny - 1);
-  }
-
-  print("YES");
+  print(ans.val());
 }
 
 int main()

@@ -49,77 +49,43 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
-  ll h, w, n, sr, sc;
-  string s, t;
-  cin >> h >> w >> n >> sr >> sc >> s >> t;
-
-  // 左ぶっぱ
-  ll ny = sr;
-  ll nx = sc;
-
-  rep(i, n)
+  ll h, w;
+  cin >> h >> w;
+  vvl mp(h, vl(w));
+  rep(y, h)
+  rep(x, w)
   {
-    if (s[i] == 'L') nx--;
-    if (nx <= 0)
-    {
-      print("NO");
-      debug("L", i);
-      return;
-    }
-    if (t[i] == 'R') nx = min(w, nx + 1);
+    cin >> mp[y][x];
   }
 
-  // 右ぶっぱ
-  ny = sr;
-  nx = sc;
+  auto check = [&](ll y, ll x) -> bool {
+    bool le = x > 0 ? (mp[y][x] != mp[y][x - 1]) : true;
+    bool up = y > 0 ? (mp[y][x] != mp[y - 1][x]) : true;
 
-  rep(i, n)
+    bool ri = x < w - 1 ? (mp[y][x] != mp[y][x + 1]) : true;
+    bool dw = y < h - 1 ? (mp[y][x] != mp[y + 1][x]) : true;
+
+    bool ret = le && up && ri && dw;
+    // if (ret) print(y, x);
+    return ret;
+  };
+
+  ll cnt = 0;
+  rep(y, h)
   {
-    if (s[i] == 'R') nx++;
-    if (nx > w)
+    // print("y", y);
+    bool flip = false;
+    rep(x, w) flip |= check(y, x);
+    if (flip)
     {
-      print("NO");
-      debug("R", i);
-      return;
+      // print("y-flip", y);
+      cnt += 1;
+      rep(x, w) mp[y][x] = 1 - mp[y][x];
+      repie(yy, max(0LL, y - 1), y) rep(x, w) { if(check(yy, x)) { print(-1); return; } }
     }
-    if (t[i] == 'L') nx = max(1LL, nx - 1);
   }
 
-
-  // 上ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'U') ny--;
-    if (ny <= 0)
-    {
-      print("NO");
-      debug("U", i);
-      return;
-    }
-    if (t[i] == 'D') ny = min(h, ny + 1);
-  }
-
-
-  // 下ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'D') ny++;
-    if (ny > h)
-    {
-      print("NO");
-      debug("D", i);
-      return;
-    }
-    if (t[i] == 'U') ny = max(1LL, ny - 1);
-  }
-
-  print("YES");
+  print(min(cnt, h - cnt));
 }
 
 int main()

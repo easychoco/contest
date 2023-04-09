@@ -49,77 +49,34 @@ void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward
 
 void solve()
 {
-  ll h, w, n, sr, sc;
-  string s, t;
-  cin >> h >> w >> n >> sr >> sc >> s >> t;
-
-  // 左ぶっぱ
-  ll ny = sr;
-  ll nx = sc;
-
+  ll n, s;
+  cin >> n >> s;
+  vl a(n), b(n);
   rep(i, n)
   {
-    if (s[i] == 'L') nx--;
-    if (nx <= 0)
-    {
-      print("NO");
-      debug("L", i);
-      return;
-    }
-    if (t[i] == 'R') nx = min(w, nx + 1);
+    cin >> a[i] >> b[i];
   }
 
-  // 右ぶっぱ
-  ny = sr;
-  nx = sc;
-
+  vs hist(s + 1, "");
   rep(i, n)
   {
-    if (s[i] == 'R') nx++;
-    if (nx > w)
+    vs next(s + 1, "");
+    repe(j, s)
     {
-      print("NO");
-      debug("R", i);
-      return;
+      if (j > 0 && hist[j].length() == 0) continue;
+      ll val = j + a[i];
+      if (val <= s && hist[j].length() == i) next[val] = hist[j] + "H";
+      val = j + b[i];
+      if (val <= s && hist[j].length() == i) next[val] = hist[j] + "T";
     }
-    if (t[i] == 'L') nx = max(1LL, nx - 1);
+    swap(hist, next);
   }
 
-
-  // 上ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
+  YN(hist[s].length() == n);
+  if (hist[s].length() == n)
   {
-    if (s[i] == 'U') ny--;
-    if (ny <= 0)
-    {
-      print("NO");
-      debug("U", i);
-      return;
-    }
-    if (t[i] == 'D') ny = min(h, ny + 1);
+  	print(hist[s]);
   }
-
-
-  // 下ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'D') ny++;
-    if (ny > h)
-    {
-      print("NO");
-      debug("D", i);
-      return;
-    }
-    if (t[i] == 'U') ny = max(1LL, ny - 1);
-  }
-
-  print("YES");
 }
 
 int main()

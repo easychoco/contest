@@ -47,79 +47,70 @@ void debug() { cerr << endl; }
 template <class Head, class... Tail>
 void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward<Tail>(tail)...); }
 
+ll dist(ll a, ll b, ll mod)
+{
+  if (a > b) swap(a, b);
+  // a < b;
+  return(min(b - a, a + mod - b));
+}
+
 void solve()
 {
-  ll h, w, n, sr, sc;
-  string s, t;
-  cin >> h >> w >> n >> sr >> sc >> s >> t;
+  ll n;
+  cin >> n;
+  vl p(n);
+  rep(i, n) cin >> p[i];
+  vl nums(n);
 
-  // 左ぶっぱ
-  ll ny = sr;
-  ll nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'L') nx--;
-    if (nx <= 0)
-    {
-      print("NO");
-      debug("L", i);
-      return;
-    }
-    if (t[i] == 'R') nx = min(w, nx + 1);
+  rep(i, n) {
+    nums[i] = abs(i - p[i]);
+    debug(i, p[i], nums[i]);
   }
 
-  // 右ぶっぱ
-  ny = sr;
-  nx = sc;
+  sort(ALL(nums));
+  printv(nums);
 
-  rep(i, n)
-  {
-    if (s[i] == 'R') nx++;
-    if (nx > w)
+  ll ans = 0;
+  if (n & 1) {
+    ll mid = nums[n / 2];
+    rep(i, n)
     {
-      print("NO");
-      debug("R", i);
-      return;
+      ll pi = (i - mid + n) % n;
+      ans += dist(i, p[pi], n);
     }
-    if (t[i] == 'L') nx = max(1LL, nx - 1);
   }
-
-
-  // 上ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'U') ny--;
-    if (ny <= 0)
+  else {
+    ll mid = nums[n / 2];
+    ll score1 = 0;
+    rep(i, n)
     {
-      print("NO");
-      debug("U", i);
-      return;
+      ll pi = (i - mid + n) % n;
+      score1 += dist(i, p[pi], n);
+      debug("mid1 :", mid, "/", dist(i, p[pi], n));
     }
-    if (t[i] == 'D') ny = min(h, ny + 1);
-  }
 
-
-  // 下ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'D') ny++;
-    if (ny > h)
+    mid = nums[n / 2 - 1];
+    ll score2 = 0;
+    rep(i, n)
     {
-      print("NO");
-      debug("D", i);
-      return;
+      ll pi = (i - mid + n) % n;
+      score2 += dist(i, p[pi], n);
+      debug("mid2 :", mid, "/", dist(i, p[pi], n));
     }
-    if (t[i] == 'U') ny = max(1LL, ny - 1);
+    debug(mid, score1, score2);
+    ans = min(score1, score2);
   }
+  print(ans);
 
-  print("YES");
+
+  {
+    rep(mid, n)
+    {
+      ll s = 0;
+      rep(i, n) s += dist(i, p[(i - mid + n) % n], n);
+      print(mid, s);      
+    }
+  }
 }
 
 int main()

@@ -47,79 +47,35 @@ void debug() { cerr << endl; }
 template <class Head, class... Tail>
 void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward<Tail>(tail)...); }
 
+using mint = modint998244353;
+
 void solve()
 {
-  ll h, w, n, sr, sc;
-  string s, t;
-  cin >> h >> w >> n >> sr >> sc >> s >> t;
-
-  // 左ぶっぱ
-  ll ny = sr;
-  ll nx = sc;
-
+  ll n;
+  cin >> n;
+  vvl score(5, vl(100010, 0));
+  
   rep(i, n)
   {
-    if (s[i] == 'L') nx--;
-    if (nx <= 0)
-    {
-      print("NO");
-      debug("L", i);
-      return;
-    }
-    if (t[i] == 'R') nx = min(w, nx + 1);
+    ll t, x, a;
+    cin >> t >> x >> a;
+    if (t < x) continue;
+    score[x][t + 4 - x] = a;
   }
-
-  // 右ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
+  
+  vl sum(5, 0);
+  rep(i, 15)
   {
-    if (s[i] == 'R') nx++;
-    if (nx > w)
+    print(":", i);
+    rep(j, 5)
     {
-      print("NO");
-      debug("R", i);
-      return;
+      sum[j] += score[j][i];
+      if (j > 0) chmax(sum[j], sum[j - 1] + score[j][i]);
+      print(sum[j]);
     }
-    if (t[i] == 'L') nx = max(1LL, nx - 1);
+    print("----");
   }
-
-
-  // 上ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'U') ny--;
-    if (ny <= 0)
-    {
-      print("NO");
-      debug("U", i);
-      return;
-    }
-    if (t[i] == 'D') ny = min(h, ny + 1);
-  }
-
-
-  // 下ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'D') ny++;
-    if (ny > h)
-    {
-      print("NO");
-      debug("D", i);
-      return;
-    }
-    if (t[i] == 'U') ny = max(1LL, ny - 1);
-  }
-
-  print("YES");
+  print(sum[4]);
 }
 
 int main()
@@ -129,3 +85,5 @@ int main()
 
   return 0;
 }
+
+

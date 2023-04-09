@@ -38,7 +38,8 @@
     ],
     "files.associations": {
       "iostream": "cpp",
-      "tuple": "cpp"
+      "tuple": "cpp",
+      "complex": "cpp"
     }
   },
 }

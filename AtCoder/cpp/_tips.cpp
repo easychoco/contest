@@ -603,6 +603,7 @@ void dijkstra()
   const ll INF = 1LL << 60;
   vector<ll> d(n, INF);
   d[0] = 0;
+  // 小さいものから出てくる
   priority_queue<P, vector<P>, greater<P>> que;
   que.push(P(0, 0)); // P(cost, start)
   while (!que.empty())

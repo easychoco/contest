@@ -47,79 +47,42 @@ void debug() { cerr << endl; }
 template <class Head, class... Tail>
 void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward<Tail>(tail)...); }
 
+string s;
+ll now = -1;
+vl shown(26, 0);
+bool dfs()
+{
+  bool ret = true;
+  vl hist;
+  while (++now < (ll)s.length())
+  {
+    if (s[now] == '(')
+    {
+      ret &= dfs();
+    }
+    else if (s[now] == ')')
+    {
+      for (auto v : hist)
+      {
+        shown[v] = 0;
+      }
+      return ret;
+    }
+    else 
+    {
+      ll idx = s[now] - (int)('a');
+      if (shown[idx] > 0) ret = false;
+      shown[idx]++;
+      hist.pb(idx);
+    }
+  }
+  return ret;
+}
+
 void solve()
 {
-  ll h, w, n, sr, sc;
-  string s, t;
-  cin >> h >> w >> n >> sr >> sc >> s >> t;
-
-  // 左ぶっぱ
-  ll ny = sr;
-  ll nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'L') nx--;
-    if (nx <= 0)
-    {
-      print("NO");
-      debug("L", i);
-      return;
-    }
-    if (t[i] == 'R') nx = min(w, nx + 1);
-  }
-
-  // 右ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'R') nx++;
-    if (nx > w)
-    {
-      print("NO");
-      debug("R", i);
-      return;
-    }
-    if (t[i] == 'L') nx = max(1LL, nx - 1);
-  }
-
-
-  // 上ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'U') ny--;
-    if (ny <= 0)
-    {
-      print("NO");
-      debug("U", i);
-      return;
-    }
-    if (t[i] == 'D') ny = min(h, ny + 1);
-  }
-
-
-  // 下ぶっぱ
-  ny = sr;
-  nx = sc;
-
-  rep(i, n)
-  {
-    if (s[i] == 'D') ny++;
-    if (ny > h)
-    {
-      print("NO");
-      debug("D", i);
-      return;
-    }
-    if (t[i] == 'U') ny = max(1LL, ny - 1);
-  }
-
-  print("YES");
+  cin >> s;
+  YN(dfs());
 }
 
 int main()
