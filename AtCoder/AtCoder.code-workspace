@@ -37,10 +37,13 @@
       "ms-vscode-remote.remote-wsl"
     ],
     "files.associations": {
+      "*.sql": "postgres",
+      "*.erb": "erb",
       "iostream": "cpp",
       "tuple": "cpp",
       "complex": "cpp",
-      "iomanip": "cpp"
+      "iomanip": "cpp",
+      "random": "cpp"
     }
   },
 }
