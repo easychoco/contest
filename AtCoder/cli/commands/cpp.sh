@@ -5,43 +5,43 @@ set -eu
 cpp() {
   SUB_COMMAND="$1"
   case "$SUB_COMMAND" in
-    gg)
-      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp/gg.sh"
+  gg)
+    SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp/gg.sh"
     ;;
-    r|run)
-      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp/run.sh"
+  r | run)
+    SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp/run.sh"
     ;;
-    rin)
-      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp/rin.sh"
+  rin)
+    SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp/rin.sh"
     ;;
-    mono)
-      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/common/mono.sh cpp cpp"
+  mono)
+    SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/common/mono.sh cpp cpp"
     ;;
-    t|temp|template)
-      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/common/template.sh cpp cpp"
+  t | temp | template)
+    SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/common/template.sh cpp cpp"
     ;;
-    h|help|usage)
-      usage
-      exit
+  h | help | usage)
+    usage
+    exit
     ;;
-    *)
-      # これだけ引数がフォルダ名を示すので、別の処理にする
-      CURRENT_DIR_PATH="$CURRENT_DIR_PATH" \
+  *)
+    # これだけ引数がフォルダ名を示すので、別の処理にする
+    CURRENT_DIR_PATH="$CURRENT_DIR_PATH" \
       REPOSITORY_ROOT="$REPOSITORY_ROOT" \
-        "${COMMAND_ROOT}/common/open.sh" cpp cpp "$@"
-      exit
+      "${COMMAND_ROOT}/common/open.sh" cpp cpp "$@"
+    exit
     ;;
   esac
 
   shift
   CURRENT_DIR_PATH="$CURRENT_DIR_PATH" \
-  REPOSITORY_ROOT="$REPOSITORY_ROOT" \
-  COMMAND_ROOT="$COMMAND_ROOT" \
-  $SUBCOMMAND_SCRIPT "$@"
+    REPOSITORY_ROOT="$REPOSITORY_ROOT" \
+    COMMAND_ROOT="$COMMAND_ROOT" \
+    $SUBCOMMAND_SCRIPT "$@"
 }
 
 usage() {
-  cat <<- END 1>&2
+  cat <<-END 1>&2
 
 [ cpp.sh ]
 

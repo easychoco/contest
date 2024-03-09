@@ -20,39 +20,39 @@ atc() {
   SUB_COMMAND="$1"
   shift
   case "$SUB_COMMAND" in
-    # C++
-    c|cp|cpp)
-      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp.sh"
+  # C++
+  c | cp | cpp)
+    SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp.sh"
     ;;
-    gg)
-      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp.sh gg"
-    ;;
-
-    # Python
-    p|py|python)
-      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/python.sh"
+  gg)
+    SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/cpp.sh gg"
     ;;
 
-    # common
-    r|run)
-      LANG=$(guess_lang "$CURRENT_DIR_PATH")
-      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/${LANG}/run.sh"
-    ;;
-    rin)
-      LANG=$(guess_lang "$CURRENT_DIR_PATH")
-      SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/${LANG}/rin.sh"
+  # Python
+  p | py | python)
+    SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/python.sh"
     ;;
 
-    *)
-      echo 'unknown' 1>&2
-      usage
+  # common
+  r | run)
+    LANG=$(guess_lang "$CURRENT_DIR_PATH")
+    SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/${LANG}/run.sh"
+    ;;
+  rin)
+    LANG=$(guess_lang "$CURRENT_DIR_PATH")
+    SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/${LANG}/rin.sh"
+    ;;
+
+  *)
+    echo 'unknown' 1>&2
+    usage
     ;;
   esac
 
   CURRENT_DIR_PATH="$CURRENT_DIR_PATH" \
-  REPOSITORY_ROOT="$REPOSITORY_ROOT" \
-  COMMAND_ROOT="$COMMAND_ROOT" \
-  $SUBCOMMAND_SCRIPT "$@"
+    REPOSITORY_ROOT="$REPOSITORY_ROOT" \
+    COMMAND_ROOT="$COMMAND_ROOT" \
+    $SUBCOMMAND_SCRIPT "$@"
 }
 
 guess_lang() {
@@ -64,14 +64,14 @@ guess_lang() {
   if [ "$CURRENT_DIR_PATH" = "$LANG" ]; then
     echo "directory meybe wrong." 1>&2
     usage
-    return 1;
+    return 1
   fi
 
   echo "$LANG"
 }
 
 usage() {
-  cat <<- END 1>&2
+  cat <<-END 1>&2
 
 [ atc.sh ]
 
