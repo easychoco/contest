@@ -19,31 +19,21 @@
     {
       "name": "cli",
       "path": "cli"
-    },
+    }
   ],
+
   "settings": {
-    "editor.insertSpaces": true,
     "editor.tabSize": 2,
-    "recommendations": [
-      "ms-vscode.cpptools",
-      "ms-vscode.cpptools-extension-pack",
-      "austin.code-gnu-global",
-      "ms-python.python",
-      "ms-python.vscode-pylance",
-      "timonwong.shellcheck",
-      "DavidAnson.vscode-markdownlint",
-      "Asuka.insertnumbers",
-      "PKief.material-icon-theme",
-      "ms-vscode-remote.remote-wsl"
-    ],
+    "editor.formatOnSave": false,
+    "editor.insertSpaces": true,
+    "editor.comments.insertSpace": true,
+    "editor.trimAutoWhitespace": true,
     "files.associations": {
-      "*.sql": "postgres",
-      "*.erb": "erb",
       "iostream": "cpp",
       "tuple": "cpp",
       "complex": "cpp",
       "iomanip": "cpp",
       "random": "cpp"
     }
-  },
+  }
 }
