@@ -79,7 +79,8 @@ usage() {
     atc cp abc xxx         [C++] ABCxxx を VSCode で開く
     atc cp arc xxx         [C++] ARCxxx を VSCode で開く
     atc cp agc xxx         [C++] AGCxxx を VSCode で開く
-    atc cp mono xxx        [C++] xxx.cpp という名前のファイルを mono フォルダに作って VSCode で開く
+    atc cp mono xxx        [C++] xxx.cpp を mono フォルダに作って VSCode で開く
+    atc cp other xxx       [C++] other/xxx に a.cpp ~ h.cpp をコピーして VSCode で開く
     atc gg xxx             [C++] ./xxx.cpp をコンパイルする
     atc r|run              [C++] ./a.out
     atc rin                [C++] ./a.out < in
@@ -89,7 +90,8 @@ usage() {
     atc py abc xxx         [Python] ABCxxx を VSCode で開く
     atc py arc xxx         [Python] ARCxxx を VSCode で開く
     atc py agc xxx         [Python] AGCxxx を VSCode で開く
-    atc py mono xxx        [Python] xxx.py という名前のファイルを mono フォルダに作って VSCode で開く
+    atc py mono xxx        [Python] xxx.py を mono フォルダに作って VSCode で開く
+    atc cp other xxx       [Python] other/xxx に a.py ~ h.py をコピーして VSCode で開く
     atc r|run a            [Python] python a.py
     atc rin a              [Python] python a.py < in
     atc py template        [Python] Python のプログラムテンプレートをコピーする
