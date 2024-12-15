@@ -38,9 +38,16 @@ atc() {
     LANG=$(guess_lang "$CURRENT_DIR_PATH")
     SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/${LANG}/run.sh"
     ;;
+
   rin)
     LANG=$(guess_lang "$CURRENT_DIR_PATH")
     SUBCOMMAND_SCRIPT="${COMMAND_ROOT}/${LANG}/rin.sh"
+    ;;
+
+  edit)
+    cd "${REPOSITORY_ROOT}"
+    code AtCoder.code-workspace
+    exit 0
     ;;
 
   *)
