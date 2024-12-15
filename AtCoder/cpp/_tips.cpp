@@ -34,24 +34,24 @@ using vvp = vector<vp>;
 using T = tuple<ll, ll, ll>;
 using vt = vector<T>;
 const ll INF = 1LL << 60;
-void YN(bool a, string whenT="Yes", string whenF="No") { cout << (a ? whenT : whenF) << endl; }
+void YN(bool a, string whenT = "Yes", string whenF = "No") { cout << (a ? whenT : whenF) << endl; }
 template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
 template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return true; } return false; }
 void print() { cout << endl; }
 template <class T>
-void print(T &&t){ cout << t << endl; }
+void print(T&& t) { cout << t << endl; }
 template <class Head, class... Tail>
-void print(Head &&head, Tail &&...tail){ cout << head << " "; print(std::forward<Tail>(tail)...); }
+void print(Head&& head, Tail &&...tail) { cout << head << " "; print(std::forward<Tail>(tail)...); }
 void printd(double d) { cout << std::fixed << setprecision(13) << d << endl; }
 template <class T>
-inline void printv(T &v){ for (auto a : v) print(a); }
+inline void printv(T& v) { for (auto a : v) print(a); }
 template <class T>
-inline void printp(T &p){ for (auto [a, b] : p) print(a, b); }
+inline void printp(T& p) { for (auto [a, b] : p) print(a, b); }
 template <class T>
-inline void printt(T &t){ for (auto [a, b, c] : t) print(a, b, c); }
+inline void printt(T& t) { for (auto [a, b, c] : t) print(a, b, c); }
 void debug() { cerr << endl; }
 template <class Head, class... Tail>
-void debug(Head&& head, Tail&&... tail){ cerr << head << " "; debug(std::forward<Tail>(tail)...); }
+void debug(Head&& head, Tail&&... tail) { cerr << head << " "; debug(std::forward<Tail>(tail)...); }
 
 using mint = modint998244353;
 
@@ -64,7 +64,7 @@ string getIntStr(ll pow)
   if (pow < 0)
   {
     reverse(ALL(in));
-    for(int i = 1; i < (int)in.length(); ++i)
+    for (int i = 1; i < (int)in.length(); ++i)
     {
       if (in[i] == '.')
       {
@@ -86,8 +86,8 @@ string getIntStr(ll pow)
     return ret;
   }
 
-  for(int i = 0; i < pow; ++i) in += '0';
-  for(int i = 1; i < (int)in.length(); ++i)
+  for (int i = 0; i < pow; ++i) in += '0';
+  for (int i = 1; i < (int)in.length(); ++i)
   {
     if (in[i] == '.')
     {
@@ -102,7 +102,7 @@ string getIntStr(ll pow)
 
 void tip_div()
 {
-  ll a ,b;
+  ll a, b;
   // a / b の切り上げ
   (a - 1) / b + 1;
 
@@ -132,7 +132,7 @@ tuple<ll, ll, ll> extgcd(ll a, ll b) {
 bool isPrime(ll a) {
   if (a == 1) return false;
   for (ll i = 2; i * i <= a; i++) {
-    if(a % i == 0) return false;
+    if (a % i == 0) return false;
   }
   return true;
 }
@@ -168,8 +168,8 @@ ll powmod(ll a, ll n, ll mod) {
 ll combmod(ll n, ll r, ll mod) {
   ll x = 1, y = 1;
   r = min(n - r, r);
-  for(ll i = 0; i < r; ++i) { x = x * (n - i) % mod; }	// 分子
-  for(ll i = 1; i <= r; ++i) { y = y * i % mod; }			// 分母
+  for (ll i = 0; i < r; ++i) { x = x * (n - i) % mod; }	// 分子
+  for (ll i = 1; i <= r; ++i) { y = y * i % mod; }			// 分母
   return x * powmod(y, mod - 2, mod) % mod;	// nCr = (分子) * (分母)^-1 mod M
 }
 
@@ -178,8 +178,8 @@ ll combmod(ll n, ll r, ll mod) {
 mint combmod(ll n, ll r) {
   mint x = 1, y = 1;
   r = min(n - r, r);
-  for(ll i = 0; i < r; ++i) { x = x * (n - i); }	// 分子
-  for(ll i = 1; i <= r; ++i) { y = y * i; }			// 分母
+  for (ll i = 0; i < r; ++i) { x = x * (n - i); }	// 分子
+  for (ll i = 1; i <= r; ++i) { y = y * i; }			// 分母
   return x * y.inv();	// nCr = (分子) / (分母)
 }
 
@@ -191,7 +191,7 @@ vvl comb(ll n) {
     ret[i][i] = 1;
   }
   repie(j, 1, n)
-  repi (k, 1, j) ret[j][k] = (ret[j - 1][k - 1] + ret[j - 1][k]);
+    repi(k, 1, j) ret[j][k] = (ret[j - 1][k - 1] + ret[j - 1][k]);
   return ret;
 }
 
@@ -201,7 +201,7 @@ vvl comb(ll n) {
 // 破壊的なので注意
 // 戻り値は重複を削除 ( sort & unique ) した vector
 template <typename T>
-vector<T> compress(vector<T> &vec)
+vector<T> compress(vector<T>& vec)
 {
   vector<T> ret = vec;
 
@@ -210,7 +210,7 @@ vector<T> compress(vector<T> &vec)
   ret.erase(unique(ALL(ret)), ret.end());
 
   // 各要素ごとに二分探索で位置を求める
-  rep (i, vec.size())
+  rep(i, vec.size())
   {
     vec[i] = lower_bound(ALL(ret), vec[i]) - ret.begin();
   }
@@ -222,13 +222,13 @@ vector<T> compress(vector<T> &vec)
  * @brief
  * ランレングス圧縮 runlength encoding
  * O(|S|)
- * 
+ *
  * @param s ランレングス圧縮をする文字列
  * @return vector< pair<文字, 個数> > を返す
  */
 vector<pair<char, ll>> run_length_encoding(const string s) {
-  vector<pair<char, ll>> runlength { make_pair(s[0], 1) };
-  repi (i, 1, s.length()) {
+  vector<pair<char, ll>> runlength{ make_pair(s[0], 1) };
+  repi(i, 1, s.length()) {
     const char now = s[i];
     if (runlength.back().first == now) runlength.back().second++;
     else runlength.pb(make_pair(now, 1));
@@ -244,7 +244,7 @@ void tip_facotrization()
   ll num;
   map<ll, ll> primes;
   ll factor = 2;
-  while(factor * factor <= num)
+  while (factor * factor <= num)
   {
     if (num % factor == 0)
     {
@@ -261,14 +261,14 @@ void tip_facotrization()
 void tip_binary_search()
 {
   auto f = [&](ll arg) -> bool
-  {
-    return arg > 0;
-  };
+    {
+      return arg > 0;
+    };
   ll ac = 0, wa = 1'000'000'000LL;
-  while(wa - ac > 1)
+  while (wa - ac > 1)
   {
     ll wj = (ac + wa) / 2;
-    if ( f(wj) ) ac = wj;
+    if (f(wj)) ac = wj;
     else wa = wj;
   }
 }
@@ -316,7 +316,7 @@ void accumulate_sum_2D()
 
 // C++20 の　std::ranges::range で書きたい
 // 区間を扱うクラス
-class SegmentMap{
+class SegmentMap {
 public:
   vector<T> raw; // vector< pair< from, to > >
   void add(ll from, ll to) { add(P(from, to)); }
@@ -327,7 +327,7 @@ public:
   // vector<from, to, index>
   vector<T> schedule() {
     vector<T> ret; vector<T> segments(raw);
-    sort(segments.begin(), segments.end(), [&](const T &a, const T &b) { return get<1>(a) < get<1>(b); });
+    sort(segments.begin(), segments.end(), [&](const T& a, const T& b) { return get<1>(a) < get<1>(b); });
     ll last = get<1>(segments[0]);
     ret.pb(segments[0]);
     for (auto seg : segments) {
@@ -338,7 +338,7 @@ public:
       }
     }
     return ret;
-  } 
+  }
 
   // 区間を合成したものを返す
   // O ( N log N )
@@ -362,7 +362,7 @@ public:
 
 /**
  * @brief ループの始点と周期を求める
- * 
+ *
  * @tparam T target の型
  * @param target 検証対象の vector
  * @param next ひとつ進める function / target の index をもらって、次の index を返す
@@ -379,7 +379,7 @@ pair<ll, ll> detect_cycle_loop(
   vl loop(sz, -1);
   ll now = first_index;
   loop[now] = 0;
-  repi (i, 1, sz + 2) {
+  repi(i, 1, sz + 2) {
     now = next(now);
     if (loop[now] == -1) loop[now] = i;
     else return P(now, i - loop[now]);
@@ -395,7 +395,7 @@ pair<ll, ll> detect_cycle_loop(
   auto calc = [&](ll acc, ll now){ return acc + a[now]; };
   auto [_1, _2, t] = detect_cycle_loop_acc<ll, ll>(a, next, calc, k);
  * ```
- * 
+ *
  * @tparam T target の型
  * @tparam U score の型 / ll か mint の想定
  * @param target 検証対象の vector
@@ -455,7 +455,7 @@ tuple<ll, ll, U> detect_cycle_loop_acc(
   return make_tuple(-1, -1, 0);
 }
 
-class UnionFind{
+class UnionFind {
 public:
   vector<ll> p;		// 親
   vector<ll> rank;	// サイズ・各集合の根のみ有効
@@ -464,29 +464,29 @@ public:
     p.resize(n, -1);
     rank.resize(n, 1);
   }
-  ll root(ll x){
-    if(p[x] == -1) return x;
+  ll root(ll x) {
+    if (p[x] == -1) return x;
     else return p[x] = root(p[x]); // 深さを 1 にしている
   }
-  bool unite(ll x, ll y){
+  bool unite(ll x, ll y) {
     x = root(x); y = root(y);
-    if(x == y) return false;
-    if(rank[x] > rank[y]) swap(x, y); // rankの小さいものを下につける
+    if (x == y) return false;
+    if (rank[x] > rank[y]) swap(x, y); // rankの小さいものを下につける
     rank[y] += rank[x];
     p[x] = y;
     root_num--;
     return true;
   }
-  bool merge(ll x, ll y){ return unite(x, y); }
+  bool merge(ll x, ll y) { return unite(x, y); }
   // グループごとに頂点をまとめる: O(N log N)
-  map<ll, vector<ll>> groups(){
+  map<ll, vector<ll>> groups() {
     map<ll, vector<ll>> ret;
     rep(i, p.size()) ret[root(i)].emplace_back(i);
     return ret;
   }
   //xが属すグループのサイズ
-  ll size(ll x){ return rank[root(x)]; }
-  bool same(ll x, ll y){ return (root(x) == root(y)); }
+  ll size(ll x) { return rank[root(x)]; }
+  bool same(ll x, ll y) { return (root(x) == root(y)); }
 };
 
 // クラスカル法
@@ -497,7 +497,7 @@ void tip_kruskal()
   //     tuple<cost, from, to>
   vector<tuple<ll, ll, ll> > G;
   UnionFind uf(n);
-  
+
   rep(i, n)
   {
     ll cost, from, to;
@@ -507,7 +507,7 @@ void tip_kruskal()
 
   ll dist_sum = 0;
   ll edge_cnt = 0;
-  for(const auto& edge : G)
+  for (const auto& edge : G)
   {
     ll cost, from, to;
     tie(cost, from, to) = edge;
@@ -530,9 +530,9 @@ void tip_warshall_floyd() {
   rep(i, n) rep(j, n) dist[i][j] = INF;
   rep(i, n) dist[i][i] = 0;
 
-  rep (k, n){       // 経由する頂点
-    rep (i, n) {    // 始点
-      rep (j, n) {  // 終点
+  rep(k, n) {       // 経由する頂点
+    rep(i, n) {    // 始点
+      rep(j, n) {  // 終点
         chmin(dist[i][j], dist[i][k] + dist[k][j]);
       }
     }
@@ -631,7 +631,7 @@ void tip_graph_bfs()
   cin >> n >> m;
   vector<P> input(m);
   vector< vector<int> > edge(n, vector<int>());
-  for(int i = 0; i < m; ++i)
+  for (int i = 0; i < m; ++i)
   {
     cin >> a >> b;
     a--; b--;
@@ -644,12 +644,12 @@ void tip_graph_bfs()
   vector<bool> visited(n, false);
   queue<int> que;
   que.push(0); //初期位置
-  while(!que.empty())
+  while (!que.empty())
   {
     int now = que.front();
     que.pop();
     visited[now] = true;
-    for(const auto& to : edge[now])
+    for (const auto& to : edge[now])
     {
       if (!visited[to]) //visited使用
       {
@@ -681,13 +681,13 @@ void bfs_shortest_path(vector< vector<P> >& graph, vl& use_cnt, ll from, ll to)
   que.push(P(from, -1));
   vector<P> prev(sz, P(-1, -1));
   vector<bool> come(sz, false);
-  while(!que.empty())
+  while (!que.empty())
   {
     auto [now, _] = que.front();
     que.pop();
     if (now == to) break;
     come[now] = true;
-    for (auto [next, idx]: graph[now])
+    for (auto [next, idx] : graph[now])
     {
       if (come[next]) continue;
       que.push(P(next, idx));
@@ -696,7 +696,7 @@ void bfs_shortest_path(vector< vector<P> >& graph, vl& use_cnt, ll from, ll to)
   }
 
   ll now = to;
-  while(now != from)
+  while (now != from)
   {
     auto [next_rev, idx] = prev[now];
     now = next_rev;
@@ -729,12 +729,12 @@ void tip_topological_sort()
     que.push(i);
     depth[i] = 0;
   }
-  while(!que.empty())
+  while (!que.empty())
   {
     ll now = que.front();
     que.pop();
     sorted.emplace_back(now);
-    for(const auto& to : edge[now])
+    for (const auto& to : edge[now])
     {
       deg[to]--;
       if (deg[to] == 0)
@@ -753,123 +753,123 @@ void tip_topological_sort()
 
 namespace topological { // shadowing でエラーが出るので対策
 
-// トポロジカルソート(DFS)
-// topological sort
-// O(V + E)
-vector<P> sorted;
-vector< vector<ll> > graph;
-vector<bool> come;
-void topo_dfs(int prev, int now)
-{
-  if (come[now]) return;
-  come[now] = true;
-
-  for (auto& i: graph[now]) topo_dfs(now, i);
-  // 帰りがけ順で追加
-  sorted.push_back(P(prev, now));
-};
-void tip_topologicalsort_dfs()
-{
-  ll n, m;
-  cin >> n;
-  come.resize(n, false);
-  graph.resize(n);
-  vector<ll> deg(n, 0); // 入り次数
-  rep(i, n)
+  // トポロジカルソート(DFS)
+  // topological sort
+  // O(V + E)
+  vector<P> sorted;
+  vector< vector<ll> > graph;
+  vector<bool> come;
+  void topo_dfs(int prev, int now)
   {
-    ll a, b;
-    cin >> a >> b;
-    a--; b--;
-    graph[a].emplace_back(b);
+    if (come[now]) return;
+    come[now] = true;
+
+    for (auto& i : graph[now]) topo_dfs(now, i);
+    // 帰りがけ順で追加
+    sorted.push_back(P(prev, now));
+  };
+  void tip_topologicalsort_dfs()
+  {
+    ll n, m;
+    cin >> n;
+    come.resize(n, false);
+    graph.resize(n);
+    vector<ll> deg(n, 0); // 入り次数
+    rep(i, n)
+    {
+      ll a, b;
+      cin >> a >> b;
+      a--; b--;
+      graph[a].emplace_back(b);
+    }
+    rep(i, n) topo_dfs(-1, i);
+    reverse(ALL(sorted));
   }
-  rep(i, n) topo_dfs(-1, i);
-  reverse(ALL(sorted));
-}
 
 } // end of namespace topological
 
-namespace scc{ // shadowing でエラーが出るので対策
+namespace scc { // shadowing でエラーが出るので対策
 
-// SCC : Strongly Connected Component
-// 強連結成分分解 きょうれんけつせいぶんぶんかい
-// O(V + E)
-ll n, m;
-vector< vector<ll> > graph; // 順方向
-vector< vector<ll> > graph_rev; // 逆方向
-vector<bool> come;
-vector<ll> seq; // 帰りがけ順の並び
-vector<ll> hist; // 各グループのサイズ
-vector<ll> group; // 各ノードがどのグループに属するか
+  // SCC : Strongly Connected Component
+  // 強連結成分分解 きょうれんけつせいぶんぶんかい
+  // O(V + E)
+  ll n, m;
+  vector< vector<ll> > graph; // 順方向
+  vector< vector<ll> > graph_rev; // 逆方向
+  vector<bool> come;
+  vector<ll> seq; // 帰りがけ順の並び
+  vector<ll> hist; // 各グループのサイズ
+  vector<ll> group; // 各ノードがどのグループに属するか
 
-// 1回目の DFS
-// 帰りがけ順に記録する
-void scc_dfs(ll now)
-{
-  if (come[now]) return;
-  come[now] = true;
-  for (const auto& next : graph[now])
+  // 1回目の DFS
+  // 帰りがけ順に記録する
+  void scc_dfs(ll now)
   {
-    scc_dfs(next);
-  }
-  seq.emplace_back(now);
-}
-
-// 2回目の DFS
-// 記録した番号の大きい順にDFSをして、訪れたノードが強連結成分
-void scc_dfs_rev(ll now, ll group_id)
-{
-  if (come[now]) return;
-  come[now] = true;
-  group[now] = group_id;
-  hist[group_id]++;
-  for (const auto& next : graph_rev[now])
-  {
-    scc_dfs_rev(next, group_id);
-  }
-}
-
-// 閉路に含まれる要素を返す
-// O(N)
-vl scc_get_loop_node()
-{
-  vl ret;
-  rep(i, n) if (hist[group[i]] > 1) ret.pb(i);
-  return ret;
-}
-
-void tip_scc()
-{
-  cin >> n >> m;
-  graph.resize(n);
-  graph_rev.resize(n);
-  group.resize(n, 0);
-  come.resize(n, false);
-  hist.resize(n, 0);
-  rep(i, m)
-  {
-    ll u, v;
-    cin >> u >> v;
-    u--; v--;
-    graph[u].emplace_back(v);
-    graph_rev[v].emplace_back(u);
+    if (come[now]) return;
+    come[now] = true;
+    for (const auto& next : graph[now])
+    {
+      scc_dfs(next);
+    }
+    seq.emplace_back(now);
   }
 
-  fill(ALL(come), false);
-  rep(i, n)
+  // 2回目の DFS
+  // 記録した番号の大きい順にDFSをして、訪れたノードが強連結成分
+  void scc_dfs_rev(ll now, ll group_id)
   {
-    if (!come[i]) scc_dfs(i);
+    if (come[now]) return;
+    come[now] = true;
+    group[now] = group_id;
+    hist[group_id]++;
+    for (const auto& next : graph_rev[now])
+    {
+      scc_dfs_rev(next, group_id);
+    }
   }
 
-  fill(ALL(come), false);
-  ll group_id = 0;
-  for(ll i = seq.size() - 1; i >= 0; --i)
+  // 閉路に含まれる要素を返す
+  // O(N)
+  vl scc_get_loop_node()
   {
-    if (!come[seq[i]]) scc_dfs_rev(seq[i], group_id++);
+    vl ret;
+    rep(i, n) if (hist[group[i]] > 1) ret.pb(i);
+    return ret;
   }
 
-  // hist が 2 以上のグループは閉路・ループになっている
-  vl looping = scc_get_loop_node();
-}
+  void tip_scc()
+  {
+    cin >> n >> m;
+    graph.resize(n);
+    graph_rev.resize(n);
+    group.resize(n, 0);
+    come.resize(n, false);
+    hist.resize(n, 0);
+    rep(i, m)
+    {
+      ll u, v;
+      cin >> u >> v;
+      u--; v--;
+      graph[u].emplace_back(v);
+      graph_rev[v].emplace_back(u);
+    }
+
+    fill(ALL(come), false);
+    rep(i, n)
+    {
+      if (!come[i]) scc_dfs(i);
+    }
+
+    fill(ALL(come), false);
+    ll group_id = 0;
+    for (ll i = seq.size() - 1; i >= 0; --i)
+    {
+      if (!come[seq[i]]) scc_dfs_rev(seq[i], group_id++);
+    }
+
+    // hist が 2 以上のグループは閉路・ループになっている
+    vl looping = scc_get_loop_node();
+  }
 
 } // end of namespace scc
 
@@ -973,11 +973,11 @@ const ll E = 0;                     // 演算での単位元
 ll op(ll a, ll b) { return a + b; } // 使用する演算、可換
 // =======================================================
 ll node[N * 2 + 1];
-void init(){
-  for(int i = 0; i < N * 2 + 1; ++i) node[i] = E;
+void init() {
+  for (int i = 0; i < N * 2 + 1; ++i) node[i] = E;
 }
 ll get(int i) { return node[i + N - 1]; }
-void update(int i, ll x){ // i 番目の葉の値を x に変える
+void update(int i, ll x) { // i 番目の葉の値を x に変える
   i += N - 1; // i 番目の葉のノード番号
   node[i] = x;
   while (i > 0) {
@@ -985,7 +985,7 @@ void update(int i, ll x){ // i 番目の葉の値を x に変える
     node[i] = op(node[i * 2 + 1], node[i * 2 + 2]); // 左右の子の値を計算しなおす
   }
 }
-ll query(int a, int b, int k = 0, int l = 0, int r = N){
+ll query(int a, int b, int k = 0, int l = 0, int r = N) {
   // [a, b) の区間に対するクエリについてノード k （区間 [l, r) 担当）が答える
   if (r <= a || b <= l) return E; // 区間が被らない場合は単位元を返す
   if (a <= l && r <= b) return node[k]; // ノード k の担当範囲がクエリ区間 [a, b) に完全に含まれる
@@ -1031,22 +1031,22 @@ struct Mo {
     order.resize(left.size());
     iota(ALL(order), 0);
     sort(ALL(order), [&](int a, int b) {
-      if(left[a] / width != left[b] / width) return left[a] < left[b];
+      if (left[a] / width != left[b] / width) return left[a] < left[b];
       return right[a] < right[b];
-    });
+      });
   }
   int process() { // クエリを1つ処理してクエリのidを返す
-    if(ptr == (int)order.size()) return (-1);
+    if (ptr == (int)order.size()) return (-1);
     const auto id = order[ptr];
-    while(nl > left[id]) distribute(--nl);
-    while(nr < right[id]) distribute(nr++);
-    while(nl < left[id]) distribute(nl++);
-    while(nr > right[id]) distribute(--nr);
+    while (nl > left[id]) distribute(--nl);
+    while (nr < right[id]) distribute(nr++);
+    while (nl < left[id]) distribute(nl++);
+    while (nr > right[id]) distribute(--nr);
     return (order[ptr++]);
   }
   inline void distribute(int idx) {
     v[idx].flip();
-    if(v[idx]) add(idx);
+    if (v[idx]) add(idx);
     else del(idx);
   }
   // ===================  問題ごとに設定 ====================
@@ -1062,11 +1062,11 @@ struct Mo {
 struct Fraction {
   // y / x
   ll y, x;
-  Fraction(ll _y = 0, ll _x = 1): y(_y), x(_x) {}
-  bool operator < (const Fraction &other) const {
+  Fraction(ll _y = 0, ll _x = 1) : y(_y), x(_x) {}
+  bool operator < (const Fraction& other) const {
     return y * other.x < other.y * x;
   }
-  bool operator <= (const Fraction &other) const {
+  bool operator <= (const Fraction& other) const {
     return y * other.x <= other.y * x;
   }
   void show() {
@@ -1092,10 +1092,10 @@ public:
   vector<vector<T>> val;
 
   Matrix operator - () {
-    for(int y = 0; y < size_y; ++y)
-    for(int x = 0; x < size_x; ++x) {
-      this->val[y][x] *= -1;
-    }
+    for (int y = 0; y < size_y; ++y)
+      for (int x = 0; x < size_x; ++x) {
+        this->val[y][x] *= -1;
+      }
     return *this;
   }
   Matrix operator + (Matrix right) const {
@@ -1106,10 +1106,10 @@ public:
     }
 
     auto ret = Matrix(size_y, size_x);
-    for(int y = 0; y < size_y; ++y)
-    for(int x = 0; x < size_x; ++x) {
-      ret.val[y][x] = left.val[y][x] + right.val[y][x];
-    }
+    for (int y = 0; y < size_y; ++y)
+      for (int x = 0; x < size_x; ++x) {
+        ret.val[y][x] = left.val[y][x] + right.val[y][x];
+      }
     return ret;
   }
   Matrix operator - (Matrix right) const {
@@ -1125,12 +1125,12 @@ public:
     }
 
     auto ret = Matrix(left.y(), right.x());
-    for(int y = 0; y < left.y(); ++y)
-    for(int x = 0; x < right.x(); ++x) {
-      for(int i = 0; i < left.x(); ++i) {
-        ret.val[y][x] += left.val[y][i] * right.val[i][x];
+    for (int y = 0; y < left.y(); ++y)
+      for (int x = 0; x < right.x(); ++x) {
+        for (int i = 0; i < left.x(); ++i) {
+          ret.val[y][x] += left.val[y][i] * right.val[i][x];
+        }
       }
-    }
     return ret;
   }
   void operator *= (Matrix right) { *this = *this * right; }
@@ -1152,7 +1152,7 @@ public:
 
   static Matrix E(int _size) {// ::演算子でアクセス
     auto ret = Matrix(_size, _size);
-    for(int i = 0; i < _size; ++i) {
+    for (int i = 0; i < _size; ++i) {
       ret.val[i][i] = 1;
     }
     return ret;
@@ -1161,8 +1161,8 @@ public:
   int y() const { return this->size_y; }
   bool same_size(Matrix* other) const { return ((this->x() == other->x()) && (this->y() == other->y())); }
   void show() const {
-    for(int y = 0; y < size_y; ++y) {
-      for(int x = 0; x < size_x; ++x) {
+    for (int y = 0; y < size_y; ++y) {
+      for (int x = 0; x < size_x; ++x) {
         cout << std::fixed << setprecision(13) << val[y][x];
         if (x < size_x - 1) cout << " ";
       }
@@ -1179,7 +1179,7 @@ public:
 // - x軸反転・y軸反転
 class AffineMatrix : public Matrix<ll> {
 public:
-  AffineMatrix() : Matrix(3, 3){ val[2][2] = 1; }
+  AffineMatrix() : Matrix(3, 3) { val[2][2] = 1; }
   void operator = (Matrix other) {
     this->val = other.val;
     this->size_x = other.x();
@@ -1245,14 +1245,14 @@ public:
 
 void solve()
 {
-/*
-  ll n;
-  cin >> n;
+  /*
+    ll n;
+    cin >> n;
 
-  bool y = n > 0;
+    bool y = n > 0;
 
-  YN(y);
-*/
+    YN(y);
+  */
 
   ll n;
   cin >> n;
