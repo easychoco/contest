@@ -3,7 +3,7 @@
 set -eu
 
 run() {
-  if [ ! $# -eq 1 ]; then 
+  if [ ! $# -eq 1 ]; then
     echo "  you need arg" 1>&2
     usage
     return 1
@@ -22,14 +22,14 @@ run() {
 }
 
 usage() {
-  cat <<- END 1>&2
+  cat <<-END 1>&2
 
 [ python/run.sh ]
 
   Python のプログラムを実行する
 
-    atc rin         pythno3 a.py
-    atc cp rin      pythno3 a.py
+    atc rin         python3 a.py
+    atc cp rin      python3 a.py
 END
 }
 
