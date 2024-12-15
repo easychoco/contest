@@ -2,7 +2,7 @@
 // https://qiita.com/kawa-Kotaro/items/782bc31b64e4ee13649a
 // https://atcoder.github.io/ac-library/production/document_ja/
 
-// g++ --std=gnu++17 -I ~/pg/ac-library -Wall -Werror -O2
+// g++ --std=gnu++23 -I ~/pg/ac-library -Wall -Werror -O2
 
 #include <bits/stdc++.h>
 #include <atcoder/all>

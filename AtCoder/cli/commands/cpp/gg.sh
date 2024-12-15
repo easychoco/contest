@@ -19,7 +19,7 @@ gg() {
   # -Werror \ <- これをつけると、warning が error になる
 
   g++ \
-    --std=gnu++17 \
+    --std=gnu++23 \
     -I "${REPOSITORY_ROOT}/../../ac-library" \
     -Wall \
     -O2 \
